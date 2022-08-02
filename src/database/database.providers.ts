@@ -12,7 +12,7 @@ export const databaseProviders = [
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
         entities: [__dirname + '/../**/*.entity.{js,ts}'],
-        synchronize: false,
+        synchronize: true,
         // migrations: ['src/migration/*.ts'],
       });
 

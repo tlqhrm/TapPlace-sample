@@ -5,16 +5,21 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Logger,
   Param,
   ParseIntPipe,
   Patch,
   Post,
   UseFilters,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { type } from 'os';
 import { AuthService } from 'src/auth/auth.service';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { User } from 'src/auth/user.entity';
 import { ExceptionHandler } from 'src/ExceptHandler';
 import { BoardStatus } from './board-status.enum';
 import { Board } from './boards.entity';
@@ -23,22 +28,26 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe';
 
 @Controller('boards')
+@UseGuards(AuthGuard())
 @UseFilters(new ExceptionHandler())
 export class BoardsController {
+  private logger = new Logger('BoardsController');
   constructor(private boardService: BoardsService) {}
 
   @Get('/')
   getAllBoard(): Promise<Board[]> {
-    throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    // return this.boardService.getAllBoards();
+    // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    return this.boardService.getAllBoards();
   }
 
   @Post('/')
   // @UsePipes(ValidationPipe)
-  createBoard(@Body() CreateBoardDto: CreateBoardDto): Promise<Board> {
-    console.log(CreateBoardDto);
-    console.log(typeof CreateBoardDto.title);
-    return this.boardService.createBoard(CreateBoardDto);
+  createBoard(
+    @Body() CreateBoardDto: CreateBoardDto,
+    @GetUser() user: User,
+  ): Promise<Board> {
+    this.logger.verbose(`User ${user.username} trying to create board`);
+    return this.boardService.createBoard(CreateBoardDto, user);
   }
 
   @Get('/:id')

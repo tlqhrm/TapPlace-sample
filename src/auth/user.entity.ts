@@ -1,7 +1,9 @@
+import { Board } from 'src/boards/boards.entity';
 import {
   Column,
   Entity,
   IsNull,
+  OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
   Unique,
@@ -18,4 +20,7 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany((type) => Board, (board) => board.user, { eager: true })
+  boards: Board[];
 }

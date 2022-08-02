@@ -1,17 +1,17 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class init1659319822368 implements MigrationInterface {
-  name = 'init1659319822368';
+export class test31659397403808 implements MigrationInterface {
+  name = 'test31659397403808';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "user" RENAME COLUMN "name" TO "username"`,
+      `ALTER TABLE "user" RENAME COLUMN "wordpass" TO "password"`,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "user" RENAME COLUMN "username" TO "name"`,
+      `ALTER TABLE "user" RENAME COLUMN "password" TO "wordpass"`,
     );
   }
 }

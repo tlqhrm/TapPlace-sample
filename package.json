@@ -10,22 +10,28 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
+    "start:dev": "cross-env NODE_ENV=dev nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "cross-env NODE_ENV=prod node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    
     "typeorm": "typeorm-ts-node-commonjs",
-    "migration:generate": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:generate -d srcdatabase/database.providers.ts",
-    "migration:up": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:run -d src/database/database.providers.ts",
-    "migration:down": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:revert -d src/database/database.providers.ts"
+    "typeorm:migration:generate": "cross-env NODE_ENV=prod npm run typeorm -- migration:generate -n",
+    "typeorm:migration:run:dev": "npx typeorm migration:run -d dist/database/dataSource-dev.js",
+    "typeorm:migration:revert:dev": "npx typeorm migration:revert -d dist/database/dataSource-dev.js",
+    "typeorm:migration:run:prod": "npx typeorm migration:run -d dist/database/dataSource-prod.js",
+    "typeorm:migration:revert:prod": "npx typeorm migration:revert -d dist/database/dataSource-prod.js"
+    
+    
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^9.0.0",
     "@nestjs/passport": "^9.0.0",
@@ -35,6 +41,9 @@
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.1",
+    "joi": "^17.6.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.3",

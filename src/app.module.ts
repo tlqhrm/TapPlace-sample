@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
-import { BoardsModule } from './boards/boards.module';
-import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { DatabaseModule } from './database/database.module';
+import { StoreModule } from './store/store.module';
+import { UserModule } from './user/user.module';
+import { PayModule } from './pay/pay.module';
+import { PaylistModule } from './paylist/paylist.module';
+import { LogModule } from './userlog/user.module';
 
 @Module({
   imports: [
@@ -19,8 +23,12 @@ import * as Joi from 'joi';
         DB_DATABASE: Joi.string().required(),
       }),
     }),
-    BoardsModule,
-    AuthModule,
+    DatabaseModule,
+    UserModule,
+    PayModule,
+    PaylistModule,
+    LogModule,
+    StoreModule,
   ],
   controllers: [],
   providers: [],

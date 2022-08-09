@@ -10,37 +10,47 @@ import {
 } from '@nestjs/common';
 import { PayService } from './pay.service';
 import { CreatePayDto } from './dto/create-pay.dto';
-import { UpdatePayDto } from './dto/update-pay.dto';
+import { GetPaysDto } from './dto/get-pays.dto';
+import { keyCheck } from 'src/keyCheck-decorators';
+import { keyPipe } from 'src/keyPipes';
+import { FeedbackDto } from './dto/feedbackdto';
+import { GetPaysCehckDto } from './dto/get-pays-check.dto';
 
 @Controller('pay')
 export class PayController {
   constructor(private readonly payService: PayService) {}
 
   @Post()
-  create(@Body() createPayDto: CreatePayDto) {
-    if (createPayDto.key !== process.env.KEY) {
-      throw new HttpException('Unable to access.', 403);
-    }
-    return this.payService.create(createPayDto);
+  async create(
+    @Body() createPayDto: CreatePayDto,
+    @keyCheck(keyPipe) key,
+  ): Promise<boolean> {
+    return await this.payService.create(createPayDto);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.payService.findAll();
-  // }
+  @Get()
+  findAll() {
+    return true;
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.payService.findOne(+id);
-  // }
+  @Post('/list')
+  async getPays(@Body() getPaysDto: GetPaysDto, @keyCheck(keyPipe) key) {
+    return await this.payService.getPays(getPaysDto);
+  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updatePayDto: UpdatePayDto) {
-  //   return this.payService.update(+id, updatePayDto);
-  // }
+  @Post('/list/check')
+  async getPaysCehck(
+    @Body() getPaysCehckDto: GetPaysCehckDto,
+    @keyCheck(keyPipe) key,
+  ) {
+    return await this.payService.getPaysCheck(getPaysCehckDto);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.payService.remove(+id);
-  // }
+  @Patch('feedback')
+  async feedback(
+    @Body() feedbackDto: FeedbackDto,
+    @keyCheck(keyPipe) key,
+  ): Promise<boolean> {
+    return await this.payService.feedBack(feedbackDto);
+  }
 }

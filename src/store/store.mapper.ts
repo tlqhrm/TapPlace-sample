@@ -1,8 +1,10 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { Store } from 'src/entities/store.entity';
 import { ExceptionHandler } from 'src/ExceptHandler';
+import { GetPaysCehckDto } from 'src/pay/dto/get-pays-check.dto';
 import { Repository } from 'typeorm';
-import { CreateStoreDto } from './dto/create-store.dto';
+import { AroundStoreDto } from './dto/around-store';
+import { CreateStoreDto } from './dto/create-store';
 
 export class StoreMapper {
   constructor(
@@ -10,14 +12,41 @@ export class StoreMapper {
     private storeRepository: Repository<Store>,
   ) {}
 
-  async createStore(createStoreDto: CreateStoreDto): Promise<string | Store> {
-    const { id, place_name, address_name, category_name, phone, x, y } =
-      createStoreDto;
-    const store = this.storeRepository.create({
-      id,
+  // 주변찾기 쿼리
+  async aroundStore(aroundStoreDto: AroundStoreDto) {
+    const { x1, y1, distance } = aroundStoreDto;
+
+    const stores = await this.storeRepository
+      .createQueryBuilder('store')
+      .addSelect(
+        `ROUND((6371*acos(cos(radians(${y1}))*cos(radians(y))*cos(radians(x) -radians(${x1}))+sin(radians(${y1}))*sin(radians(y)))),3) AS distance`,
+      )
+      .having(`distance <= ${distance}`)
+      .orderBy('distance')
+      .limit(100)
+      .getRawMany();
+
+    return stores;
+  }
+
+  // 가게 생성 쿼리
+  async createStore(
+    createStoreDto: CreateStoreDto | GetPaysCehckDto,
+  ): Promise<Store> {
+    const {
+      store_id,
       place_name,
       address_name,
-      category_name,
+      category_group_name,
+      phone,
+      x,
+      y,
+    } = createStoreDto;
+    const store = this.storeRepository.create({
+      id: store_id,
+      place_name,
+      address_name,
+      category_group_name,
       phone,
       x,
       y,
@@ -27,7 +56,7 @@ export class StoreMapper {
       await this.storeRepository.save(store);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
-        throw new HttpException(`store id : ${id} is existed`, 409);
+        throw new HttpException(`store id : ${store_id} is existed`, 409);
       } else {
         throw new HttpException(`Unkown error please contact the manager`, 500);
       }
@@ -35,10 +64,18 @@ export class StoreMapper {
 
     return store;
   }
-  async getStoreById(id: string): Promise<Store> {
+
+  async getStoreById(store_id: string): Promise<Store> {
     const found = await this.storeRepository.findOneBy({
-      id,
+      id: store_id,
     });
     return found;
+  }
+
+  async findAll(): Promise<Store[]> {
+    return this.storeRepository
+      .createQueryBuilder('store')
+      .limit(100)
+      .getMany();
   }
 }

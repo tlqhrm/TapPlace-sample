@@ -1,9 +1,9 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, Allow } from 'class-validator';
 
 export class CreateStoreDto {
   @IsNotEmpty()
   @IsString()
-  id: string;
+  store_id: string;
 
   @IsNotEmpty()
   @IsString()
@@ -13,11 +13,9 @@ export class CreateStoreDto {
   @IsString()
   address_name: string;
 
-  @IsNotEmpty()
   @IsString()
-  category_name: string;
+  category_group_name: string;
 
-  @IsNotEmpty()
   @IsString()
   phone: string;
 
@@ -29,5 +27,6 @@ export class CreateStoreDto {
   @IsString()
   y: string;
 
+  @Allow()
   key: string;
 }

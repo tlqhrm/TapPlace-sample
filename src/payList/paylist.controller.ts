@@ -1,34 +1,46 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Headers,
+  HttpStatus,
+  Res,
+} from '@nestjs/common';
 import { PaylistService } from './paylist.service';
 import { CreatePaylistDto } from './dto/create-paylist.dto';
 import { UpdatePaylistDto } from './dto/update-paylist.dto';
+import { PayList } from 'src/entities/paylist.entity';
+import { Response } from 'express';
+import { keyCheck, keyCheck2 } from 'src/keyCheck-decorators';
+import { keyPipe, keyPipe2 } from 'src/keyPipes';
 
 @Controller('paylist')
 export class PaylistController {
   constructor(private readonly paylistService: PaylistService) {}
 
   @Post()
-  create(@Body() createPaylistDto: CreatePaylistDto) {
-    return this.paylistService.create(createPaylistDto);
+  async create(
+    @Body() createPaylistDto: CreatePaylistDto,
+    @keyCheck(keyPipe) key,
+  ): Promise<boolean> {
+    return await this.paylistService.create(createPaylistDto);
   }
 
   @Get()
-  findAll() {
-    return this.paylistService.findAll();
+  async findAll(): Promise<PayList[]> {
+    return await this.paylistService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paylistService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaylistDto: UpdatePaylistDto) {
-    return this.paylistService.update(+id, updatePaylistDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paylistService.remove(+id);
+  @Delete(':pay')
+  async remove(
+    @Param('pay') pay: string,
+    @keyCheck2(keyPipe2) key,
+  ): Promise<boolean> {
+    return this.paylistService.remove(pay);
+    // return this.paylistService.remove(pay);
   }
 }

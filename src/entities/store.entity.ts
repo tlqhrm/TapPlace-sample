@@ -15,7 +15,7 @@ export class Store {
   address_name: string;
 
   @Column({ type: 'varchar', length: 20 })
-  category_name: string;
+  category_group_name: string;
 
   @Column({ type: 'varchar', length: 20 })
   phone: string;

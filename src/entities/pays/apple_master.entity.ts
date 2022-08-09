@@ -8,15 +8,15 @@ export class AppleMaster {
   @Column({ type: 'varchar', length: 12, unique: true })
   store_id: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 0 })
   success: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', default: 0 })
   fail: number;
 
-  @Column({ type: 'varchar', length: 10 })
+  @Column({ type: 'varchar', length: 10, default: '' })
   last_state: string;
 
-  @Column({ type: 'varchar', length: 40 })
+  @Column({ type: 'varchar', length: 40, default: '' })
   last_time: string;
 }

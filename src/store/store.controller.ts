@@ -11,22 +11,37 @@ import {
 } from '@nestjs/common';
 import { StoreService } from './store.service';
 
-import { UpdateStoreDto } from './dto/update-store.dto';
-import { CreateStoreDto } from './dto/create-store.dto';
+import { AroundStoreDto } from './dto/around-store';
+import { CreateStoreDto } from './dto/create-store';
+import { keyCheck } from 'src/keyCheck-decorators';
+import { keyPipe } from 'src/keyPipes';
+import { Store } from 'src/entities/store.entity';
 
 @Controller('store')
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
-  @Post()
-  create(@Body() createStoreDto: CreateStoreDto) {
-    if (createStoreDto.key !== process.env.KEY) {
-      throw new HttpException('Unable to access.', 403);
-    }
-    return this.storeService.create(createStoreDto);
+
+  //주변찾기
+  @Post('/around')
+  async aroundStore(
+    @Body() aroundStoreDto: AroundStoreDto,
+    @keyCheck(keyPipe) key,
+  ) {
+    return await this.storeService.aroundStore(aroundStoreDto);
   }
 
-  @Get(':id')
-  fineOne(@Param('id') id: string) {
-    return this.storeService.getStoreById(id);
+  @Post()
+  async create(@Body() createStoreDto: CreateStoreDto, @keyCheck(keyPipe) key) {
+    return await this.storeService.create(createStoreDto);
+  }
+
+  @Get(':store_id')
+  async fineOne(@Param('store_id') store_id: string) {
+    return await this.storeService.getStoreById(store_id);
+  }
+
+  @Get()
+  async findAll(): Promise<Store[]> {
+    return await this.storeService.findAll();
   }
 }

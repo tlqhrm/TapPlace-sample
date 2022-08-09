@@ -6,25 +6,9 @@ export class CreatePayDto {
   @IsString()
   store_id: string;
 
-  // @IsNotEmpty()
-  // @IsNumber()
-  // success: number;
-
-  // @IsNotEmpty()
-  // @IsNumber()
-  // fail: number;
-
-  // @IsNotEmpty()
-  // @IsString()
-  // last_state: string;
-
-  // @IsNotEmpty()
-  // @IsString()
-  // last_time: string;
-
   @IsNotEmpty()
   @IsString()
-  whatPay: string;
+  pay: string;
 
   @Allow()
   key: string;

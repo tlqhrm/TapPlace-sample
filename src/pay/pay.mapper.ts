@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { AppleMaster } from 'src/entities/pays/apple_master.entity';
 import { AppleVisa } from 'src/entities/pays/apple_visa.entity';
 import { Kakaopay } from 'src/entities/pays/kakaopay.entity';
@@ -37,9 +37,20 @@ export class PayMapper {
       store_id,
     });
 
-    const result = await eval('this.' + pay + 'Repository').save(create);
+    try {
+      await eval('this.' + pay + 'Repository').save(create);
+    } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new HttpException(
+          ` ${pay} - store id : ${store_id} is existed`,
+          409,
+        );
+      } else {
+        throw new HttpException(`Unkown error please contact the manager`, 500);
+      }
+    }
 
-    return result ? true : false;
+    return true;
   }
 
   //pay 가져오는 쿼리
@@ -67,8 +78,6 @@ export class PayMapper {
 
     const feedback = await this.successOrFail(repo, store_id, pay, feed);
 
-    console.log(feedback);
-
     return feedback ? true : false;
   }
 
@@ -80,6 +89,8 @@ export class PayMapper {
         .update()
         .set({
           success: () => `success +1`,
+          last_state: 'success',
+          last_time: () => `left(NOW(),19)`,
         })
         .where(`store_id = ${store_id}`)
         .execute();
@@ -89,6 +100,8 @@ export class PayMapper {
         .update()
         .set({
           fail: () => `fail +1`,
+          last_state: 'fail',
+          last_time: () => `left(NOW(),19)`,
         })
         .where(`store_id = ${store_id}`)
         .execute();

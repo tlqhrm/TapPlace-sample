@@ -8,7 +8,6 @@ import { appleMasterRepository } from 'src/repositories/pays/apple_master.reposi
 import { kakaoPayRepository } from 'src/repositories/pays/kakaopay.repository';
 import { naverPayRepository } from 'src/repositories/pays/naverpay.repository';
 import { appleVisaRepository } from 'src/repositories/pays/apple_visa.repository';
-import { StoreModule } from 'src/store/store.module';
 import { StoreMapper } from 'src/store/store.mapper';
 import { storeRepository } from 'src/repositories/store.repository';
 

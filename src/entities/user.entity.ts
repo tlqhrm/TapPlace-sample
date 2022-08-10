@@ -5,8 +5,8 @@ export class User {
   @PrimaryGeneratedColumn()
   num: number;
 
-  @Column({ type: 'varchar', length: 50 })
-  id: string;
+  @Column({ type: 'varchar', length: 50, unique: true })
+  user_id: string;
 
   @Column({ type: 'varchar', length: 10 })
   os: string;
@@ -15,5 +15,5 @@ export class User {
   birth: string;
 
   @Column({ type: 'simple-array' })
-  pay: string[];
+  pays: string[];
 }

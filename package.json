@@ -44,6 +44,7 @@
     "joi": "^17.6.0",
     "mariadb": "^3.0.1",
     "mysql2": "^2.3.3",
+    "nest-winston": "^1.7.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.3",
@@ -51,7 +52,8 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "typeorm": "^0.3.7",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "winston": "^3.8.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

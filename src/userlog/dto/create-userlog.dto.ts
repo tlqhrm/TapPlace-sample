@@ -1,13 +1,9 @@
 import { Allow, IsNotEmpty, IsString } from 'class-validator';
 
-export class CreatePayDto {
+export class CreateUserlogDto {
   @IsNotEmpty()
   @IsString()
-  store_id: string;
-
-  @IsNotEmpty()
-  @IsString()
-  pay: string;
+  user_id: string;
 
   @Allow()
   key: string;

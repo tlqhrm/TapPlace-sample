@@ -6,7 +6,7 @@ import { StoreModule } from './store/store.module';
 import { UserModule } from './user/user.module';
 import { PayModule } from './pay/pay.module';
 import { PaylistModule } from './paylist/paylist.module';
-import { LogModule } from './userlog/user.module';
+import { UserlogModule } from './userlog/userlog.module';
 
 @Module({
   imports: [
@@ -27,8 +27,8 @@ import { LogModule } from './userlog/user.module';
     UserModule,
     PayModule,
     PaylistModule,
-    LogModule,
     StoreModule,
+    UserlogModule,
   ],
   controllers: [],
   providers: [],

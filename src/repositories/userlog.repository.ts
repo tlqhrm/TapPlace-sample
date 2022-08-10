@@ -1,9 +1,9 @@
 import { UserLog } from 'src/entities/userlog.entity';
 import { DataSource } from 'typeorm';
 
-export const logRepository = [
+export const userLogRepository = [
   {
-    provide: 'LOG_REPOSITORY',
+    provide: 'USERLOG_REPOSITORY',
     useFactory: (dataSource: DataSource) => dataSource.getRepository(UserLog),
     inject: ['DATA_SOURCE'],
   },

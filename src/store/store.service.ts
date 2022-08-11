@@ -37,6 +37,7 @@ export class StoreService {
     return result;
   }
 
+  //dev
   async create(createStoreDto: CreateStoreDto): Promise<Store> {
     const store = await this.storeMapper.createStore(createStoreDto);
     return store;
@@ -49,5 +50,9 @@ export class StoreService {
 
   async findAll(): Promise<Store[]> {
     return await this.storeMapper.findAll();
+  }
+
+  async deleteStore(id: string) {
+    return await this.storeMapper.deleteStore(id);
   }
 }

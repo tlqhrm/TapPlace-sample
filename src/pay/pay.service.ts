@@ -10,10 +10,6 @@ import { PayMapper } from './pay.mapper';
 export class PayService {
   constructor(private payMapper: PayMapper, private storeMapper: StoreMapper) {}
 
-  async create(createPayDto: CreatePayDto): Promise<boolean> {
-    return await this.payMapper.createPay(createPayDto);
-  }
-
   //store_id에 에 맞는 존재하는 pay들 exist까지 담아서 전달
   async getPays(getPaysDto: GetPaysDto | GetPaysCehckDto) {
     const { store_id, pays } = getPaysDto;
@@ -70,19 +66,50 @@ export class PayService {
       return await this.payMapper.feedBack(feedbackDto);
     }
   }
-  // findAll() {
-  //   return this.payMapper.findAll();
-  // }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} pay`;
-  // }
+  //dev
 
-  // update(id: number, updatePayDto: UpdatePayDto) {
-  //   return `This action updates a #${id} pay`;
-  // }
+  async createPay(createPayDto: CreatePayDto): Promise<boolean> {
+    return await this.payMapper.createPay(createPayDto);
+  }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} pay`;
-  // }
+  async getPaysById(store_id) {
+    const pays = [
+      'kakaopay',
+      'naverpay',
+      'payco',
+      'zeropay',
+      'apple_visa',
+      'apple_master',
+      'apple_jcb',
+      'conless_visa',
+      'conless_master',
+      'conless_amex',
+      'conless_union',
+      'conless_jcb',
+      'google_visa',
+      'google_master',
+      'google_maestro',
+    ];
+    const result = [];
+
+    for await (const what_pay of pays) {
+      const pay = await this.payMapper.getPay(store_id, what_pay);
+      if (pay) {
+        pay['pay'] = what_pay;
+        pay['exist'] = true;
+        result.push(pay);
+      } else {
+        result.push({
+          exist: false,
+          pay: what_pay,
+        });
+      }
+    }
+    return result;
+  }
+
+  async deletePay(id, pay) {
+    return await this.payMapper.deletePay(id, pay);
+  }
 }

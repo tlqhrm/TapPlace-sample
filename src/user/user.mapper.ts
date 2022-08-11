@@ -39,7 +39,6 @@ export class UserMapper {
       .set({ pays })
       .where(`user_id = ${user_id}`)
       .execute();
-
     try {
       await this.userRepository
         .createQueryBuilder('user')
@@ -56,5 +55,22 @@ export class UserMapper {
     }
 
     return true;
+  }
+
+  //dev
+  async getAllUser() {
+    return await this.userRepository.findBy({});
+  }
+
+  async getUser(id: string) {
+    return await this.userRepository.findOneBy({
+      user_id: id,
+    });
+  }
+
+  async deleteUser(id: string) {
+    return await this.userRepository.delete({
+      user_id: id,
+    });
   }
 }

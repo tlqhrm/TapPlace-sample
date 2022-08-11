@@ -9,12 +9,14 @@ import {
   Headers,
   HttpStatus,
   Res,
+  Req,
+  Logger,
 } from '@nestjs/common';
 import { PaylistService } from './paylist.service';
 import { CreatePaylistDto } from './dto/create-paylist.dto';
 import { UpdatePaylistDto } from './dto/update-paylist.dto';
 import { PayList } from 'src/entities/paylist.entity';
-import { Response } from 'express';
+import { Request } from 'express';
 import { keyCheck, keyCheck2 } from 'src/keyCheck-decorators';
 import { keyPipe, keyPipe2 } from 'src/keyPipes';
 
@@ -32,8 +34,14 @@ export class PaylistController {
 
   @Get()
   async findAll(): Promise<PayList[]> {
+    Logger.warn('asdasd');
     return await this.paylistService.findAll();
   }
+
+  // @Get()
+  // async findAll(@Req() req: Request) {
+  //   console.log
+  // }
 
   @Delete(':pay')
   async remove(

@@ -1,5 +1,4 @@
 import { Allow, IsBoolean, IsNotEmpty, IsString } from 'class-validator';
-import { FeedEnum } from 'src/enums/feed.enum';
 
 export class FeedbackDto {
   @IsNotEmpty()

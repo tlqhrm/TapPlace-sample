@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpException,
+  HttpCode,
 } from '@nestjs/common';
 import { PayService } from './pay.service';
 import { CreatePayDto } from './dto/create-pay.dto';
@@ -20,24 +21,13 @@ import { GetPaysCehckDto } from './dto/get-pays-check.dto';
 export class PayController {
   constructor(private readonly payService: PayService) {}
 
-  @Post()
-  async create(
-    @Body() createPayDto: CreatePayDto,
-    @keyCheck(keyPipe) key,
-  ): Promise<boolean> {
-    return await this.payService.create(createPayDto);
-  }
-
-  @Get()
-  findAll() {
-    return true;
-  }
-
+  @HttpCode(200)
   @Post('/list')
   async getPays(@Body() getPaysDto: GetPaysDto, @keyCheck(keyPipe) key) {
     return await this.payService.getPays(getPaysDto);
   }
 
+  @HttpCode(200)
   @Post('/list/check')
   async getPaysCehck(
     @Body() getPaysCehckDto: GetPaysCehckDto,
@@ -52,5 +42,29 @@ export class PayController {
     @keyCheck(keyPipe) key,
   ): Promise<boolean> {
     return await this.payService.feedBack(feedbackDto);
+  }
+
+  //dev
+
+  @Post()
+  async createPay(
+    @Body() createPayDto: CreatePayDto,
+    @keyCheck(keyPipe) key,
+  ): Promise<boolean> {
+    return await this.payService.createPay(createPayDto);
+  }
+
+  @Get(':id')
+  getPaysbyId(@Param('id') id: string) {
+    return this.payService.getPaysById(id);
+  }
+
+  @Delete(':id')
+  deletePay(
+    @Param('id') id: string,
+    @Body('pay') pay: string,
+    @keyCheck(keyPipe) key,
+  ) {
+    return this.payService.deletePay(id, pay);
   }
 }

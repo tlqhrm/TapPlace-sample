@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { DatabaseModule } from './database/database.module';
@@ -7,6 +7,10 @@ import { UserModule } from './user/user.module';
 import { PayModule } from './pay/pay.module';
 import { PaylistModule } from './paylist/paylist.module';
 import { UserlogModule } from './userlog/userlog.module';
+import { WinstonModule } from 'nest-winston';
+import winston from 'winston';
+import { LoggerMiddleware } from './logger/logger.middleware';
+import { winstonLogger } from './logger/winston.util';
 
 @Module({
   imports: [
@@ -23,6 +27,15 @@ import { UserlogModule } from './userlog/userlog.module';
         DB_DATABASE: Joi.string().required(),
       }),
     }),
+    // WinstonModule.forRoot({
+    //   level: 'info',
+    //   format: winston.format.json(),
+    //   defaultMeta: { service: 'user-service' },
+    //   transports: [
+    //     new winston.transports.File({ filename: 'error.log', level: 'error' }),
+    //     new winston.transports.File({ filename: 'combined.log' }),
+    //   ],
+    // }),
     DatabaseModule,
     UserModule,
     PayModule,
@@ -31,6 +44,10 @@ import { UserlogModule } from './userlog/userlog.module';
     UserlogModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [Logger],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

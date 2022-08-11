@@ -1,73 +1,131 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Tapplace API v1.0
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Pay 리스트 (= ~pay 테이블명 && pay 컬럼 값)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+1. kakaopay
+2. naverpay
+3. payco
+4. zeropay
+5. apple_visa
+6. apple_master
+7. apple_jcb
+8. conless_visa (contactless)
+9. conless_master
+10. conless_amex (american express)
+11. conless_union
+12. conless_jcb
+13. google_visa
+14. google_master
+15. google_maestro
 
-## Description
+## API 구성
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### 시작 & 설정
 
-## Installation
+![API - 시작 & 설정.png](Tapplace%20API%20v1%200%20b1770eac7b2c415d86aa8e046d3426bd/API_-_%25EC%258B%259C%25EC%259E%2591__%25EC%2584%25A4%25EC%25A0%2595.png)
 
-```bash
-$ npm install
-```
+### 주변 찾기
 
-## Running the app
+![API - 주변찾기.png](Tapplace%20API%20v1%200%20b1770eac7b2c415d86aa8e046d3426bd/API_-_%25EC%25A3%25BC%25EB%25B3%2580%25EC%25B0%25BE%25EA%25B8%25B0.png)
 
-```bash
-# development
-$ npm run start
+### 등록
 
-# watch mode
-$ npm run start:dev
+![API - 등록.png](Tapplace%20API%20v1%200%20b1770eac7b2c415d86aa8e046d3426bd/API_-_%25EB%2593%25B1%25EB%25A1%259D.png)
 
-# production mode
-$ npm run start:prod
-```
+### API 종류
 
-## Test
+| Method | Endpoint | Request body | Return | When to use | 구현 현황 |
+| --- | --- | --- | --- | --- | --- |
+| GET | /paylist |  | { paylist[ ] } | 어플 첫 실행 | O |
+| POST | /user | { user(T), key } | true or ERROR | 최초 설정 | O |
+| POST | /userlog | { user_id, key } | { paylist[ ] } | 어플 실행 | O |
+| PATCH | /user/pays | { user_id, pays[ ], key } | true or ERROR | 관심 pay 수정 | O |
+| POST | /store/around | { x1, y1, distance, pays[ ], key } | { store(T), distance, pays[ ] } [ ] | 주변 찾기 | O |
+| POST | /pay/list | { store_id, pays[ ], key } | { pay(T), exist, pay } or { exist, pay } [ ] | 주변 찾기 → 가게 선택 | O |
+| POST | /pay/list/check | { store(T), pays[ ], key } | { pay(T), exist, pay } or { exist, pay } [ ] | 등록 → 가게 선택 | O |
+| PATCH | /pay/feedback | { store_id, pay, exist, feed, key } | true or ERROR | 주변 찾기 & 등록→ 가게 선택 → 피드백 | O |
 
-```bash
-# unit tests
-$ npm run test
+### 개발할 때만  쓰는 API 종류
 
-# e2e tests
-$ npm run test:e2e
+| Method | Endpoint | Request body | When to use |
+| --- | --- | --- | --- |
+| GET | /user |  | 전체 유저 가져옴 |
+| GET | /user/:user_id |  | user_id에 맞는 유저 가져옴 |
+| DELETE | /user/:user_id | { key } | user_id에 맞는 유저 삭제 |
+| GET | /userlog |  | user_log테이블 데이터 전부 가져옴 |
+| GET | /userlog/:user_id |  | user_id에 맞는 로그 가져옴 |
+| DELETE | /userlog/:user_id | { key } | user_id에 맞는 로그 삭제 |
+| GET | /store |  | 등록된 store 전부 가져옴 |
+| GET | /store/:store_id |  | store_id에 맞는 store 가져옴 |
+| POST | /store | { store(T), key } | store 등록 |
+| DELETE | /store/:store_id | { key } | store_id에 맞는 store 삭제 |
+| GET | /pay/:user_id |  | 모든 pay테이블에서 user_id에 맞는 정보 가져옴 |
+| POST | /pay | { pay(T), key } | pay 등록 |
+| DELETE | /pay/:user_id | { pay, key } | Requesy body의 pay에 맞는 테이블에서 user_id 와 같은 데이터 삭제 |
 
-# test coverage
-$ npm run test:cov
-```
+### API 전달 값
 
-## Support
+| 이름 | 설명 | 예시 |
+| --- | --- | --- |
+| 테이블명(T) | 테이블명의 컬럼이 전부 포함된 값(num은 제외) | user(T) = num, user_id, os, birth, pays                              { user(T), key } = { num, user_id, os, birth, pays, key } |
+| key | GET 이외의 방식에 전부 넣어야 하는 값 |  |
+| paylist[ ] | pay_list 테이블의 데이터 전부 담은 배열 | paylist : [ ”apple_visa”, “apple_master”, “kakaopay” ….. ] |
+| true or ERROR | 요청 성공 시 true 리턴 , 실패시 ERROR 발생 |  |
+| pays[ ] | pay_list 테이블 데이터 중 일부를 담은 배열 | pays : [” apple_visa”, “payco” ] |
+| distance | 주변 찾기 시 반경으로 설정된 값 (number) | distance : 1.5 (반경이 1.5km로 설정되었을 때) |
+| x1, y1 | 주변 찾기 시 사용자 현재 위치 값 |  |
+| exist | pay종류 별 기존 데이터가 존재하는지 여부값 [ true, false ] | exist : true = 기존 데이터 있음 ( pay(T)의 데이터 그대로 쓰면 됨)                                                                       exist :  false = 기존 데이터 없음                                                            |
+| feed | 피드백시 success(true)또는 fail(false) 여부 값 [ true, false ] | feed : true = DB success +1  fail :  false = DB fail +1 |
+| 나머지  | DB 컬럼의 이름에 맞는 값 |  |
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## DB 구성
 
-## Stay in touch
+![Tapplace - ERD.png](Tapplace%20API%20v1%200%20b1770eac7b2c415d86aa8e046d3426bd/Tapplace_-_ERD.png)
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### store 테이블
 
-## License
+| 컬럼 | 특성 | 설명 |
+| --- | --- | --- |
+| num | number, 기본키 | 자동으로 증가 되는 PK용 인조키 |
+| store_id | string, 유니크키 | 카카오 검색 API 호출 시 반환 되는 “id” 값 |
+| place_name | string | 카카오 검색 API 호출 시 반환 되는 “place_name” 값 |
+| address_name | string | 카카오 검색 API 호출 시 반환 되는 “address_name” 값 |
+| category_name | string | 카카오 검색 API 호출 시 반환 되는 “category_name” 값 |
+| phone | string | 카카오 검색 API 호출 시 반환 되는 “phone” 값 |
+| x | string | 카카오 검색 API 호출 시 반환 되는 “x” 값 |
+| y | string | 카카오 검색 API 호출 시 반환 되는 “y” 값 |
 
-Nest is [MIT licensed](LICENSE).
+### ~pay 테이블
+
+| 컬럼 | 특성 | 설명 |
+| --- | --- | --- |
+| num | number, 기본키 | 자동으로 증가 되는 PK용 인조키 |
+| store_id | string, 외래키, 유니크키 | store 테이블의 store_id 참조 |
+| success | number, 기본 값 : 0 | 결제 성공 피드백 값 |
+| fail | number, 기본 값 : 0 | 결제 실패 피드백 값 |
+| last_state | string, 값 [ ‘success’, ‘fail’ ] | 마지막으로 피드백 된 상태 |
+| last_time | string | 마지막으로 피드백 된 시간 |
+
+### pay_list 테이블
+
+| 컬럼 | 특성 | 설명 |
+| --- | --- | --- |
+| pay | string, 기본키 | pay 종류, pay테이블명과 같음 |
+
+### user 테이블
+
+| 컬럼 | 특성 | 설명 |
+| --- | --- | --- |
+| num | number, 기본키 | 자동으로 증가 되는 PK용 인조키 |
+| user_id | string, 유니크키 | 사용자 기기 고유  id |
+| os | string, 값 [ ‘android’, ‘ios’ ] |  사용자 운영체제 |
+| birth | string, 값 [ ‘yyyy-MM-dd’ ] |  사용자 생년월일 |
+| pays | string |  사용자 설정 pay종류 |
+
+### user_log 테이블
+
+| 컬럼 | 특성 | 설명 |
+| --- | --- | --- |
+| num | number, 기본키 | 자동으로 증가 되는 PK용 인조키 |
+| user_id | string, 외래키 | user 테이블 user_id 참조 |
+| time | string | 접속 시간 |

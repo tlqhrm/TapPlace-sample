@@ -6,7 +6,7 @@ export class Store {
   num: number;
 
   @Column({ type: 'varchar', length: 12, unique: true })
-  id: string;
+  store_id: string;
 
   @Column({ type: 'varchar', length: 80 })
   place_name: string;

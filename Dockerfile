@@ -1,7 +1,5 @@
-FROM node:16
+FROM tlqhrm/nestjs
 
 WORKDIR /tapplace
-RUN npm install -g @nestjs/cli
-COPY . /tapplace
-# RUN npm install
-# CMD ["npm", "install"]
+COPY . /BACKEND
+CMD ["npm", "run", "start:dev"]

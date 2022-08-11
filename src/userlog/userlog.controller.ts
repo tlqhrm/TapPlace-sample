@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, Param } from '@nestjs/common';
 import { UserlogService } from './userlog.service';
 import { CreateUserlogDto } from './dto/create-userlog.dto';
 import { keyCheck } from 'src/keyCheck-decorators';
@@ -13,6 +13,22 @@ export class UserlogController {
     @Body() createUserlogDto: CreateUserlogDto,
     @keyCheck(keyPipe) key,
   ) {
-    return this.userlogService.create(createUserlogDto);
+    return this.userlogService.createUserLog(createUserlogDto);
+  }
+
+  //개발시에만 쓰는 REST API
+  @Get()
+  getAllUser() {
+    return this.userlogService.getAllUserLog();
+  }
+
+  @Get(':id')
+  getUser(@Param('id') id: string) {
+    return this.userlogService.getUserLog(id);
+  }
+
+  @Delete(':id')
+  deleteUser(@Param('id') id: string, @keyCheck(keyPipe) key) {
+    return this.userlogService.deleteUserLog(id);
   }
 }

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateUserPaysDto } from './dto/updatePay-user.dto';
 import { UserMapper } from './user.mapper';
 
@@ -14,5 +13,18 @@ export class UserService {
 
   async updateUserPays(updateUserPaysDto: UpdateUserPaysDto) {
     return await this.userMapper.updateUserPays(updateUserPaysDto);
+  }
+
+  //dev
+  async getAllUser() {
+    return await this.userMapper.getAllUser();
+  }
+
+  async getUser(id: string) {
+    return await this.userMapper.getUser(id);
+  }
+
+  async deleteUser(id: string) {
+    return await this.userMapper.deleteUser(id);
   }
 }

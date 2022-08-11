@@ -8,6 +8,7 @@ import {
   Delete,
   Req,
   HttpException,
+  HttpCode,
 } from '@nestjs/common';
 import { StoreService } from './store.service';
 
@@ -22,6 +23,7 @@ export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
   //주변찾기
+  @HttpCode(200)
   @Post('/around')
   async aroundStore(
     @Body() aroundStoreDto: AroundStoreDto,
@@ -30,6 +32,7 @@ export class StoreController {
     return await this.storeService.aroundStore(aroundStoreDto);
   }
 
+  //dev
   @Post()
   async create(@Body() createStoreDto: CreateStoreDto, @keyCheck(keyPipe) key) {
     return await this.storeService.create(createStoreDto);
@@ -43,5 +46,10 @@ export class StoreController {
   @Get()
   async findAll(): Promise<Store[]> {
     return await this.storeService.findAll();
+  }
+
+  @Delete(':id')
+  deleteStore(@Param('id') id: string, @keyCheck(keyPipe) key) {
+    return this.storeService.deleteStore(id);
   }
 }

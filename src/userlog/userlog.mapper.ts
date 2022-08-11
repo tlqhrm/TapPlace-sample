@@ -20,4 +20,21 @@ export class UserLogMapper {
 
     return result ? true : false;
   }
+
+  //dev
+  async getAllUserLog() {
+    return await this.userLogRepository.findBy({});
+  }
+
+  async getUserLog(id: string) {
+    return await this.userLogRepository.findBy({
+      user_id: id,
+    });
+  }
+
+  async deleteUserLog(id: string) {
+    return await this.userLogRepository.delete({
+      user_id: id,
+    });
+  }
 }

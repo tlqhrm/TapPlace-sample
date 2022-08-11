@@ -5,7 +5,21 @@ import { UserLogMapper } from './userlog.mapper';
 @Injectable()
 export class UserlogService {
   constructor(private userLogMapper: UserLogMapper) {}
-  async create(createUserlogDto: CreateUserlogDto) {
+
+  async createUserLog(createUserlogDto: CreateUserlogDto) {
     return await this.userLogMapper.createUserLog(createUserlogDto);
+  }
+
+  //dev
+  async getAllUserLog() {
+    return await this.userLogMapper.getAllUserLog();
+  }
+
+  async getUserLog(id: string) {
+    return await this.userLogMapper.getUserLog(id);
+  }
+
+  async deleteUserLog(id: string) {
+    return await this.userLogMapper.deleteUserLog(id);
   }
 }

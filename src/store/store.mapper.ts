@@ -42,7 +42,7 @@ export class StoreMapper {
       y,
     } = createStoreDto;
     const store = this.storeRepository.create({
-      id: store_id,
+      store_id,
       place_name,
       address_name,
       category_group_name,
@@ -66,7 +66,7 @@ export class StoreMapper {
 
   async getStoreById(store_id: string): Promise<Store> {
     const found = await this.storeRepository.findOneBy({
-      id: store_id,
+      store_id: store_id,
     });
     return found;
   }
@@ -76,5 +76,11 @@ export class StoreMapper {
       .createQueryBuilder('store')
       .limit(100)
       .getMany();
+  }
+
+  async deleteStore(id: string) {
+    return await this.storeRepository.delete({
+      store_id: id,
+    });
   }
 }

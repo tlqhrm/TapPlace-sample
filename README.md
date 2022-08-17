@@ -20,17 +20,29 @@
 
 ## API 구성
 
-### 시작 & 설정
+### 화면1) 어플 첫 실행
 
-![API - 시작 & 설정.png](Tapplace%20API%20v1%200%20b1770eac7b2c415d86aa8e046d3426bd/API_-_%25EC%258B%259C%25EC%259E%2591__%25EC%2584%25A4%25EC%25A0%2595.png)
+![1.png](Tapplace%20API%20v1%200%207b0a3273876540488c2027bce3ad260b/1.png)
 
-### 주변 찾기
+### 화면2) 설정
 
-![API - 주변찾기.png](Tapplace%20API%20v1%200%20b1770eac7b2c415d86aa8e046d3426bd/API_-_%25EC%25A3%25BC%25EB%25B3%2580%25EC%25B0%25BE%25EA%25B8%25B0.png)
+![2.png](Tapplace%20API%20v1%200%207b0a3273876540488c2027bce3ad260b/2.png)
 
-### 등록
+### 화면3) 주변찾기
 
-![API - 등록.png](Tapplace%20API%20v1%200%20b1770eac7b2c415d86aa8e046d3426bd/API_-_%25EB%2593%25B1%25EB%25A1%259D.png)
+![3.png](Tapplace%20API%20v1%200%207b0a3273876540488c2027bce3ad260b/3.png)
+
+### 화면4) 주변찾기 - 가게선택
+
+![4.png](Tapplace%20API%20v1%200%207b0a3273876540488c2027bce3ad260b/4.png)
+
+### 화면5) 등록 - 가게선택
+
+![5.png](Tapplace%20API%20v1%200%207b0a3273876540488c2027bce3ad260b/5.png)
+
+### 화면6) 피드백
+
+![6.png](Tapplace%20API%20v1%200%207b0a3273876540488c2027bce3ad260b/6.png)
 
 ### API 종류
 
@@ -44,6 +56,7 @@
 | POST | /pay/list | { store_id, pays[ ], key } | { pay(T), exist, pay } or { exist, pay } [ ] | 주변 찾기 → 가게 선택 | O |
 | POST | /pay/list/check | { store(T), pays[ ], key } | { pay(T), exist, pay } or { exist, pay } [ ] | 등록 → 가게 선택 | O |
 | PATCH | /pay/feedback | { store_id, pay, exist, feed, key } | true or ERROR | 주변 찾기 & 등록→ 가게 선택 → 피드백 | O |
+| GET | /store/:store_id |  | { store(T) } | store_id에 맞는 store 가져옴 ( 공유받은 링크 타고 들어갈 때 사용) |  |
 
 ### 개발할 때만  쓰는 API 종류
 
@@ -56,7 +69,6 @@
 | GET | /userlog/:user_id |  | user_id에 맞는 로그 가져옴 |
 | DELETE | /userlog/:user_id | { key } | user_id에 맞는 로그 삭제 |
 | GET | /store |  | 등록된 store 전부 가져옴 |
-| GET | /store/:store_id |  | store_id에 맞는 store 가져옴 |
 | POST | /store | { store(T), key } | store 등록 |
 | DELETE | /store/:store_id | { key } | store_id에 맞는 store 삭제 |
 | GET | /pay/:user_id |  | 모든 pay테이블에서 user_id에 맞는 정보 가져옴 |
@@ -67,7 +79,7 @@
 
 | 이름 | 설명 | 예시 |
 | --- | --- | --- |
-| 테이블명(T) | 테이블명의 컬럼이 전부 포함된 값(num은 제외) | user(T) = num, user_id, os, birth, pays                              { user(T), key } = { num, user_id, os, birth, pays, key } |
+| 테이블명(T) | 테이블명의 컬럼이 전부 포함된 값(num은 제외) | user(T) = user_id, os, birth, pays   ex) { user(T), key } = { user_id, os, birth, pays, key } |
 | key | GET 이외의 방식에 전부 넣어야 하는 값 |  |
 | paylist[ ] | pay_list 테이블의 데이터 전부 담은 배열 | paylist : [ ”apple_visa”, “apple_master”, “kakaopay” ….. ] |
 | true or ERROR | 요청 성공 시 true 리턴 , 실패시 ERROR 발생 |  |
@@ -80,7 +92,7 @@
 
 ## DB 구성
 
-![Tapplace - ERD.png](Tapplace%20API%20v1%200%20b1770eac7b2c415d86aa8e046d3426bd/Tapplace_-_ERD.png)
+![Tapplace - ERD.png](Tapplace%20API%20v1%200%207b0a3273876540488c2027bce3ad260b/Tapplace_-_ERD.png)
 
 ### store 테이블
 
@@ -90,7 +102,7 @@
 | store_id | string, 유니크키 | 카카오 검색 API 호출 시 반환 되는 “id” 값 |
 | place_name | string | 카카오 검색 API 호출 시 반환 되는 “place_name” 값 |
 | address_name | string | 카카오 검색 API 호출 시 반환 되는 “address_name” 값 |
-| category_name | string | 카카오 검색 API 호출 시 반환 되는 “category_name” 값 |
+| category_group_name | string | 카카오 검색 API 호출 시 반환 되는 “category_group_name” 값 |
 | phone | string | 카카오 검색 API 호출 시 반환 되는 “phone” 값 |
 | x | string | 카카오 검색 API 호출 시 반환 되는 “x” 값 |
 | y | string | 카카오 검색 API 호출 시 반환 되는 “y” 값 |
@@ -120,6 +132,7 @@
 | user_id | string, 유니크키 | 사용자 기기 고유  id |
 | os | string, 값 [ ‘android’, ‘ios’ ] |  사용자 운영체제 |
 | birth | string, 값 [ ‘yyyy-MM-dd’ ] |  사용자 생년월일 |
+| sex | string, 값 [ ‘남’, ‘여’ ] |  사용자 성별 |
 | pays | string |  사용자 설정 pay종류 |
 
 ### user_log 테이블

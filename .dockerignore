@@ -1,6 +1,6 @@
 # **/node_modules
 **/.git
 /dist
-*.env
-**/dataSource-dev.ts
-**/dataSource-prod.ts
+# *.env
+# **/dataSource-dev.ts
+# **/dataSource-prod.ts

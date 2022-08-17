@@ -1,5 +1,5 @@
-FROM tlqhrm/nestjs
+FROM tlqhrm/nestjs:9.0.0
 
 WORKDIR /tapplace
-COPY . /BACKEND
+COPY .  .
 CMD ["npm", "run", "start:dev"]

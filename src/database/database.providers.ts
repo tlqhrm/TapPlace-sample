@@ -11,7 +11,11 @@ export const databaseProviders = [
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
-        entities: [__dirname + '/../**/*.entity.{js,ts}'],
+        // type: 'oracle',
+        // username: 'admin',
+        // password: 'Wlgns13579@@',
+        // connectString: 'Wallet_O653N969L3A78WUZ',
+        // entities: [__dirname + '/../**/*.entity.{js,ts}'],
         synchronize: true,
 
         // migrations: ['src/migration/*.ts'],

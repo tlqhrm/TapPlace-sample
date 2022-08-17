@@ -1,5 +1,10 @@
 # Tapplace API v1.0
 
+
+## api 임시 주소
+https://api.tapplace.cloud
+key : "1234"
+
 ## Pay 리스트 (= ~pay 테이블명 && pay 컬럼 값)
 
 1. kakaopay

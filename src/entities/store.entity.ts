@@ -14,6 +14,9 @@ export class Store {
   @Column({ type: 'varchar', length: 100 })
   address_name: string;
 
+  @Column({ type: 'varchar', length: 100 })
+  road_address_name: string;
+
   @Column({ type: 'varchar', length: 20 })
   category_group_name: string;
 

@@ -13,7 +13,10 @@ export class PayService {
   //store_id에 에 맞는 존재하는 pay들 exist까지 담아서 전달
   async getPays(getPaysDto: GetPaysDto | GetPaysCehckDto) {
     const { store_id, pays } = getPaysDto;
+    // const result = [];
     const result = [];
+
+    result.push(await this.storeMapper.getStoreById(store_id));
 
     for await (const what_pay of pays) {
       const pay = await this.payMapper.getPay(store_id, what_pay);

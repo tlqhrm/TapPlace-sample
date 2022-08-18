@@ -9,12 +9,13 @@ export class UserMapper {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<boolean> {
-    const { user_id, os, birth, pays } = createUserDto;
+    const { user_id, os, birth, sex, pays } = createUserDto;
 
     const user = this.userRepository.create({
       user_id,
       os,
       birth,
+      sex,
       pays,
     });
 

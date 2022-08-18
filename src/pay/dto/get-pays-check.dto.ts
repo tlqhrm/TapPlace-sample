@@ -14,6 +14,9 @@ export class GetPaysCehckDto {
   address_name: string;
 
   @IsString()
+  road_address_name: string;
+
+  @IsString()
   category_group_name: string;
 
   @IsString()

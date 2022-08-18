@@ -14,6 +14,10 @@ export class CreateUserDto {
   birth: string;
 
   @IsNotEmpty()
+  @IsString()
+  sex: string;
+
+  @IsNotEmpty()
   @IsArray()
   pays: string[];
 

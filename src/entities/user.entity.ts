@@ -14,6 +14,9 @@ export class User {
   @Column({ type: 'varchar', length: 12 })
   birth: string;
 
+  @Column({ type: 'varchar', length: 4 })
+  sex: string;
+
   @Column({ type: 'simple-array' })
   pays: string[];
 }

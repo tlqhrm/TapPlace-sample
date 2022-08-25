@@ -34,6 +34,6 @@ export class GetPaysCehckDto {
   @IsArray()
   pays: string[];
 
-  @Allow()
-  key: string;
+  // @Allow()
+  // key: string;
 }

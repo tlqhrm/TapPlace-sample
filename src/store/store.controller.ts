@@ -25,10 +25,7 @@ export class StoreController {
   //주변찾기
   @HttpCode(200)
   @Post('/around')
-  async aroundStore(
-    @Body() aroundStoreDto: AroundStoreDto,
-    @keyCheck(keyPipe) key,
-  ) {
+  async aroundStore(@Body() aroundStoreDto: AroundStoreDto) {
     return await this.storeService.aroundStore(aroundStoreDto);
   }
 

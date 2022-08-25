@@ -17,6 +17,7 @@ export class StoreMapper {
 
     const stores = await this.storeRepository
       .createQueryBuilder('store')
+      .select('*')
       .addSelect(
         `ROUND((6371*acos(cos(radians(${y1}))*cos(radians(y))*cos(radians(x) -radians(${x1}))+sin(radians(${y1}))*sin(radians(y)))),3) AS distance`,
       )

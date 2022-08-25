@@ -11,7 +11,7 @@ export class PaylistService {
     return await this.payListMapper.create(createPaylistDto);
   }
 
-  async findAll(): Promise<PayList[]> {
+  async findAll(): Promise<string[]> {
     return await this.payListMapper.findAllPayList();
   }
 

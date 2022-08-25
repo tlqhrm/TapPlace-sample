@@ -22,6 +22,6 @@ export class AroundStoreDto {
   @IsArray()
   pays: string[];
 
-  @Allow()
-  key: string;
+  // @Allow()
+  // key: string;
 }

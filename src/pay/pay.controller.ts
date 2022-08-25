@@ -23,16 +23,18 @@ export class PayController {
 
   @HttpCode(200)
   @Post('/list')
-  async getPays(@Body() getPaysDto: GetPaysDto, @keyCheck(keyPipe) key) {
-    return await this.payService.getPays(getPaysDto);
+  async getPays(@Body() getPaysDto: GetPaysDto) {
+    return await this.payService.getPays(getPaysDto, false);
+  }
+
+  @Post('/list/more')
+  async getPaysMore(@Body() getPaysDto: GetPaysDto) {
+    return await this.payService.getPaysMore(getPaysDto);
   }
 
   @HttpCode(200)
   @Post('/list/check')
-  async getPaysCehck(
-    @Body() getPaysCehckDto: GetPaysCehckDto,
-    @keyCheck(keyPipe) key,
-  ) {
+  async getPaysCehck(@Body() getPaysCehckDto: GetPaysCehckDto) {
     return await this.payService.getPaysCheck(getPaysCehckDto);
   }
 
@@ -40,7 +42,7 @@ export class PayController {
   async feedback(
     @Body() feedbackDto: FeedbackDto,
     @keyCheck(keyPipe) key,
-  ): Promise<boolean> {
+  ): Promise<any[]> {
     return await this.payService.feedBack(feedbackDto);
   }
 

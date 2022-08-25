@@ -33,8 +33,8 @@ export class PaylistController {
   }
 
   @Get()
-  async findAll(): Promise<PayList[]> {
-    Logger.warn('asdasd');
+  async findAll(): Promise<string[]> {
+    // Logger.warn('asdasd');
     return await this.paylistService.findAll();
   }
 

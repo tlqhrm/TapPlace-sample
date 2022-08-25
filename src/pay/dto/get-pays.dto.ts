@@ -9,6 +9,6 @@ export class GetPaysDto {
   @IsArray()
   pays: string[];
 
-  @Allow()
-  key: string;
+  // @Allow()
+  // key: string;
 }

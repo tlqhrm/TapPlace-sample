@@ -71,10 +71,11 @@ export class PayMapper {
       await eval('this.' + pay + 'Repository').save(create);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
-        throw new HttpException(
-          ` ${pay} - store id : ${store_id} is existed`,
-          409,
-        );
+        return false;
+        // throw new HttpException(
+        //   ` ${pay} - store id : ${store_id} is existed`,
+        //   409,
+        // );
       } else {
         throw new HttpException(`Unkown error please contact the manager`, 500);
       }
@@ -102,13 +103,13 @@ export class PayMapper {
   }
 
   //피드백
-  async feedBack(feedbackDto: FeedbackDto): Promise<boolean> {
-    const { store_id, pay, feed } = feedbackDto;
+  async feedBack(store_id, feedback): Promise<any> {
+    const { pay, feed } = feedback;
     const repo = this.repo(pay);
 
-    const feedback = await this.successOrFail(repo, store_id, pay, feed);
+    const result = await this.successOrFail(repo, store_id, pay, feed);
 
-    return feedback ? true : false;
+    return result;
   }
 
   // update에 동적으로 할당 못해서 만든 함수

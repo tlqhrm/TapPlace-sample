@@ -11,12 +11,34 @@ export class PayService {
   constructor(private payMapper: PayMapper, private storeMapper: StoreMapper) {}
 
   //store_id에 에 맞는 존재하는 pay들 exist까지 담아서 전달
-  async getPays(getPaysDto: GetPaysDto | GetPaysCehckDto) {
+  async getPays(getPaysDto: GetPaysDto | GetPaysCehckDto, check: boolean) {
     const { store_id, pays } = getPaysDto;
     // const result = [];
     const result = [];
+    if (!check) {
+      result.push(await this.storeMapper.getStoreById(store_id));
+    }
 
-    result.push(await this.storeMapper.getStoreById(store_id));
+    for await (const what_pay of pays) {
+      const pay = await this.payMapper.getPay(store_id, what_pay);
+      if (pay) {
+        pay['pay'] = what_pay;
+        pay['exist'] = true;
+        result.push(pay);
+      } else {
+        result.push({
+          exist: false,
+          pay: what_pay,
+        });
+      }
+    }
+    return result;
+  }
+
+  async getPaysMore(getPaysDto: GetPaysDto | GetPaysCehckDto) {
+    const { store_id, pays } = getPaysDto;
+
+    const result = [];
 
     for await (const what_pay of pays) {
       const pay = await this.payMapper.getPay(store_id, what_pay);
@@ -40,7 +62,7 @@ export class PayService {
     const result = [];
     const found = await this.storeMapper.getStoreById(store_id);
     if (found) {
-      return await this.getPays(getPaysCehckDto);
+      return await this.getPays(getPaysCehckDto, true);
     } else {
       await this.storeMapper.createStore(getPaysCehckDto);
       for await (const what_pay of pays) {
@@ -54,20 +76,53 @@ export class PayService {
   }
 
   //피드백
-  async feedBack(feedbackDto: FeedbackDto): Promise<boolean> {
-    //exist 로 있는지 없는지 판단
-    const { exist } = feedbackDto;
-    if (exist === true) {
-      return await this.payMapper.feedBack(feedbackDto);
-    } else {
-      const { store_id, pay } = feedbackDto;
-      const createPayDto = new CreatePayDto();
-      createPayDto.store_id = store_id;
-      createPayDto.pay = pay;
-      // 없으면 만들고 피드백
-      await this.payMapper.createPay(createPayDto);
-      return await this.payMapper.feedBack(feedbackDto);
+  async feedBack(feedbackDto: FeedbackDto): Promise<any[]> {
+    const { store_id, feedbacks } = feedbackDto;
+    const result = [];
+
+    for (const feedback of feedbacks) {
+      const { pay, exist } = feedback;
+      let affected;
+      if (exist === true) {
+        affected = await this.payMapper.feedBack(store_id, feedback);
+      } else {
+        const createPayDto = new CreatePayDto();
+        createPayDto.store_id = store_id;
+        createPayDto.pay = pay;
+        // 없으면 만들고 피드백
+        await this.payMapper.createPay(createPayDto);
+
+        affected = await this.payMapper.feedBack(store_id, feedback);
+      }
+
+      if (affected['affected']) {
+        const { success, fail, last_state } = await this.payMapper.getPay(
+          store_id,
+          pay,
+        );
+        result.push({
+          pay: pay,
+          success: success,
+          fail: fail,
+          last_state: last_state,
+        });
+      }
     }
+    return result;
+
+    //   //exist 로 있는지 없는지 판단
+    //   const { exist } = feedbackDto;
+    //   if (exist === true) {
+    //     return await this.payMapper.feedBack(feedbackDto);
+    //   } else {
+    //     const { store_id, pay } = feedbackDto;
+    //     const createPayDto = new CreatePayDto();
+    //     createPayDto.store_id = store_id;
+    //     createPayDto.pay = pay;
+    //     // 없으면 만들고 피드백
+    //     await this.payMapper.createPay(createPayDto);
+    //     return await this.payMapper.feedBack(feedbackDto);
+    //   }
   }
 
   //dev

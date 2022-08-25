@@ -20,10 +20,15 @@ export class PayListMapper {
     return commit ? true : false;
   }
 
-  async findAllPayList(): Promise<PayList[]> {
-    return await this.payListRepository
-      .createQueryBuilder('pay_list')
-      .getMany();
+  async findAllPayList(): Promise<string[]> {
+    const result = [];
+    const payList = await this.payListRepository.find();
+
+    for (const pay of payList) {
+      result.push(pay['pay']);
+    }
+
+    return result;
   }
 
   async remove(pay: string): Promise<boolean> {

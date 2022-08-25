@@ -1,4 +1,10 @@
-import { Allow, IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import {
+  Allow,
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
 
 export class FeedbackDto {
   @IsNotEmpty()
@@ -6,16 +12,8 @@ export class FeedbackDto {
   store_id: string;
 
   @IsNotEmpty()
-  @IsString()
-  pay: string;
-
-  @IsNotEmpty()
-  @IsBoolean()
-  exist: boolean;
-
-  @IsNotEmpty()
-  @IsBoolean()
-  feed: boolean;
+  @IsArray()
+  feedbacks;
 
   @Allow()
   key: string;

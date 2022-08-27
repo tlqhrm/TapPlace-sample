@@ -38,22 +38,8 @@ export class UserMapper {
       .createQueryBuilder('user')
       .update()
       .set({ pays })
-      .where(`user_id = ${user_id}`)
+      .where('user_id = :user_id', { user_id: user_id })
       .execute();
-    try {
-      await this.userRepository
-        .createQueryBuilder('user')
-        .update()
-        .set({ pays })
-        .where(`user_id = ${user_id}`)
-        .execute();
-    } catch (error) {
-      if (!result.affected) {
-        throw new HttpException(`user_id : ${user_id} is not exist`, 409);
-      } else {
-        throw new HttpException(`Unkown error please contact the manager`, 500);
-      }
-    }
 
     return true;
   }

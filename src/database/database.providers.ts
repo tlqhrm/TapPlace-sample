@@ -13,6 +13,7 @@ export const databaseProviders = [
         database: process.env.DB_DATABASE,
         entities: [__dirname + '/../**/*.entity.{js,ts}'],
         synchronize: process.env.DB_SYNC ? true : false,
+        logging: true,
         // type: 'oracle',
         // username: 'admin',
         // password: 'Wlgns13579@@',

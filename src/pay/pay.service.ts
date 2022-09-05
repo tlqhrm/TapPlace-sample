@@ -13,10 +13,12 @@ export class PayService {
   //store_id에 에 맞는 존재하는 pay들 exist까지 담아서 전달
   async getPays(getPaysDto: GetPaysDto | GetPaysCehckDto, check: boolean) {
     const { store_id, pays } = getPaysDto;
-    // const result = [];
-    const result = [];
+    let result = {};
     if (!check) {
-      result.push(await this.storeMapper.getStoreById(store_id));
+      result = await this.storeMapper.getStoreById(store_id);
+      result['feedback'] = [];
+    } else {
+      result['feedback'] = [];
     }
 
     for await (const what_pay of pays) {
@@ -24,9 +26,9 @@ export class PayService {
       if (pay) {
         pay['pay'] = what_pay;
         pay['exist'] = true;
-        result.push(pay);
+        result['feedback'].push(pay);
       } else {
-        result.push({
+        result['feedback'].push({
           exist: false,
           pay: what_pay,
         });

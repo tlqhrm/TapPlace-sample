@@ -18,7 +18,7 @@ export class StoreService {
     const stores = await this.storeMapper.aroundStore(aroundStoreDto);
     // 해당 가게 stores 값 + pay 추가해서 리턴할 배열
     const result = [];
-    console.log(stores);
+
     for await (const store of stores) {
       // pays 중에 존재하는 pay만 담을 배열
       const paysResult = [];
@@ -29,10 +29,11 @@ export class StoreService {
           paysResult.push(pay);
         }
       }
-      store['pays'] = paysResult;
-
-      result.push(store);
-      console.log('yes');
+      //해당 store에 pays 가있어야만 리턴
+      if (paysResult.length) {
+        store['pays'] = paysResult;
+        result.push(store);
+      }
     }
 
     return result;

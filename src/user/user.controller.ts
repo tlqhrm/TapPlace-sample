@@ -11,8 +11,8 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateUserPaysDto } from './dto/updatePay-user.dto';
-import { keyCheck } from 'src/keyCheck-decorators';
-import { keyPipe } from 'src/keyPipes';
+import { keyCheck } from 'src/auth/keyCheck-decorators';
+import { keyPipe } from 'src/auth/keyPipes';
 
 @Controller('user')
 export class UserController {

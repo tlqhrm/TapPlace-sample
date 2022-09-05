@@ -6,24 +6,24 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { NoticeService } from './notice.service';
 import { CreateNoticeDto } from './dto/create-notice.dto';
 import { UpdateNoticeDto } from './dto/update-notice.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { adminPipe } from 'src/auth/auth.pipe';
 
 @Controller('notice')
 export class NoticeController {
   constructor(private readonly noticeService: NoticeService) {}
 
   @Post()
-  create(@Body() createNoticeDto: CreateNoticeDto) {
+  @UseGuards(AuthGuard())
+  create(@Body() createNoticeDto: CreateNoticeDto, @GetUser(adminPipe) admin) {
     return this.noticeService.create(createNoticeDto);
   }
-
-  // @Get()
-  // findAll() {
-  //   return this.noticeService.findAll();
-  // }
 
   @Get(':category1/:category2/:page')
   findOne(
@@ -35,12 +35,18 @@ export class NoticeController {
   }
 
   @Patch(':num')
-  update(@Param('num') num: number, @Body() updateNoticeDto: UpdateNoticeDto) {
+  @UseGuards(AuthGuard())
+  update(
+    @Param('num') num: number,
+    @Body() updateNoticeDto: UpdateNoticeDto,
+    @GetUser(adminPipe) admin,
+  ) {
     return this.noticeService.updateNotice(num, updateNoticeDto);
   }
 
   @Delete(':num')
-  remove(@Param('num') num: number) {
+  @UseGuards(AuthGuard())
+  remove(@Param('num') num: number, @GetUser(adminPipe) admin) {
     return this.noticeService.removeNotice(num);
   }
 }

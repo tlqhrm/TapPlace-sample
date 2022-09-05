@@ -1,8 +1,8 @@
 import { Controller, Post, Body, Get, Delete, Param } from '@nestjs/common';
 import { UserlogService } from './userlog.service';
 import { CreateUserlogDto } from './dto/create-userlog.dto';
-import { keyCheck } from 'src/keyCheck-decorators';
-import { keyPipe } from 'src/keyPipes';
+import { keyCheck } from 'src/auth/keyCheck-decorators';
+import { keyPipe } from 'src/auth/keyPipes';
 
 @Controller('userlog')
 export class UserlogController {

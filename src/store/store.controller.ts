@@ -14,8 +14,8 @@ import { StoreService } from './store.service';
 
 import { AroundStoreDto } from './dto/around-store';
 import { CreateStoreDto } from './dto/create-store';
-import { keyCheck } from 'src/keyCheck-decorators';
-import { keyPipe } from 'src/keyPipes';
+import { keyCheck } from 'src/auth/keyCheck-decorators';
+import { keyPipe } from 'src/auth/keyPipes';
 import { Store } from 'src/entities/store.entity';
 
 @Controller('store')

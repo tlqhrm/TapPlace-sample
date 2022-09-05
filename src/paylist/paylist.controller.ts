@@ -17,8 +17,8 @@ import { CreatePaylistDto } from './dto/create-paylist.dto';
 import { UpdatePaylistDto } from './dto/update-paylist.dto';
 import { PayList } from 'src/entities/paylist.entity';
 import { Request } from 'express';
-import { keyCheck, keyCheck2 } from 'src/keyCheck-decorators';
-import { keyPipe, keyPipe2 } from 'src/keyPipes';
+import { keyCheck, keyCheck2 } from 'src/auth/keyCheck-decorators';
+import { keyPipe, keyPipe2 } from 'src/auth/keyPipes';
 
 @Controller('paylist')
 export class PaylistController {

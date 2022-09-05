@@ -12,8 +12,8 @@ import {
 import { PayService } from './pay.service';
 import { CreatePayDto } from './dto/create-pay.dto';
 import { GetPaysDto } from './dto/get-pays.dto';
-import { keyCheck } from 'src/keyCheck-decorators';
-import { keyPipe } from 'src/keyPipes';
+import { keyCheck } from 'src/auth/keyCheck-decorators';
+import { keyPipe } from 'src/auth/keyPipes';
 import { FeedbackDto } from './dto/feedbackdto';
 import { GetPaysCehckDto } from './dto/get-pays-check.dto';
 

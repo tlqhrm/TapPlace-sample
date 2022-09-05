@@ -55,7 +55,7 @@ export class NoticeMapper {
   }
 
   async updateNotice(num, updateNoticeDto) {
-    const { title, content, category1, category2 } = updateNoticeDto;
+    // const { title, content, category1, category2 } = updateNoticeDto;
     const set = {};
     for (const element in updateNoticeDto) {
       console.log(updateNoticeDto[element]);

@@ -13,6 +13,7 @@ import { LoggerMiddleware } from './logger/logger.middleware';
 import { winstonLogger } from './logger/winston.util';
 import { NoticeModule } from './notice/notice.module';
 import { TermsModule } from './terms/terms.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -27,6 +28,9 @@ import { TermsModule } from './terms/terms.module';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
+        KEY: Joi.string().required(),
+        KEY2: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
       }),
     }),
     // WinstonModule.forRoot({
@@ -46,6 +50,7 @@ import { TermsModule } from './terms/terms.module';
     UserlogModule,
     NoticeModule,
     TermsModule,
+    AdminModule,
   ],
   controllers: [],
   providers: [Logger],

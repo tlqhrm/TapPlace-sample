@@ -75,6 +75,7 @@ export class TermsMapper {
     const result = await this.termsRepository
       .createQueryBuilder()
       .select(['personal_date', 'service_date'])
+      .orderBy('num', 'DESC')
       .getRawOne();
 
     return result;

@@ -32,9 +32,12 @@ export class NoticeMapper {
   async findNotice(ct1, ct2, page) {
     const viewCount = 10;
     const startCount = (page - 1) * viewCount;
-    const result = await this.noticeRepository
+    const result = {
+      total_count: 0,
+      notice: [],
+    };
+    result['notice'] = await this.noticeRepository
       .createQueryBuilder()
-
       //게시글 순서쿼리
       // .select(`SQL_CALC_FOUND_ROWS  @rownum:=@rownum+1, notice.*`)
       .select(`SQL_CALC_FOUND_ROWS *`)
@@ -50,7 +53,7 @@ export class NoticeMapper {
       .createQueryBuilder('notice')
       .select('FOUND_ROWS() as totalCount')
       .getRawOne();
-    result.unshift(totalCount);
+    result['total_count'] = totalCount['totalCount'];
     return result;
   }
 

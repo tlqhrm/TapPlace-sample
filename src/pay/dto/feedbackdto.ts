@@ -13,7 +13,7 @@ export class FeedbackDto {
 
   @IsNotEmpty()
   @IsArray()
-  feedbacks;
+  user_feedback;
 
   @Allow()
   key: string;

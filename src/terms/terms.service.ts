@@ -10,19 +10,25 @@ export class TermsService {
     return this.termsMapper.createTerms(createTermDto);
   }
 
-  findAll() {
-    return this.termsMapper.findAllTerms();
+  async findAll() {
+    const result = {
+      terms: [],
+    };
+    result['terms'] = await this.termsMapper.findAllTerms();
+    return result;
   }
 
-  findOne(num: number) {
-    return this.termsMapper.findOne(num);
+  async findOne(num: number) {
+    const result = await this.termsMapper.findOne(num);
+
+    return result[0];
   }
 
-  update(num: number, updateTermDto: UpdateTermDto) {
-    return this.termsMapper.update(num, updateTermDto);
+  async update(num: number, updateTermDto: UpdateTermDto) {
+    return await this.termsMapper.update(num, updateTermDto);
   }
 
-  remove(num: number) {
-    return this.termsMapper.remove(num);
+  async remove(num: number) {
+    return await this.termsMapper.remove(num);
   }
 }

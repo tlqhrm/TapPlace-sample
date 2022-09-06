@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PayListMapper } from 'src/paylist/paylist.mapper';
+import { TermsMapper } from 'src/terms/terms.mapper';
 import { CreateUserlogDto } from './dto/create-userlog.dto';
 import { UserLogMapper } from './userlog.mapper';
 
@@ -7,13 +7,14 @@ import { UserLogMapper } from './userlog.mapper';
 export class UserlogService {
   constructor(
     private userLogMapper: UserLogMapper,
-    private paylistMapper: PayListMapper,
+    private termsMapper: TermsMapper,
   ) {}
 
   async createUserLog(createUserlogDto: CreateUserlogDto) {
     await this.userLogMapper.createUserLog(createUserlogDto);
-
-    return this.paylistMapper.findAllPayList();
+    const result = {};
+    // result['terms'] = await this.termsMapper.findLast();
+    return await this.termsMapper.findLast();
   }
 
   //dev

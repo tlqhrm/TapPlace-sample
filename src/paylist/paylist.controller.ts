@@ -20,35 +20,28 @@ import { Request } from 'express';
 import { keyCheck, keyCheck2 } from 'src/auth/keyCheck-decorators';
 import { keyPipe, keyPipe2 } from 'src/auth/keyPipes';
 
-@Controller('paylist')
-export class PaylistController {
-  constructor(private readonly paylistService: PaylistService) {}
+// @Controller('paylist')
+// export class PaylistController {
+//   constructor(private readonly paylistService: PaylistService) {}
 
-  @Post()
-  async create(
-    @Body() createPaylistDto: CreatePaylistDto,
-    @keyCheck(keyPipe) key,
-  ): Promise<boolean> {
-    return await this.paylistService.create(createPaylistDto);
-  }
+//   @Post()
+//   async create(
+//     @Body() createPaylistDto: CreatePaylistDto,
+//     @keyCheck(keyPipe) key,
+//   ): Promise<boolean> {
+//     return await this.paylistService.create(createPaylistDto);
+//   }
 
-  @Get()
-  async findAll(): Promise<object> {
-    // Logger.warn('asdasd');
-    return await this.paylistService.findAll();
-  }
+//   @Get()
+//   async findAll(): Promise<object> {
+//     return await this.paylistService.findAll();
+//   }
 
-  // @Get()
-  // async findAll(@Req() req: Request) {
-  //   console.log
-  // }
-
-  @Delete(':pay')
-  async remove(
-    @Param('pay') pay: string,
-    @keyCheck2(keyPipe2) key,
-  ): Promise<boolean> {
-    return this.paylistService.remove(pay);
-    // return this.paylistService.remove(pay);
-  }
-}
+//   @Delete(':pay')
+//   async remove(
+//     @Param('pay') pay: string,
+//     @keyCheck2(keyPipe2) key,
+//   ): Promise<boolean> {
+//     return this.paylistService.remove(pay);
+//   }
+// }

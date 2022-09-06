@@ -13,6 +13,7 @@ import { GoogleVisa } from 'src/entities/pays/google_visa.entity';
 import { Kakaopay } from 'src/entities/pays/kakaopay.entity';
 import { Naverpay } from 'src/entities/pays/naverpay.entity';
 import { Payco } from 'src/entities/pays/pacyco.entity';
+import { Toss } from 'src/entities/pays/toss.entity';
 import { Zeropay } from 'src/entities/pays/zeropay.entity';
 import { Repository } from 'typeorm';
 import { CreatePayDto } from './dto/create-pay.dto';
@@ -51,6 +52,8 @@ export class PayMapper {
     private google_masterRepository: Repository<GoogleMaster>,
     @Inject('GOOGLE_MAESTRO_REPOSITORY')
     private google_maestroRepository: Repository<GoogleMaestro>,
+    @Inject('TOSS_REPOSITORY')
+    private tossRepository: Repository<Toss>,
   ) {}
 
   // 전달받은 pay 종류애따라 repository 동적으로 사용

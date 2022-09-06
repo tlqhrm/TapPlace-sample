@@ -29,32 +29,6 @@ export class AdminController {
 
   @Post('login')
   login(@Body() adminLoginDto: AdminLoginDto) {
-    console.log(process.env.JWT_SECRET);
     return this.adminService.login(adminLoginDto);
   }
-
-  @Get('test')
-  @UseGuards(AuthGuard())
-  test(@Req() req) {
-    // console.log(req.user);
-  }
-  // @Get()
-  // findAll() {
-  //   return this.adminService.findAll();
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.adminService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
-  //   return this.adminService.update(+id, updateAdminDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.adminService.remove(+id);
-  // }
 }

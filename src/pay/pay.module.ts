@@ -20,6 +20,7 @@ import { conlessJcbRepository } from 'src/repositories/pays/conless_jcb.reposito
 import { googleVisaRepository } from 'src/repositories/pays/google_visa.repository';
 import { googleMasterRepository } from 'src/repositories/pays/google_master.repository';
 import { googleMaestroRepository } from 'src/repositories/pays/google_maestro.repository';
+import { tossRepository } from 'src/repositories/pays/toss.repository';
 
 @Module({
   imports: [DatabaseModule],
@@ -42,6 +43,7 @@ import { googleMaestroRepository } from 'src/repositories/pays/google_maestro.re
     ...googleVisaRepository,
     ...googleMasterRepository,
     ...googleMaestroRepository,
+    ...tossRepository,
     StoreMapper,
     ...storeRepository,
   ],

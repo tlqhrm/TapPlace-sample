@@ -4,8 +4,8 @@ import { UserlogController } from './userlog.controller';
 import { userLogRepository } from 'src/repositories/userlog.repository';
 import { UserLogMapper } from './userlog.mapper';
 import { DatabaseModule } from 'src/database/database.module';
-import { PayListMapper } from 'src/paylist/paylist.mapper';
-import { paylistRepository } from 'src/repositories/paylist.repository';
+import { termsRepository } from 'src/repositories/terms.repository';
+import { TermsMapper } from 'src/terms/terms.mapper';
 
 @Module({
   imports: [DatabaseModule],
@@ -14,8 +14,8 @@ import { paylistRepository } from 'src/repositories/paylist.repository';
     UserlogService,
     ...userLogRepository,
     UserLogMapper,
-    ...paylistRepository,
-    PayListMapper,
+    ...termsRepository,
+    TermsMapper,
   ],
 })
 export class UserlogModule {}

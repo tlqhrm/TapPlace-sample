@@ -16,46 +16,19 @@ export class PayService {
     let result = {};
     if (!check) {
       result = await this.storeMapper.getStoreById(store_id);
-      result['feedback'] = [];
-    } else {
-      result['feedback'] = [];
     }
-
-    for await (const what_pay of pays) {
-      const pay = await this.payMapper.getPay(store_id, what_pay);
-      if (pay) {
-        pay['pay'] = what_pay;
-        pay['exist'] = true;
-        result['feedback'].push(pay);
-      } else {
-        result['feedback'].push({
-          exist: false,
-          pay: what_pay,
-        });
-      }
-    }
-    return result;
+    result['feedback'] = [];
+    return await this.getPaysFeedback(store_id, pays, result);
   }
 
   async getPaysMore(getPaysDto: GetPaysDto | GetPaysCehckDto) {
     const { store_id, pays } = getPaysDto;
 
-    const result = [];
+    const result = {
+      feedback: [],
+    };
 
-    for await (const what_pay of pays) {
-      const pay = await this.payMapper.getPay(store_id, what_pay);
-      if (pay) {
-        pay['pay'] = what_pay;
-        pay['exist'] = true;
-        result.push(pay);
-      } else {
-        result.push({
-          exist: false,
-          pay: what_pay,
-        });
-      }
-    }
-    return result;
+    return await this.getPaysFeedback(store_id, pays, result);
   }
 
   // store_id로 조회후 없으면 가게 등록
@@ -78,11 +51,13 @@ export class PayService {
   }
 
   //피드백
-  async feedBack(feedbackDto: FeedbackDto): Promise<any[]> {
-    const { store_id, feedbacks } = feedbackDto;
-    const result = [];
+  async feedBack(feedbackDto: FeedbackDto): Promise<any> {
+    const { store_id, user_feedback } = feedbackDto;
+    const result = {
+      feedback_result: [],
+    };
 
-    for (const feedback of feedbacks) {
+    for (const feedback of user_feedback) {
       const { pay, exist } = feedback;
       let affected;
       if (exist === true) {
@@ -102,7 +77,7 @@ export class PayService {
           store_id,
           pay,
         );
-        result.push({
+        result['feedback_result'].push({
           pay: pay,
           success: success,
           fail: fail,
@@ -150,6 +125,7 @@ export class PayService {
       'google_visa',
       'google_master',
       'google_maestro',
+      'toss',
     ];
     const result = [];
 
@@ -171,5 +147,23 @@ export class PayService {
 
   async deletePay(id, pay) {
     return await this.payMapper.deletePay(id, pay);
+  }
+
+  //getPays 중복기능 함수화
+  async getPaysFeedback(store_id, pays, result) {
+    for await (const what_pay of pays) {
+      const pay = await this.payMapper.getPay(store_id, what_pay);
+      if (pay) {
+        pay['pay'] = what_pay;
+        pay['exist'] = true;
+        result['feedback'].push(pay);
+      } else {
+        result['feedback'].push({
+          exist: false,
+          pay: what_pay,
+        });
+      }
+    }
+    return result;
   }
 }

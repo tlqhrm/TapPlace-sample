@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { Qna } from 'src/entities/qna.entity';
 import { Repository } from 'typeorm';
 import { CreateQnaDto } from './dto/create-qna.dto';
@@ -34,10 +34,8 @@ export class QnaMapper {
   async findQna(ct, asnwer_check, page) {
     const viewCount = 10;
     const startCount = (page - 1) * viewCount;
-    const result = {
-      notice: [],
-    };
-    result['notice'] = await this.qnaRepository
+    const result = {};
+    result['qna'] = await this.qnaRepository
       .createQueryBuilder()
       .select(`SQL_CALC_FOUND_ROWS *`)
       .where(`(category = ${ct})`)
@@ -57,15 +55,33 @@ export class QnaMapper {
 
   async updateQna(num, updateQnaDto) {
     const set = {};
+    const id = updateQnaDto['user_id'];
     for (const element in updateQnaDto) {
-      if (element != null) set[element] = updateQnaDto[element];
+      if (element === 'user_id') continue;
+      if (element === 'key') continue;
+      if (updateQnaDto[element] != null) set[element] = updateQnaDto[element];
     }
+    // console.log(set);
     const result = await this.qnaRepository
       .createQueryBuilder()
       .update(Qna)
       .set(set)
-      .where(`num = ${num}`)
+      .where(`num = ${num} AND user_id = '${id}'`)
       .execute();
+
+    if (!result['affected'])
+      throw new HttpException('조건에 맞는 게시글이 없습니다.', 400);
+    return true;
+  }
+
+  async deleteQna(num, user_id) {
+    const result = await this.qnaRepository
+      .createQueryBuilder()
+      .delete()
+      .where(`num = ${num} AND user_id = '${user_id}'`)
+      .execute();
+    if (!result['affected'])
+      throw new HttpException('조건에 맞는 게시글이 없습니다.', 400);
     return true;
   }
 }

@@ -25,10 +25,10 @@ export class Qna {
   @Column({ type: 'varchar', length: 40 })
   write_date: string;
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 100 })
   email: string;
 
-  @Column({ type: 'varchar', length: 20 })
+  @Column({ type: 'varchar', length: 10 })
   os: string;
 
   @Column({ type: 'bool', default: false })

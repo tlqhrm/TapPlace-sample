@@ -4,7 +4,9 @@
 
 [https://api.tapplace.cloud](https://api.tapplace.cloud)          “key”:”1234”
 
-## 변경사항(1.0 → 1.1)
+## 변경사항
+
+### 1.0 → 1.1
 
 1. store/around 리턴값 중 피드백 없는 store 포함 안하게 변경
 2. 공지사항 테이블 ‘notice’ 생성 & CRUD API 추가
@@ -13,6 +15,11 @@
 5. 결제수단 ‘toss’ 추가
 6. 시작 화면과 /userlog 시 반환되는 paylist 데이터 삭제( /userlog 리턴값 terms 데이터로 대체)
 7. 배열로 되어있던 리턴타입 json 형식으로 통일
+
+### 1.1 → 1.1.1
+
+1. 문의하기 테이블 ‘qna’ 생성 & CRUD API 추가
+2. 프렌차이즈 데이터 DB 이식
 
 ## Pay 리스트 (= ~pay 테이블명 && pay 컬럼 값)
 
@@ -59,6 +66,10 @@
 
 ![7.png](Tapplace%20API%20v1%201%20c0fd668530054f399017c32a0f5ee75a/7.png)
 
+### 화면7) 문의하기
+
+![8.png](Tapplace%20API%20v1%201%20c0fd668530054f399017c32a0f5ee75a/8.png)
+
 ### API
 
 | Method | Endpoint | Request body | Return | When to use | 구현 현황 |
@@ -73,6 +84,10 @@
 | POST | /pay/list/more | { store_id, pays[ ] } | { feedback[ ] } | 피드백 → 결제수단 더보기 | O |
 | GET | /store/:store_id |  | { store(T) } | store_id에 맞는 store 가져옴 ( 공유하기 할때 meta데이터 표시용) | O |
 | GET | /notice/:category1/:category2/:page |  | { total_count, notice [ ] } | 공지사항/자주하는 질문 | O |
+| GET | /qna/:category/:answer_check/:page |  | { total_count, qna [ ] } | 문의하기 불러오기 | O |
+| POST | /qna | { qna(T), key } | true or ERROR | 문의하기 등록 | O |
+| PATCH | /qna/:num | { qna(T), key } (qna 테이블에서 변경하고 싶은 컬럼만 추가하면 됨. user_id는 필수로 들어가야함) | true or ERROR | 문의하기 수정 | O |
+| DELETE | /qna/:num | { user_id, key } | true or ERROR | 문의하기 삭제 | O |
 
 ### 개발할 때만  쓰는 API
 
@@ -95,7 +110,8 @@
 
 | 이름 | 설명 | 예시 |
 | --- | --- | --- |
-| 테이블명(T) | 테이블명의 컬럼이 전부 포함된 값(num은 제외) | user(T) = user_id, os, birth, pays   ex) { user(T), key } = { user_id, os, birth, pays, key } |
+| 테이블명(T) | 테이블명의 컬럼이 전부 포함된 값(num과 기본값이 있는 컬럼 제외) | user(T) = user_id, os, birth, pays   
+ex) { user(T), key } = { user_id, os, birth, pays, key } |
 | key | GET 이외의 방식에 전부 넣어야 하는 값 |  |
 | paylist[ ] | pay_list 테이블의 데이터 전부 담은 배열 | paylist : [ ”apple_visa”, “apple_master”, “kakaopay” ….. ] |
 | true or ERROR | 요청 성공 시 true 리턴 , 실패시 ERROR 발생 |  |
@@ -103,16 +119,46 @@
 | pays[ ] | pay_list 테이블 데이터 중 일부를 담은 배열 | pays : [ ”apple_visa”, “payco” ] |
 | distance | 주변 찾기 시 반경으로 설정된 값 (number) | distance : 1.5 (반경이 1.5km로 설정되었을 때) |
 | x1, y1 | 주변 찾기 시 사용자 현재 위치 값 |  |
-| feedback[ ] | 해당 store의 pay별 feedback 현황 | feedback : [ { pay(T), pay, exist }(feedback 결과가 있는 pay), { pay, exist }(feedback 결과가 없는 pay)  ] |
-| user_feedback[ ] | feedback시 pay별 pay, exist, feed를 담은 값 | feedbacks : [ { “pay” : “apple_visa”, “exist” : false, “feed” : true }, { “pay” : “naverpay”, “exist” : true, “feed” : false } ] |
+| feedback[ ] | 해당 store의 pay별 feedback 현황 | feedback : [ 
+{ pay(T), pay, exist }(feedback 결과가 있는 pay),
+{ pay, exist }(feedback 결과가 없는 pay)  ] |
+| user_feedback[ ] | feedback시 pay별 pay, exist, feed를 담은 값 | feedbacks : [
+ { “pay” : “apple_visa”,
+ “exist” : false, 
+ “feed” : true },
+ { “pay” : “naverpay”,
+ “exist” : true,
+ “feed” : false } ... ] |
 | exist | pay종류 별 기존 데이터가 존재하는지 여부값 [ true, false ] | exist : true = 기존 데이터 있음 ( pay(T)의 데이터 그대로 쓰면 됨)                                                                       exist :  false = 기존 데이터 없음                                                            |
 | feed | 피드백시 success(true)또는 fail(false) 여부 값 [ true, false ] | feed : true = DB success +1  fail :  false = DB fail +1 |
-| feedback_result | 피드백 후 결과값 | feedback_result : [ { “pay” : “naverpay”, “success”:10, “fail” : 2, “last_state” : “success } … ]  |
-| :category1 | notice - 공지사항, qna - 자주 묻는 질문 | /notice/qna/:category2/:page |
-| :category2 | all - category2 전부, 현재는 category2 가 정해진게 없어서 all로만 가능 | /notice/:category1/all/:page |
+| feedback_result | 피드백 후 결과값 | feedback_result : [ 
+{ “pay” : “naverpay”,
+ “success”:10,
+ “fail” : 2,
+ “last_state” : “success } … ]  |
+| :category1 (notice) | notice - 공지사항, faq - 자주 묻는 질문 | /notice/qna/:category2/:page |
+| :category2 (notice) | all - category2 전부, 현재는 category2 가 정해진게 없어서 all로만 가능 | /notice/:category1/all/:page |
 | :page | 한 화면에 표시될 페이지, 현재 1페이지당 10개로 설정. page 1 이면 1~10번 게시물, 2이면 11~20번 게시물 | /notice/:category1/:category2/1 |
 | total_count | category1,category2 조건에 맞는 총 게시글 수 | total_count : “12” |
-| notice[ ] | category1,category2,page 조건에 맞는 notice(T) | notice : [ { “num” : 1, “title” : “공지사항1”, “content” : “공지사항 내용”, “wriete_date” : “2022-09-04 06:40:30”, “category1” : “notice”, “category2” : “” ] |
+| notice[ ] | category1,category2,page 조건에 맞는 notice(T) | notice : [ 
+ { “num” : 1,
+ “title” : “공지사항1”,
+ “content” : “공지사항 내용”,
+ “wriete_date” : “2022-09-04 06:40:30”,
+ “category1” : “notice”,
+ “category2” : “” } … ] |
+| category (qna) | qna - 문의하기, edit - 수정제안, all - 답변, 미답변 전부 | /qna/edit/:answer_check/:page |
+| answer_check | false 또는 0 - 미답변, true 또는 1 - 답변완료, all - 답변,미답변 전부 | /qna/:category/true/:page |
+| qna[ ] | category,answer_check,page 조건에 맞는 qna(T) | qna : [ 
+{"num": 6,
+"user_id": "11",
+"category": "edit",
+"title": "문의사항입니다3",
+"content": "답변부탁드려요",
+"write_date": "2022-09-13 08:24:35",
+"answer_check": 1,
+"email": "tlqhrm@naver.com",
+"os": "android" } …] |
 | 나머지  | DB 컬럼의 이름에 맞는 값 |  |
 
 ## 관리자 API
@@ -192,7 +238,7 @@
 | title | string | 글 제목 |
 | content | string | 글 내용 |
 | write_date | string | 글 작성일 |
-| category1 | string, 값 [ ‘notice’, ‘qna’ ] | 공지사항, 자주 하는 질문  |
+| category1 | string, 값 [ ‘notice’, ‘faq’ ] | 공지사항, 자주 하는 질문  |
 | category2 | string, 값 [ ‘all’ ] | 현재는 all 만 가능 |
 
 ### terms 테이블
@@ -213,3 +259,17 @@
 | password | string | 비밀번호 |
 | role | string, 값 [ ‘admin’ ] | 권한 |
 | regist_date | string | 등록 일자 |
+
+### qna 테이블
+
+| 컬럼 | 특성 | 설명 |
+| --- | --- | --- |
+| num | number, 기본키 | 자동으로 증가 되는 PK용 인조키 |
+| title | string | 글 제목 |
+| content | string | 글 내용 |
+| write_date | string | 글 작성일 |
+| user_id | string | 사용자 기기 고유id |
+| category | string, 값 [ ‘qna’, ‘edit’ ] | qna : 문의하기 , edit : 수정제안 |
+| email | string | 답변 받을 이메일 |
+| os | string | 유저 os |
+| answer_check | boolean, 기본값 : false(0) | true(1) : 답변완료, false(0) : 답변대기중 |

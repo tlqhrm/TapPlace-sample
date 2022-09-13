@@ -14,13 +14,15 @@ import { UpdateQnaDto } from './dto/update-qna.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { adminPipe } from 'src/auth/auth.pipe';
+import { keyCheck } from 'src/auth/keyCheck-decorators';
+import { keyPipe } from 'src/auth/keyPipes';
 
 @Controller('qna')
 export class QnaController {
   constructor(private readonly qnaService: QnaService) {}
 
   @Post()
-  create(@Body() createQnaDto: CreateQnaDto) {
+  create(@Body() createQnaDto: CreateQnaDto, @keyCheck(keyPipe) key) {
     return this.qnaService.createQna(createQnaDto);
   }
 
@@ -32,19 +34,18 @@ export class QnaController {
   ) {
     return this.qnaService.findQna(ct, answer_check, page);
   }
-  @UseGuards(AuthGuard())
+
   @Patch(':num')
   update(
     @Param('num') num: number,
     @Body() updateQnaDto: UpdateQnaDto,
-    @GetUser(adminPipe) admin,
+    @keyCheck(keyPipe) key,
   ) {
     return this.qnaService.updateQna(num, updateQnaDto);
   }
 
-  // @Delete(':num')
-  // @UseGuards(AuthGuard())
-  // remove(@Param('num') num: number, @GetUser(adminPipe) admin) {
-  //   return this.qnaService.removeQna(num);
-  // }
+  @Delete(':num')
+  delete(@Param('num') num: number, @Body('user_id') user_id: string) {
+    return this.qnaService.deleteQna(num, user_id);
+  }
 }

@@ -17,11 +17,11 @@ export class QnaService {
     return await this.qnaMapper.findQna(ct, answer_check, page);
   }
 
-  async updateQna(id: number, updateQnaDto: UpdateQnaDto) {
-    return await this.qnaMapper.updateQna(id, updateQnaDto);
+  async updateQna(num: number, updateQnaDto: UpdateQnaDto) {
+    return await this.qnaMapper.updateQna(num, updateQnaDto);
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} qna`;
-  // }
+  async deleteQna(num: number, user_id) {
+    return this.qnaMapper.deleteQna(num, user_id);
+  }
 }

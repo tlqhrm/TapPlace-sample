@@ -30,4 +30,7 @@ export class CreateQnaDto {
 
   @Allow()
   answer_check: boolean;
+
+  @Allow()
+  key: string;
 }

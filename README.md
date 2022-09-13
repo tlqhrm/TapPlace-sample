@@ -122,43 +122,18 @@ ex) { user(T), key } = { user_id, os, birth, pays, key } |
 | feedback[ ] | 해당 store의 pay별 feedback 현황 | feedback : [ 
 { pay(T), pay, exist }(feedback 결과가 있는 pay),
 { pay, exist }(feedback 결과가 없는 pay)  ] |
-| user_feedback[ ] | feedback시 pay별 pay, exist, feed를 담은 값 | feedbacks : [
- { “pay” : “apple_visa”,
- “exist” : false, 
- “feed” : true },
- { “pay” : “naverpay”,
- “exist” : true,
- “feed” : false } ... ] |
-| exist | pay종류 별 기존 데이터가 존재하는지 여부값 [ true, false ] | exist : true = 기존 데이터 있음 ( pay(T)의 데이터 그대로 쓰면 됨)                                                                       exist :  false = 기존 데이터 없음                                                            |
+| user_feedback[ ] | feedback시 pay별 pay, exist, feed를 담은 값 | feedbacks : [ { “pay” : “apple_visa”, “exist” : false, “feed” :true }, { “pay” : “naverpay”, “exist” : true, “feed” : false } ... ] |
+| exist | pay종류 별 기존 데이터가 존재하는지 여부값 [ true, false ] | exist : true = 기존 데이터 있음 ( pay(T)의 데이터 그대로 쓰면 됨)   exist :  false = 기존 데이터 없음                                                            |
 | feed | 피드백시 success(true)또는 fail(false) 여부 값 [ true, false ] | feed : true = DB success +1  fail :  false = DB fail +1 |
-| feedback_result | 피드백 후 결과값 | feedback_result : [ 
-{ “pay” : “naverpay”,
- “success”:10,
- “fail” : 2,
- “last_state” : “success } … ]  |
+| feedback_result | 피드백 후 결과값 | feedback_result : [ { “pay” : “naverpay”, “success”:10, “fail” : 2, “last_state” : “success } … ]  |
 | :category1 (notice) | notice - 공지사항, faq - 자주 묻는 질문 | /notice/qna/:category2/:page |
 | :category2 (notice) | all - category2 전부, 현재는 category2 가 정해진게 없어서 all로만 가능 | /notice/:category1/all/:page |
 | :page | 한 화면에 표시될 페이지, 현재 1페이지당 10개로 설정. page 1 이면 1~10번 게시물, 2이면 11~20번 게시물 | /notice/:category1/:category2/1 |
 | total_count | category1,category2 조건에 맞는 총 게시글 수 | total_count : “12” |
-| notice[ ] | category1,category2,page 조건에 맞는 notice(T) | notice : [ 
- { “num” : 1,
- “title” : “공지사항1”,
- “content” : “공지사항 내용”,
- “wriete_date” : “2022-09-04 06:40:30”,
- “category1” : “notice”,
- “category2” : “” } … ] |
+| notice[ ] | category1,category2,page 조건에 맞는 notice(T) | notice : [  { “num” : 1, “title” : “공지사항1”, “content” : “지사항 내용”, “wriete_date” : “2022-09-04 06:40:30”, “category1” : “notice”, “category2” : “” } … ] |
 | category (qna) | qna - 문의하기, edit - 수정제안, all - 답변, 미답변 전부 | /qna/edit/:answer_check/:page |
 | answer_check | false 또는 0 - 미답변, true 또는 1 - 답변완료, all - 답변,미답변 전부 | /qna/:category/true/:page |
-| qna[ ] | category,answer_check,page 조건에 맞는 qna(T) | qna : [ 
-{"num": 6,
-"user_id": "11",
-"category": "edit",
-"title": "문의사항입니다3",
-"content": "답변부탁드려요",
-"write_date": "2022-09-13 08:24:35",
-"answer_check": 1,
-"email": "tlqhrm@naver.com",
-"os": "android" } …] |
+| qna[ ] | category,answer_check,page 조건에 맞는 qna(T) | qna : [ {"num": 6,"user_id": "11","category": "edit","title":"문의사항입니다3", "content": "답변부탁드려요","write_date": "2022-09-13 08:24:35","answer_check": 1,"email": "tlqhrm@naver.com", "os": "android" } …] |
 | 나머지  | DB 컬럼의 이름에 맞는 값 |  |
 
 ## 관리자 API

@@ -44,7 +44,7 @@ export class QnaMapper {
       .limit(10)
       .offset(startCount)
       .getRawMany();
-    return Object.assign(
+    return await Object.assign(
       await this.qnaRepository
         .createQueryBuilder('notice')
         .select('FOUND_ROWS() as totalCount')

@@ -43,7 +43,7 @@ export class NoticeMapper {
       .limit(10)
       .offset(startCount)
       .getRawMany();
-    return Object.assign(
+    return await Object.assign(
       await this.noticeRepository
         .createQueryBuilder('notice')
         .select('FOUND_ROWS() as totalCount')

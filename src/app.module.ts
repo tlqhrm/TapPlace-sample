@@ -14,15 +14,21 @@ import { winstonLogger } from './logger/winston.util';
 import { NoticeModule } from './notice/notice.module';
 import { TermsModule } from './terms/terms.module';
 import { AdminModule } from './admin/admin.module';
+import { QnaModule } from './qna/qna.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'dev' ? '.dev.env' : '.prod.env',
+      envFilePath:
+        process.env.NODE_ENV === 'dev'
+          ? '.dev.env'
+          : process.env.NODE_ENV === 'prod'
+          ? '.prod.env'
+          : '.local.env',
       // ignoreEnvFile: process.env.NODE_ENV === 'prod',
       validationSchema: Joi.object({
-        NODE_ENV: Joi.string().valid('dev', 'prod', 'test').required(),
+        NODE_ENV: Joi.string().valid('dev', 'prod', 'local').required(),
         DB_HOST: Joi.string().required(),
         DB_PORT: Joi.string().required(),
         DB_USERNAME: Joi.string().required(),
@@ -51,6 +57,7 @@ import { AdminModule } from './admin/admin.module';
     NoticeModule,
     TermsModule,
     AdminModule,
+    QnaModule,
   ],
   controllers: [],
   providers: [Logger],

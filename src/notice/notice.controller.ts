@@ -26,7 +26,7 @@ export class NoticeController {
   }
 
   @Get(':category1/:category2/:page')
-  findOne(
+  find(
     @Param('category1') ct1: string,
     @Param('category2') ct2: string,
     @Param('page') page: number,

@@ -34,14 +34,16 @@ export class PayService {
   // store_id로 조회후 없으면 가게 등록
   async getPaysCheck(getPaysCehckDto: GetPaysCehckDto) {
     const { store_id, pays } = getPaysCehckDto;
-    const result = [];
+    const result = {
+      feedback: [],
+    };
     const found = await this.storeMapper.getStoreById(store_id);
     if (found) {
       return await this.getPays(getPaysCehckDto, true);
     } else {
       await this.storeMapper.createStore(getPaysCehckDto);
       for await (const what_pay of pays) {
-        result.push({
+        result['feedback'].push({
           exist: false,
           pay: what_pay,
         });

@@ -33,35 +33,30 @@ export class NoticeMapper {
     const viewCount = 10;
     const startCount = (page - 1) * viewCount;
     const result = {
-      total_count: 0,
       notice: [],
     };
     result['notice'] = await this.noticeRepository
       .createQueryBuilder()
-      //게시글 순서쿼리
-      // .select(`SQL_CALC_FOUND_ROWS  @rownum:=@rownum+1, notice.*`)
       .select(`SQL_CALC_FOUND_ROWS *`)
-      // .from(Notice, 'notice')
-      //rownum 적용하기
-      // .addFrom(`(SELECT @rownum:=${startCount})`, `TMP`)
       .where(`category1 = '${ct1}'`)
       .andWhere(`category2 LIKE '${ct2}'`)
       .limit(10)
       .offset(startCount)
       .getRawMany();
-    const totalCount = await this.noticeRepository
-      .createQueryBuilder('notice')
-      .select('FOUND_ROWS() as totalCount')
-      .getRawOne();
-    result['total_count'] = totalCount['totalCount'];
-    return result;
+    return Object.assign(
+      await this.noticeRepository
+        .createQueryBuilder('notice')
+        .select('FOUND_ROWS() as totalCount')
+        .getRawOne(),
+      result,
+    );
   }
 
   async updateNotice(num, updateNoticeDto) {
     // const { title, content, category1, category2 } = updateNoticeDto;
     const set = {};
     for (const element in updateNoticeDto) {
-      console.log(updateNoticeDto[element]);
+      // console.log(updateNoticeDto[element]);
       if (element != null) set[element] = updateNoticeDto[element];
     }
     const result = await this.noticeRepository

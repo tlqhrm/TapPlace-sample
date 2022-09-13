@@ -35,7 +35,6 @@ import { QnaModule } from './qna/qna.module';
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
         KEY: Joi.string().required(),
-        KEY2: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
       }),
     }),

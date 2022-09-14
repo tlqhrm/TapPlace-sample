@@ -1,27 +1,44 @@
-# Tapplace API v1.1
+# Tapplace API v1.1.1
 
-### 임시 주소
+### API 주소
 
-[https://api.tapplace.cloud](https://api.tapplace.cloud)          “key”:”1234”
+ 개발 : https://api.tapplace.cloud    
 
 ## 변경사항
-
-### 1.0 → 1.1
-
-1. store/around 리턴값 중 피드백 없는 store 포함 안하게 변경
-2. 공지사항 테이블 ‘notice’ 생성 & CRUD API 추가
-3. 개인정보 날짜, 이용약관 날짜 저장하는 테이블  ‘terms’ 생성 & CRUD API추가
-4. 관리자 테이블 ‘admin’ 생성 & 관리자 로그인 추가
-5. 결제수단 ‘toss’ 추가
-6. 시작 화면과 /userlog 시 반환되는 paylist 데이터 삭제( /userlog 리턴값 terms 데이터로 대체)
-7. 배열로 되어있던 리턴타입 json 형식으로 통일
 
 ### 1.1 → 1.1.1
 
 1. 문의하기 테이블 ‘qna’ 생성 & CRUD API 추가
 2. 프렌차이즈 데이터 DB 이식
+3. 회원탈퇴 - PATCH /user/drop 추가
+4. 개발시에만 사용하는 api 삭제
 
-## Pay 리스트 (= ~pay 테이블명 && pay 컬럼 값)
+## 목차
+
+- [Pay 리스트](#pay-리스트--pay-테이블명)
+- [화면 별 API](#화면-별-api)
+    - [화면1) 설정](#화면1-설정)
+    - [화면2) 주변찾기](#화면2-주변찾기)
+    - [화면3) 주변찾기 - 가게선택](#화면3-주변찾기---가게선택)
+    - [화면4) 등록 - 가게선택](#화면4-등록---가게선택)
+    - [화면5) 피드백](#화면4-등록---가게선택)
+    - [화면6) 공지사항](#화면6-공지사항)
+    - [화면7) 문의하기](#화면7-문의하기)
+- [API 목록](#api-목록)
+- [관리자API 목록](#관리자-api-목록)
+- [API 전달 값](#api-전달-값)
+- [DB구성](#db-구성)
+    - [store 테이블](#store-테이블)
+    - [~pay 테이블](#pay-테이블)
+    - [pay_list 테이블](#paylist-테이블)
+    - [user 테이블](#user-테이블)
+    - [user_log 테이블](#userlog-테이블)
+    - [notice 테이블](#notice-테이블)
+    - [terms 테이블](#terms-테이블)
+    - [admin 테이블](#admin-테이블)
+    - [qna 테이블](#qna-테이블)
+
+## Pay 리스트 (= ~pay 테이블명)
 
 1. kakaopay
 2. naverpay
@@ -40,43 +57,44 @@
 15. google_maestro
 16. toss
 
-## API 구성
+## 화면 별 API
 
 ### 화면1) 설정
 
-![2.png](Tapplace%20API%20v1%201%20c0fd668530054f399017c32a0f5ee75a/2.png)
+![2.png](Tapplace%20API%20v1%201%201%20c0fd668530054f399017c32a0f5ee75a/2.png)
 
 ### 화면2) 주변찾기
 
-![3.png](Tapplace%20API%20v1%201%20c0fd668530054f399017c32a0f5ee75a/3.png)
+![3.png](Tapplace%20API%20v1%201%201%20c0fd668530054f399017c32a0f5ee75a/3.png)
 
 ### 화면3) 주변찾기 - 가게선택
 
-![4.png](Tapplace%20API%20v1%201%20c0fd668530054f399017c32a0f5ee75a/4.png)
+![4.png](Tapplace%20API%20v1%201%201%20c0fd668530054f399017c32a0f5ee75a/4.png)
 
 ### 화면4) 등록 - 가게선택
 
-![5.png](Tapplace%20API%20v1%201%20c0fd668530054f399017c32a0f5ee75a/5.png)
+![5.png](Tapplace%20API%20v1%201%201%20c0fd668530054f399017c32a0f5ee75a/5.png)
 
 ### 화면5) 피드백
 
-![6.png](Tapplace%20API%20v1%201%20c0fd668530054f399017c32a0f5ee75a/6.png)
+![6.png](Tapplace%20API%20v1%201%201%20c0fd668530054f399017c32a0f5ee75a/6.png)
 
 ### 화면6) 공지사항
 
-![7.png](Tapplace%20API%20v1%201%20c0fd668530054f399017c32a0f5ee75a/7.png)
+![7.png](Tapplace%20API%20v1%201%201%20c0fd668530054f399017c32a0f5ee75a/7.png)
 
 ### 화면7) 문의하기
 
-![8.png](Tapplace%20API%20v1%201%20c0fd668530054f399017c32a0f5ee75a/8.png)
+![8.png](Tapplace%20API%20v1%201%201%20c0fd668530054f399017c32a0f5ee75a/8.png)
 
-### API
+## API 목록
 
 | Method | Endpoint | Request body | Return | When to use | 구현 현황 |
 | --- | --- | --- | --- | --- | --- |
 | POST | /user | { user(T), key } | true or ERROR | 최초 설정 | O |
 | PATCH | /user/pays | { user_id, pays[ ], key } | true or ERROR | 관심 pay 수정 | O |
 | POST | /userlog | { user_id, key } | { terms(T) } | 어플 실행 | O |
+| PATCH | /user/drop | { user_id, key } | true or ERROR | 회원탈퇴 | O |
 | POST | /store/around | { x1, y1, distance, pays[ ] } | { stores[ ] } | 주변 찾기 | O |
 | POST | /pay/list | { store_id, pays[ ] } | { store(T), feedback[ ] }  | 주변 찾기 → 가게 선택 | O |
 | POST | /pay/list/check | { store(T), pays[ ] } | { feedback[ ] } | 등록 → 가게 선택 | O |
@@ -89,24 +107,22 @@
 | PATCH | /qna/:num | { qna(T), key } (qna 테이블에서 변경하고 싶은 컬럼만 추가하면 됨. user_id는 필수로 들어가야함) | true or ERROR | 문의하기 수정 | O |
 | DELETE | /qna/:num | { user_id, key } | true or ERROR | 문의하기 삭제 | O |
 
-### 개발할 때만  쓰는 API
+## 관리자 API 목록
 
-| Method | Endpoint | Request body | When to use |
-| --- | --- | --- | --- |
-| GET | /user |  | 전체 유저 가져옴 |
-| GET | /user/:user_id |  | user_id에 맞는 유저 가져옴 |
-| DELETE | /user/:user_id | { key } | user_id에 맞는 유저 삭제 |
-| GET | /userlog |  | user_log테이블 데이터 전부 가져옴 |
-| GET | /userlog/:user_id |  | user_id에 맞는 로그 가져옴 |
-| DELETE | /userlog/:user_id | { key } | user_id에 맞는 로그 삭제 |
-| GET | /store |  | 등록된 store 전부 가져옴 |
-| POST | /store | { store(T), key } | store 등록 |
-| DELETE | /store/:store_id | { key } | store_id에 맞는 store 삭제 |
-| GET | /pay/:user_id |  | 모든 pay테이블에서 user_id에 맞는 정보 가져옴 |
-| POST | /pay | { pay(T), key } | pay 등록 |
-| DELETE | /pay/:user_id | { pay, key } | Requesy body의 pay에 맞는 테이블에서 user_id 와 같은 데이터 삭제 |
+| Method | Endpoint | Request body | header | Return | When to use | 구현 현황 |
+| --- | --- | --- | --- | --- | --- | --- |
+| POST | /admin/login | { admin_id, password } |  | JWT | 관리자 로그인 | O |
+| POST | /admin/signup | { admin_id, password, role } | Authorization : Bearer JWT | true or ERROR | 관리자 등록 | O |
+| POST | /terms | { personal_date, service_date } | Authorization : Bearer JWT | true or ERROR | 약관 날짜 등록 | O |
+| GET | /terms |  | Authorization : Bearer JWT | { terms(T)[ ] } | 약관 날짜 전부 가져오기 | O |
+| GET | /terms/:num |  | Authorization : Bearer JWT | { terms(T) }  | 특정 약관 날짜 가져오기 | O |
+| PATCH | /terms/:num | { terms(T) } ( terms(T) 중 수정하고 싶은 컬럼만 넣으면 됨 ) | Authorization : Bearer JWT | true or ERROR | 특정 약관 날짜 수정 | O |
+| DELETE | /terms/:num |  | Authorization : Bearer JWT | true or ERROR | 특정 약관 날짜 삭제 | O |
+| POST | /notice | { title, content, category1, category2 } | Authorization : Bearer JWT | true or ERROR | 글 등록 | O |
+| PATCH | /notice/:num | { notice(T) } ( notice(T) 중 수정하고 싶은 컬럼만 넣으면 됨 ) | Authorization : Bearer JWT | true or ERROR | 특정 글 수정 | O |
+| DELETE | /notice/:num |  | Authorization : Bearer JWT | true or ERROR | 특정 글 삭제 | O |
 
-### API 전달 값
+## API 전달 값
 
 | 이름 | 설명 | 예시 |
 | --- | --- | --- |
@@ -136,24 +152,9 @@ ex) { user(T), key } = { user_id, os, birth, pays, key } |
 | qna[ ] | category,answer_check,page 조건에 맞는 qna(T) | qna : [ {"num": 6,"user_id": "11","category": "edit","title":"문의사항입니다3", "content": "답변부탁드려요","write_date": "2022-09-13 08:24:35","answer_check": 1,"email": "tlqhrm@naver.com", "os": "android" } …] |
 | 나머지  | DB 컬럼의 이름에 맞는 값 |  |
 
-## 관리자 API
-
-| Method | Endpoint | Request body | header | Return | When to use | 구현 현황 |
-| --- | --- | --- | --- | --- | --- | --- |
-| POST | /admin/login | { admin_id, password } |  | JWT | 관리자 로그인 | O |
-| POST | /admin/signup | { admin_id, password, role } | Authorization : Bearer JWT | true or ERROR | 관리자 등록 | O |
-| POST | /terms | { personal_date, service_date } | Authorization : Bearer JWT | true or ERROR | 약관 날짜 등록 | O |
-| GET | /terms |  | Authorization : Bearer JWT | { terms(T)[ ] } | 약관 날짜 전부 가져오기 | O |
-| GET | /terms/:num |  | Authorization : Bearer JWT | { terms(T) }  | 특정 약관 날짜 가져오기 | O |
-| PATCH | /terms/:num | { terms(T) } ( terms(T) 중 수정하고 싶은 컬럼만 넣으면 됨 ) | Authorization : Bearer JWT | true or ERROR | 특정 약관 날짜 수정 | O |
-| DELETE | /terms/:num |  | Authorization : Bearer JWT | true or ERROR | 특정 약관 날짜 삭제 | O |
-| POST | /notice | { title, content, category1, category2 } | Authorization : Bearer JWT | true or ERROR | 글 등록 | O |
-| PATCH | /notice/:num | { notice(T) } ( notice(T) 중 수정하고 싶은 컬럼만 넣으면 됨 ) | Authorization : Bearer JWT | true or ERROR | 특정 글 수정 | O |
-| DELETE | /notice/:num |  | Authorization : Bearer JWT | true or ERROR | 특정 글 삭제 | O |
-
 ## DB 구성
 
-![Tapplace - ERD.png](Tapplace%20API%20v1%201%20c0fd668530054f399017c32a0f5ee75a/Tapplace_-_ERD.png)
+![Tapplace - ERD.png](Tapplace%20API%20v1%201%201%20c0fd668530054f399017c32a0f5ee75a/Tapplace_-_ERD.png)
 
 ### store 테이블
 

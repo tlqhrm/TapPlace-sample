@@ -47,7 +47,6 @@
     "mariadb": "^3.0.1",
     "mysql2": "^2.3.3",
     "nest-winston": "^1.7.0",
-    "oracledb": "^5.4.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.3",

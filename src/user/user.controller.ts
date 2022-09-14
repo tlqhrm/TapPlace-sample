@@ -34,19 +34,23 @@ export class UserController {
     return this.userService.updateUserPays(updateUserPaysDto);
   }
 
-  //개발시에만 쓰는 REST API
-  @Get()
-  getAllUser() {
-    return this.userService.getAllUser();
+  @Patch('drop')
+  dropUser(@Body('user_id') user_id: string, @keyCheck(keyPipe) key) {
+    return this.userService.dropUser(user_id);
   }
 
   @Get(':id')
   getUser(@Param('id') id: string) {
     return this.userService.getUser(id);
   }
+  //개발시에만 쓰는 REST API
+  // @Get()
+  // getAllUser() {
+  //   return this.userService.getAllUser();
+  // }
 
-  @Delete(':id')
-  deleteUser(@Param('id') id: string, @keyCheck(keyPipe) key) {
-    return this.userService.deleteUser(id);
-  }
+  // @Delete(':id')
+  // deleteUser(@Param('id') id: string, @keyCheck(keyPipe) key) {
+  //   return this.userService.deleteUser(id);
+  // }
 }

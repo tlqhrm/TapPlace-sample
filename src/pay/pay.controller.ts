@@ -48,25 +48,25 @@ export class PayController {
 
   //dev
 
-  @Post()
-  async createPay(
-    @Body() createPayDto: CreatePayDto,
-    @keyCheck(keyPipe) key,
-  ): Promise<boolean> {
-    return await this.payService.createPay(createPayDto);
-  }
+  // @Post()
+  // async createPay(
+  //   @Body() createPayDto: CreatePayDto,
+  //   @keyCheck(keyPipe) key,
+  // ): Promise<boolean> {
+  //   return await this.payService.createPay(createPayDto);
+  // }
 
-  @Get(':id')
-  getPaysbyId(@Param('id') id: string) {
-    return this.payService.getPaysById(id);
-  }
+  // @Get(':id')
+  // getPaysbyId(@Param('id') id: string) {
+  //   return this.payService.getPaysById(id);
+  // }
 
-  @Delete(':id')
-  deletePay(
-    @Param('id') id: string,
-    @Body('pay') pay: string,
-    @keyCheck(keyPipe) key,
-  ) {
-    return this.payService.deletePay(id, pay);
-  }
+  // @Delete(':id')
+  // deletePay(
+  //   @Param('id') id: string,
+  //   @Body('pay') pay: string,
+  //   @keyCheck(keyPipe) key,
+  // ) {
+  //   return this.payService.deletePay(id, pay);
+  // }
 }

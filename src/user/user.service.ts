@@ -8,11 +8,17 @@ export class UserService {
   constructor(private userMapper: UserMapper) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<boolean> {
-    return await this.userMapper.createUser(createUserDto);
+    const result = await this.userMapper.createUser(createUserDto);
+    if (!result) await this.userMapper.updateUser(createUserDto);
+    return true;
   }
 
   async updateUserPays(updateUserPaysDto: UpdateUserPaysDto) {
     return await this.userMapper.updateUserPays(updateUserPaysDto);
+  }
+
+  async dropUser(user_id) {
+    return await this.userMapper.dropUser(user_id);
   }
 
   //dev

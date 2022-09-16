@@ -35,9 +35,23 @@ export class NoticeMapper {
     const result = {
       notice: [],
     };
+    // result['notice'] = await this.noticeRepository
+    //   .createQueryBuilder()
+    //   .select(`SQL_CALC_FOUND_ROWS *`)
+    //   .where(`category1 = '${ct1}'`)
+    //   .andWhere(`category2 LIKE '${ct2}'`)
+    //   .limit(10)
+    //   .offset(startCount)
+    //   .getRawMany();
+    // return await Object.assign(
+    //   await this.noticeRepository
+    //     .createQueryBuilder('notice')
+    //     .select('FOUND_ROWS() as totalCount')
+    //     .getRawOne(),
+    //   result,
     result['notice'] = await this.noticeRepository
       .createQueryBuilder()
-      .select(`SQL_CALC_FOUND_ROWS *`)
+      .select(`*`)
       .where(`category1 = '${ct1}'`)
       .andWhere(`category2 LIKE '${ct2}'`)
       .limit(10)
@@ -46,7 +60,9 @@ export class NoticeMapper {
     return await Object.assign(
       await this.noticeRepository
         .createQueryBuilder('notice')
-        .select('FOUND_ROWS() as totalCount')
+        .select('count(*) as totalCount')
+        .where(`category1 = '${ct1}'`)
+        .andWhere(`category2 LIKE '${ct2}'`)
         .getRawOne(),
       result,
     );

@@ -22,20 +22,20 @@ import { Store } from 'src/entities/store.entity';
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
-  //주변찾기
-  @HttpCode(200)
-  @Post('/around')
-  async aroundStore(@Body() aroundStoreDto: AroundStoreDto) {
-    return await this.storeService.aroundStore(aroundStoreDto);
+  @Get()
+  async findAll(): Promise<Store[]> {
+    return await this.storeService.findAll();
   }
   @Get(':store_id')
   async fineOne(@Param('store_id') store_id: string) {
     return await this.storeService.getStoreById(store_id);
   }
-  @Get()
-  async findAll(): Promise<Store[]> {
-    return await this.storeService.findAll();
+
+  @Post('around')
+  async aroundStore(@Body() aroundStoreDto: AroundStoreDto) {
+    return await this.storeService.aroundStore(aroundStoreDto);
   }
+
   //dev
   // @Post()
   // async create(@Body() createStoreDto: CreateStoreDto, @keyCheck(keyPipe) key) {

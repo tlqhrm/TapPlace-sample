@@ -37,7 +37,7 @@ export class QnaMapper {
     const result = {};
     result['qna'] = await this.qnaRepository
       .createQueryBuilder()
-      .select(`SQL_CALC_FOUND_ROWS *`)
+      .select(`*`)
       .where(`(category = ${ct})`)
       .andWhere(`(answer_check = ${asnwer_check})`)
       .orderBy('num', 'DESC')
@@ -47,7 +47,9 @@ export class QnaMapper {
     return await Object.assign(
       await this.qnaRepository
         .createQueryBuilder('notice')
-        .select('FOUND_ROWS() as totalCount')
+        .select('count(*) as totalCount')
+        .where(`(category = ${ct})`)
+        .andWhere(`(answer_check = ${asnwer_check})`)
         .getRawOne(),
       result,
     );

@@ -15,6 +15,10 @@ export class FeedbackDto {
   @IsArray()
   user_feedback;
 
+  @IsNotEmpty()
+  @IsString()
+  user_id: string;
+
   @Allow()
   key: string;
 }

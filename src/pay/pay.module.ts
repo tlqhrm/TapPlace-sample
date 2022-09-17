@@ -21,9 +21,11 @@ import { googleVisaRepository } from 'src/repositories/pays/google_visa.reposito
 import { googleMasterRepository } from 'src/repositories/pays/google_master.repository';
 import { googleMaestroRepository } from 'src/repositories/pays/google_maestro.repository';
 import { tossRepository } from 'src/repositories/pays/toss.repository';
+import { FeedbackCountService } from 'src/feedback_count/feedback_count.service';
+import { FeedbackCountModule } from 'src/feedback_count/feedback_count.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, FeedbackCountModule],
   controllers: [PayController],
   providers: [
     PayService,

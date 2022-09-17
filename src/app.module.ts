@@ -5,7 +5,6 @@ import { DatabaseModule } from './database/database.module';
 import { StoreModule } from './store/store.module';
 import { UserModule } from './user/user.module';
 import { PayModule } from './pay/pay.module';
-import { PaylistModule } from './paylist/paylist.module';
 import { UserlogModule } from './userlog/userlog.module';
 import { WinstonModule } from 'nest-winston';
 import winston from 'winston';
@@ -15,6 +14,7 @@ import { NoticeModule } from './notice/notice.module';
 import { TermsModule } from './terms/terms.module';
 import { AdminModule } from './admin/admin.module';
 import { QnaModule } from './qna/qna.module';
+import { FeedbackCountModule } from './feedback_count/feedback_count.module';
 
 @Module({
   imports: [
@@ -50,13 +50,13 @@ import { QnaModule } from './qna/qna.module';
     DatabaseModule,
     UserModule,
     PayModule,
-    PaylistModule,
     StoreModule,
     UserlogModule,
     NoticeModule,
     TermsModule,
     AdminModule,
     QnaModule,
+    FeedbackCountModule,
   ],
   controllers: [],
   providers: [Logger],

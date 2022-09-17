@@ -9,5 +9,6 @@ import { DatabaseModule } from 'src/database/database.module';
   imports: [DatabaseModule],
   controllers: [UserController],
   providers: [UserService, ...userRepository, UserMapper],
+  exports: [...userRepository, UserMapper],
 })
 export class UserModule {}

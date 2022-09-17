@@ -17,18 +17,18 @@ export class UserlogController {
   }
 
   //개발시에만 쓰는 REST API
-  @Get()
-  getAllUser() {
-    return this.userlogService.getAllUserLog();
-  }
+  // @Get()
+  // getAllUser() {
+  //   return this.userlogService.getAllUserLog();
+  // }
 
-  @Get(':id')
-  getUser(@Param('id') id: string) {
-    return this.userlogService.getUserLog(id);
-  }
+  // @Get(':id')
+  // getUser(@Param('id') id: string) {
+  //   return this.userlogService.getUserLog(id);
+  // }
 
-  @Delete(':id')
-  deleteUser(@Param('id') id: string, @keyCheck(keyPipe) key) {
-    return this.userlogService.deleteUserLog(id);
-  }
+  // @Delete(':id')
+  // deleteUser(@Param('id') id: string, @keyCheck(keyPipe) key) {
+  //   return this.userlogService.deleteUserLog(id);
+  // }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { FeedbackCountService } from 'src/feedback_count/feedback_count.service';
 import { StoreMapper } from 'src/store/store.mapper';
 import { CreatePayDto } from './dto/create-pay.dto';
 import { FeedbackDto } from './dto/feedbackdto';
@@ -8,7 +9,11 @@ import { PayMapper } from './pay.mapper';
 
 @Injectable()
 export class PayService {
-  constructor(private payMapper: PayMapper, private storeMapper: StoreMapper) {}
+  constructor(
+    private payMapper: PayMapper,
+    private storeMapper: StoreMapper,
+    private readonly fbcService: FeedbackCountService,
+  ) {}
 
   //store_id에 에 맞는 존재하는 pay들 exist까지 담아서 전달
   async getPays(getPaysDto: GetPaysDto | GetPaysCehckDto, check: boolean) {
@@ -54,10 +59,13 @@ export class PayService {
 
   //피드백
   async feedBack(feedbackDto: FeedbackDto): Promise<any> {
-    const { store_id, user_feedback } = feedbackDto;
+    const { store_id, user_feedback, user_id } = feedbackDto;
+    console.log(user_id);
     const result = {
       feedback_result: [],
+      remain_count: 0,
     };
+    result['remain_count'] = await this.fbcService.increseCount(user_id);
 
     for (const feedback of user_feedback) {
       const { pay, exist } = feedback;

@@ -1,4 +1,4 @@
-# Tapplace API v1.1.1
+# Tapplace API v1.1.2
 
 ### API 주소
 

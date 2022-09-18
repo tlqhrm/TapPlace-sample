@@ -6,9 +6,10 @@ import { UserLogMapper } from './userlog.mapper';
 import { DatabaseModule } from 'src/database/database.module';
 import { termsRepository } from 'src/repositories/terms.repository';
 import { TermsMapper } from 'src/terms/terms.mapper';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, UserModule],
   controllers: [UserlogController],
   providers: [
     UserlogService,

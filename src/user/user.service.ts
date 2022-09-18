@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserPaysDto } from './dto/updatePay-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserMapper } from './user.mapper';
 
 @Injectable()
@@ -9,12 +9,15 @@ export class UserService {
 
   async createUser(createUserDto: CreateUserDto): Promise<boolean> {
     const result = await this.userMapper.createUser(createUserDto);
-    if (!result) await this.userMapper.updateUser(createUserDto);
+    if (!result) {
+      const { user_id } = createUserDto;
+      await this.userMapper.updateUser(createUserDto, user_id);
+    }
     return true;
   }
 
-  async updateUserPays(updateUserPaysDto: UpdateUserPaysDto) {
-    return await this.userMapper.updateUserPays(updateUserPaysDto);
+  async updateUser(updateUserDto: UpdateUserDto, user_id) {
+    return await this.userMapper.updateUser(updateUserDto, user_id);
   }
 
   async dropUser(user_id) {

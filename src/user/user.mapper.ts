@@ -10,7 +10,16 @@ export class UserMapper {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<boolean> {
-    const { user_id, os, birth, sex, pays } = createUserDto;
+    const {
+      user_id,
+      os,
+      birth,
+      sex,
+      pays,
+      personal_date,
+      service_date,
+      token,
+    } = createUserDto;
 
     const user = this.userRepository.create({
       user_id,
@@ -18,6 +27,9 @@ export class UserMapper {
       birth,
       sex,
       pays,
+      personal_date,
+      service_date,
+      token,
     });
 
     try {
@@ -27,6 +39,7 @@ export class UserMapper {
         return false;
         // throw new HttpException(`user_id : ${user_id} is existed`, 409);
       } else {
+        console.log(error);
         throw new HttpException(`Unkown error please contact the manager`, 500);
       }
     }
@@ -34,27 +47,26 @@ export class UserMapper {
     return true;
   }
 
-  async updateUserPays(userDto) {
-    const { user_id, pays } = userDto;
-    const result = await this.userRepository
-      .createQueryBuilder('user')
-      .update()
-      .set({ pays })
-      .where('user_id = :user_id', { user_id: user_id })
-      .execute();
+  // async updateUserPays(userDto) {
+  //   const { user_id, pays } = userDto;
+  //   const result = await this.userRepository
+  //     .createQueryBuilder('user')
+  //     .update()
+  //     .set({ pays })
+  //     .where('user_id = :user_id', { user_id: user_id })
+  //     .execute();
 
-    return true;
-  }
+  //   return true;
+  // }
 
-  async updateUser(updateUserDto) {
-    const { user_id } = updateUserDto;
+  async updateUser(updateUserDto, user_id) {
     const set = {};
     for (const element in updateUserDto) {
       if (element === 'user_id') continue;
       if (element === 'key') continue;
-      // console.log(updateUserDto[element]);
       if (updateUserDto[element] != null) set[element] = updateUserDto[element];
     }
+
     const result = await this.userRepository
       .createQueryBuilder('user')
       .update()

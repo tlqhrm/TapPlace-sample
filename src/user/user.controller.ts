@@ -26,12 +26,13 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
-  @Patch('pays')
-  updateUserPapys(
-    @Body() updateUserPaysDto: UpdateUserPaysDto,
+  @Patch(':user_id')
+  updateUser(
+    @Body() updateUserDto: UpdateUserDto,
+    @Param('user_id') user_id: string,
     @keyCheck(keyPipe) key,
   ) {
-    return this.userService.updateUserPays(updateUserPaysDto);
+    return this.userService.updateUser(updateUserDto, user_id);
   }
 
   @Patch('drop')
@@ -39,10 +40,10 @@ export class UserController {
     return this.userService.dropUser(user_id);
   }
 
-  @Get(':id')
-  getUser(@Param('id') id: string) {
-    return this.userService.getUser(id);
-  }
+  // @Get(':id')
+  // getUser(@Param('id') id: string) {
+  //   return this.userService.getUser(id);
+  // }
   //개발시에만 쓰는 REST API
   // @Get()
   // getAllUser() {

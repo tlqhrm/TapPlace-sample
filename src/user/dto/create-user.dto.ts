@@ -1,4 +1,10 @@
-import { Allow, IsArray, IsNotEmpty, IsString } from 'class-validator';
+import {
+  Allow,
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -9,10 +15,12 @@ export class CreateUserDto {
   @IsString()
   os: string;
 
+  @IsOptional()
   @IsNotEmpty()
   @IsString()
   birth: string;
 
+  @IsOptional()
   @IsNotEmpty()
   @IsString()
   sex: string;
@@ -23,4 +31,17 @@ export class CreateUserDto {
 
   @Allow()
   key: string;
+
+  @IsNotEmpty()
+  @IsString()
+  personal_date: string;
+
+  @IsNotEmpty()
+  @IsString()
+  service_date: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  token: string;
 }

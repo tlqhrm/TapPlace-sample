@@ -15,6 +15,8 @@ import { TermsModule } from './terms/terms.module';
 import { AdminModule } from './admin/admin.module';
 import { QnaModule } from './qna/qna.module';
 import { FeedbackCountModule } from './feedback_count/feedback_count.module';
+import { FeedbackModule } from './feedback/feedback.module';
+import { BookmarkModule } from './bookmark/bookmark.module';
 
 @Module({
   imports: [
@@ -57,6 +59,8 @@ import { FeedbackCountModule } from './feedback_count/feedback_count.module';
     AdminModule,
     QnaModule,
     FeedbackCountModule,
+    FeedbackModule,
+    BookmarkModule,
   ],
   controllers: [],
   providers: [Logger],

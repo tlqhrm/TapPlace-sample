@@ -36,6 +36,16 @@ export class StoreController {
     return await this.storeService.aroundStore(aroundStoreDto);
   }
 
+  // @Post('around2')
+  // async aroundStore2(@Body() aroundStoreDto: AroundStoreDto) {
+  //   return await this.storeService.aroundStore2(aroundStoreDto);
+  // }
+
+  // @Post('around2')
+  // async aroundStore3(@Body() aroundStoreDto: AroundStoreDto) {
+  //   return await this.storeService.aroundStore2(aroundStoreDto);
+  // }
+
   //dev
   // @Post()
   // async create(@Body() createStoreDto: CreateStoreDto, @keyCheck(keyPipe) key) {

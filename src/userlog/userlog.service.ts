@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { TermsMapper } from 'src/terms/terms.mapper';
 import { UserMapper } from 'src/user/user.mapper';
 import { CreateUserlogDto } from './dto/create-userlog.dto';
@@ -14,12 +14,13 @@ export class UserlogService {
 
   async createUserLog(createUserlogDto: CreateUserlogDto) {
     const { user_id } = createUserlogDto;
+    const user = await this.userMapper.getUser(user_id);
+    if (!user) new HttpException('존재하지 않는 유저', 400);
     const result = {
       personal_date: true,
       service_date: true,
     };
     await this.userLogMapper.createUserLog(createUserlogDto);
-    const user = await this.userMapper.getUser(user_id);
     const terms = await this.termsMapper.findLast();
     if (user['personal_date'] !== terms['personal_date'])
       result['personal_date'] = false;

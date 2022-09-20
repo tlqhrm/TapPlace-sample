@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Allow, IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateBookmarkDto {
+export class DeleteBookmarkDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({

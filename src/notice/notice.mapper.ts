@@ -54,7 +54,7 @@ export class NoticeMapper {
       .select(`*`)
       .where(`category1 = '${ct1}'`)
       .andWhere(`category2 LIKE '${ct2}'`)
-      .limit(10)
+      .limit(viewCount)
       .offset(startCount)
       .getRawMany();
     return await Object.assign(

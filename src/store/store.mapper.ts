@@ -23,7 +23,7 @@ export class StoreMapper {
       )
       .having(`distance <= ${distance}`)
       .orderBy('distance')
-      .limit(100)
+      .limit(300)
       .getRawMany();
 
     return stores;
@@ -72,6 +72,20 @@ export class StoreMapper {
       store_id: store_id,
     });
     return found;
+  }
+
+  async getStoreById2(store_ids: string[]): Promise<Store[]> {
+    let where = '';
+    for (let i = 0; i < store_ids.length; i++) {
+      if (i === 0) where += `'${store_ids[i]}'`;
+      else where += `,'${store_ids[i]}'`;
+    }
+    // for(let store_id of store_ids) where
+    return await this.storeRepository
+      .createQueryBuilder()
+      .select('*')
+      .where(`store_id in (${where})`)
+      .getRawMany();
   }
 
   async findAll(): Promise<Store[]> {

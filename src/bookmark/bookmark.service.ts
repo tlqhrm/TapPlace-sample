@@ -1,26 +1,57 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
+import { StoreMapper } from 'src/store/store.mapper';
+import { BookmarkMapper } from './bookmark.mapper';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
+import { DeleteBookmarkDto } from './dto/delete-bookmark.dto';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
 
 @Injectable()
 export class BookmarkService {
-  create(createBookmarkDto: CreateBookmarkDto) {
-    return 'This action adds a new bookmark';
+  constructor(
+    private bookmarkMapper: BookmarkMapper,
+    private storeMapper: StoreMapper,
+  ) {}
+
+  async create(createBookmarkDto: CreateBookmarkDto) {
+    const { user_id } = createBookmarkDto;
+    const bookmarkLimit = 60;
+    const count = await this.bookmarkMapper.getBookmarkCount(user_id);
+    if (count['count'] > bookmarkLimit)
+      throw new HttpException(`북마크 ${bookmarkLimit}개를 초과.`, 409);
+
+    return this.bookmarkMapper.createBookmark(createBookmarkDto);
   }
 
-  findAll() {
-    return `This action returns all bookmark`;
+  async findById(user_id: string, page) {
+    const viewCount = 20;
+    const startCount = (page - 1) * viewCount;
+    const result = {
+      totalCount: 0,
+      isEnd: false,
+      bookmarks: [],
+    };
+    const totalCount = await this.bookmarkMapper.getBookmarkCount(user_id);
+    result['totalCount'] = totalCount['count'];
+    const stores = await this.bookmarkMapper.getBookmarksById(
+      user_id,
+      page,
+      viewCount,
+      startCount,
+    );
+    if (totalCount['count'] - viewCount * page <= 0) result['isEnd'] = true;
+    if (!stores.length) return result;
+    const store_ids = [];
+    for (const store of stores) {
+      store_ids.push(store['store_id']);
+    }
+    result['bookmarks'] = await this.storeMapper.getStoreById2(store_ids);
+
+    return result;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bookmark`;
-  }
-
-  update(id: number, updateBookmarkDto: UpdateBookmarkDto) {
-    return `This action updates a #${id} bookmark`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} bookmark`;
+  async remove(deleteBookmarkDto: DeleteBookmarkDto) {
+    const result = await this.bookmarkMapper.removeBookmark(deleteBookmarkDto);
+    if (!result['affected']) throw new HttpException('해당 북마크 없음', 409);
+    return result;
   }
 }

@@ -46,6 +46,14 @@ export class PayController {
     return await this.payService.feedBack(feedbackDto);
   }
 
+  // @Patch('feedback2')
+  // async feedback2(
+  //   @Body() feedbackDto: FeedbackDto,
+  //   @keyCheck(keyPipe) key,
+  // ): Promise<any[]> {
+  //   return await this.payService.feedBack2(feedbackDto);
+  // }
+
   //dev
 
   // @Post()

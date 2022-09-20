@@ -9,7 +9,7 @@ export class resetCount1663480489410 implements MigrationInterface {
                 STARTS '2022-09-18 23:59:59'
                 COMMENT 'feedback_count 삭제'
                 DO
-                TRUNCATE TABLE dev.feedback_count`,
+                TRUNCATE TABLE feedback_count`,
     );
   }
 

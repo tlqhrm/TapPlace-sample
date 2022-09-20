@@ -30,6 +30,12 @@ export class bookmark1663481544436 implements MigrationInterface {
             default: `left(NOW(),19)`,
           },
         ],
+        indices: [
+          {
+            name: 'idx',
+            columnNames: ['user_id'],
+          },
+        ],
       }),
       true,
     );

@@ -23,6 +23,7 @@ import { googleMaestroRepository } from 'src/repositories/pays/google_maestro.re
 import { tossRepository } from 'src/repositories/pays/toss.repository';
 import { FeedbackCountService } from 'src/feedback_count/feedback_count.service';
 import { FeedbackCountModule } from 'src/feedback_count/feedback_count.module';
+import { payRepository } from 'src/repositories/pay.repository';
 
 @Module({
   imports: [DatabaseModule, FeedbackCountModule],
@@ -48,6 +49,7 @@ import { FeedbackCountModule } from 'src/feedback_count/feedback_count.module';
     ...tossRepository,
     StoreMapper,
     ...storeRepository,
+    ...payRepository,
   ],
   exports: [PayMapper],
 })

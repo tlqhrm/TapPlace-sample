@@ -2,10 +2,10 @@ import { Pay } from 'src/entities/pay.entity';
 import { AppleJcb } from 'src/entities/pays/apple_jcb.entity';
 import { DataSource } from 'typeorm';
 
-export const appleJCBRepository = [
+export const payRepository = [
   {
-    provide: 'APPLE_JCB_REPOSITORY',
-    useFactory: (dataSource: DataSource) => dataSource.getRepository(AppleJcb),
+    provide: 'PAY_REPOSITORY',
+    useFactory: (dataSource: DataSource) => dataSource.getRepository(Pay),
     inject: ['DATA_SOURCE'],
   },
 ];

@@ -32,6 +32,8 @@ export class QnaService {
       viewCount,
       startCount,
     );
+
+    return result;
   }
 
   async updateQna(num: number, updateQnaDto: UpdateQnaDto) {

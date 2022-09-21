@@ -14,7 +14,24 @@ export class QnaService {
     if (ct === 'all') ct = `'qna' OR category = 'edit'`;
     else ct = `'${ct}'`;
     if (answer_check === 'all') answer_check = 'true OR answer_check = false';
-    return await this.qnaMapper.findQna(ct, answer_check, page);
+
+    const viewCount = 20;
+    const startCount = (page - 1) * viewCount;
+    const result = {
+      total_count: 0,
+      isEnd: false,
+      qna: null,
+    };
+    const totalCount = await this.qnaMapper.getTotalCount(ct, answer_check);
+    console.log(totalCount);
+    result['total_count'] = totalCount['count'];
+    if (totalCount['count'] - viewCount * page <= 0) result['isEnd'] = true;
+    result['qna'] = await this.qnaMapper.findQna(
+      ct,
+      answer_check,
+      viewCount,
+      startCount,
+    );
   }
 
   async updateQna(num: number, updateQnaDto: UpdateQnaDto) {

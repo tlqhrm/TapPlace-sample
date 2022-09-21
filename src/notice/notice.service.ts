@@ -12,8 +12,24 @@ export class NoticeService {
   }
 
   async findNotice(ct1, ct2, page) {
+    const viewCount = 20;
+    const startCount = (page - 1) * viewCount;
     if (ct2 === 'all') ct2 = '%%';
-    return await this.noticeMapper.findNotice(ct1, ct2, page);
+    const result = {
+      total_count: 0,
+      isEnd: false,
+      notice: null,
+    };
+    const totalCount = await this.noticeMapper.getTotalCount(ct1, ct2);
+    result['total_count'] = totalCount['count'];
+    if (totalCount['count'] - viewCount * page <= 0) result['isEnd'] = true;
+    result['notice'] = await this.noticeMapper.findNotice(
+      ct1,
+      ct2,
+      viewCount,
+      startCount,
+    );
+    return result;
   }
 
   async updateNotice(num: number, updateNoticeDto: UpdateNoticeDto) {

@@ -7,6 +7,10 @@ import {
   Param,
   Delete,
   HttpException,
+  HttpCode,
+  HttpStatus,
+  InternalServerErrorException,
+  Res,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -39,7 +43,9 @@ export class BookmarkController {
   })
   @Post()
   create(@Body() createBookmarkDto: CreateBookmarkDto, @keyCheck(keyPipe) key) {
-    return this.bookmarkService.create(createBookmarkDto);
+    this.bookmarkService.create(createBookmarkDto);
+
+    throw new HttpException('ok', 200);
   }
 
   @ApiTags('bookmark')
@@ -79,7 +85,12 @@ export class BookmarkController {
   }
 
   @Delete()
-  remove(@Body() deleteBookmarkDto: DeleteBookmarkDto, @keyCheck(keyPipe) key) {
-    return this.bookmarkService.remove(deleteBookmarkDto);
+  async remove(
+    @Body() deleteBookmarkDto: DeleteBookmarkDto,
+    @keyCheck(keyPipe) key,
+  ) {
+    await this.bookmarkService.remove(deleteBookmarkDto);
+
+    throw new HttpException('ok', 200);
   }
 }

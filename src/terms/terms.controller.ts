@@ -16,26 +16,28 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { adminPipe } from 'src/auth/auth.pipe';
 
 @Controller('terms')
-@UseGuards(AuthGuard())
 export class TermsController {
   constructor(private readonly termsService: TermsService) {}
 
   @Post()
+  @UseGuards(AuthGuard())
   create(@Body() createTermDto: CreateTermDto, @GetUser(adminPipe) admin) {
     return this.termsService.create(createTermDto);
   }
 
   @Get()
-  findAll(@GetUser(adminPipe) admin) {
-    return this.termsService.findAll();
+  findAll() {
+    return this.termsService.findLast();
   }
 
   @Get(':num')
+  @UseGuards(AuthGuard())
   findOne(@Param('num') num: number, @GetUser(adminPipe) admin) {
     return this.termsService.findOne(num);
   }
 
   @Patch(':num')
+  @UseGuards(AuthGuard())
   update(
     @Param('num') num: number,
     @Body() updateTermDto: UpdateTermDto,
@@ -45,6 +47,7 @@ export class TermsController {
   }
 
   @Delete(':num')
+  @UseGuards(AuthGuard())
   remove(@Param('num') num: number, @GetUser(adminPipe) admin) {
     return this.termsService.remove(num);
   }

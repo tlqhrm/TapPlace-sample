@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  Logger,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,25 +21,30 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  createUser(
+  async createUser(
     @Body() createUserDto: CreateUserDto,
     @keyCheck(keyPipe) key,
   ): Promise<boolean> {
-    return this.userService.createUser(createUserDto);
+    await this.userService.createUser(createUserDto);
+
+    throw new HttpException('ok', 200);
+  }
+
+  @Patch('drop')
+  async dropUser(@Body('user_id') user_id: string, @keyCheck(keyPipe) key) {
+    await this.userService.dropUser(user_id);
+    throw new HttpException('ok', 200);
   }
 
   @Patch(':user_id')
-  updateUser(
+  async updateUser(
     @Body() updateUserDto: UpdateUserDto,
     @Param('user_id') user_id: string,
     @keyCheck(keyPipe) key,
   ) {
-    return this.userService.updateUser(updateUserDto, user_id);
-  }
+    await this.userService.updateUser(updateUserDto, user_id);
 
-  @Patch('drop')
-  dropUser(@Body('user_id') user_id: string, @keyCheck(keyPipe) key) {
-    return this.userService.dropUser(user_id);
+    throw new HttpException('ok', 200);
   }
 
   // @Get(':id')

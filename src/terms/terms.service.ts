@@ -17,7 +17,9 @@ export class TermsService {
     result['terms'] = await this.termsMapper.findAllTerms();
     return result;
   }
-
+  async findLast() {
+    return await this.termsMapper.findLast();
+  }
   async findOne(num: number) {
     const result = await this.termsMapper.findOne(num);
 

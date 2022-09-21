@@ -29,43 +29,28 @@ export class NoticeMapper {
     return true;
   }
 
-  async findNotice(ct1, ct2, page) {
-    const viewCount = 10;
-    const startCount = (page - 1) * viewCount;
+  async findNotice(ct1, ct2, viewCount, startCount) {
     const result = {
       notice: [],
     };
-    // result['notice'] = await this.noticeRepository
-    //   .createQueryBuilder()
-    //   .select(`SQL_CALC_FOUND_ROWS *`)
-    //   .where(`category1 = '${ct1}'`)
-    //   .andWhere(`category2 LIKE '${ct2}'`)
-    //   .limit(10)
-    //   .offset(startCount)
-    //   .getRawMany();
-    // return await Object.assign(
-    //   await this.noticeRepository
-    //     .createQueryBuilder('notice')
-    //     .select('FOUND_ROWS() as totalCount')
-    //     .getRawOne(),
-    //   result,
     result['notice'] = await this.noticeRepository
       .createQueryBuilder()
       .select(`*`)
       .where(`category1 = '${ct1}'`)
       .andWhere(`category2 LIKE '${ct2}'`)
+      .orderBy('num', 'DESC')
       .limit(viewCount)
       .offset(startCount)
       .getRawMany();
-    return await Object.assign(
-      await this.noticeRepository
-        .createQueryBuilder('notice')
-        .select('count(*) as totalCount')
-        .where(`category1 = '${ct1}'`)
-        .andWhere(`category2 LIKE '${ct2}'`)
-        .getRawOne(),
-      result,
-    );
+    return result;
+  }
+  async getTotalCount(ct1, ct2) {
+    return await this.noticeRepository
+      .createQueryBuilder('notice')
+      .select('count(*) as count')
+      .where(`category1 = '${ct1}'`)
+      .andWhere(`category2 LIKE '${ct2}'`)
+      .getRawOne();
   }
 
   async updateNotice(num, updateNoticeDto) {

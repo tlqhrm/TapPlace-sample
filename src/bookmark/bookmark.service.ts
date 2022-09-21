@@ -23,18 +23,17 @@ export class BookmarkService {
   }
 
   async findById(user_id: string, page) {
-    const viewCount = 20;
+    const viewCount = 2;
     const startCount = (page - 1) * viewCount;
     const result = {
-      totalCount: 0,
+      total_count: 0,
       isEnd: false,
       bookmarks: [],
     };
     const totalCount = await this.bookmarkMapper.getBookmarkCount(user_id);
-    result['totalCount'] = totalCount['count'];
+    result['total_count'] = totalCount['count'];
     const stores = await this.bookmarkMapper.getBookmarksById(
       user_id,
-      page,
       viewCount,
       startCount,
     );
@@ -51,6 +50,7 @@ export class BookmarkService {
 
   async remove(deleteBookmarkDto: DeleteBookmarkDto) {
     const result = await this.bookmarkMapper.removeBookmark(deleteBookmarkDto);
+    console.log(result);
     if (!result['affected']) throw new HttpException('해당 북마크 없음', 409);
     return result;
   }

@@ -1,9 +1,13 @@
 import { Injectable, HttpException } from '@nestjs/common';
+import { BookmarkMapper } from 'src/bookmark/bookmark.mapper';
+import { Bookmark } from 'src/entities/bookmark.entity';
+import { FeedbackMapper } from 'src/feedback/feedback.mapper';
 import { FeedbackCountService } from 'src/feedback_count/feedback_count.service';
 import { StoreMapper } from 'src/store/store.mapper';
 import { CreatePayDto } from './dto/create-pay.dto';
 import { FeedbackDto } from './dto/feedbackdto';
 import { GetPaysCehckDto } from './dto/get-pays-check.dto';
+import { GetPaysMoreDto } from './dto/get-pays-more.dto';
 import { GetPaysDto } from './dto/get-pays.dto';
 import { PayMapper } from './pay.mapper';
 
@@ -13,22 +17,32 @@ export class PayService {
     private payMapper: PayMapper,
     private storeMapper: StoreMapper,
     private readonly fbcService: FeedbackCountService,
+    private feedbackMapper: FeedbackMapper,
+    private bookmarkMapper: BookmarkMapper,
   ) {}
 
   //store_id에 에 맞는 존재하는 pay들 exist까지 담아서 전달
   async getPays(getPaysDto: GetPaysDto | GetPaysCehckDto, check: boolean) {
-    const { store_id, pays } = getPaysDto;
+    const { store_id, pays, user_id } = getPaysDto;
     let result = {};
     if (!check) {
       result = await this.storeMapper.getStoreById(store_id);
       if (!result) throw new HttpException('존재하지 않는 store_id', 400);
     }
     result['feedback'] = [];
-    return await this.getPaysFeedback(store_id, pays, result);
+    result = await this.getPaysFeedback(store_id, pays, result);
+    const isBookmark = await this.bookmarkMapper.checkBookmark(
+      user_id,
+      store_id,
+    );
+    isBookmark['count'] === '0'
+      ? (result['isBookmark'] = false)
+      : (result['isBookmark'] = true);
+    return result;
   }
 
-  async getPaysMore(getPaysDto: GetPaysDto | GetPaysCehckDto) {
-    const { store_id, pays } = getPaysDto;
+  async getPaysMore(GetPaysMoreDto: GetPaysMoreDto | GetPaysCehckDto) {
+    const { store_id, pays } = GetPaysMoreDto;
 
     const result = {
       feedback: [],
@@ -179,19 +193,6 @@ export class PayService {
         pay: pay,
       });
     }
-    // console.log(diff, temp);
-    // for await (const what_pay of pays) {
-    //   const pay = await this.payMapper.getPay2(store_id, what_pay);
-    //   if (pay) {
-    //     pay['exist'] = true;
-    //     result['feedback'].push(pay);
-    //   } else {
-    //     result['feedback'].push({
-    //       exist: false,
-    //       pay: what_pay,
-    //     });
-    //   }
-    // }
     return result;
   }
 
@@ -230,7 +231,10 @@ export class PayService {
           last_state: last_state,
         });
       }
+      console.log(user_feedback);
     }
-    return result;
+
+    await this.feedbackMapper.createFeedback(user_id, store_id, user_feedback);
+    return true;
   }
 }

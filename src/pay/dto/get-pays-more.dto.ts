@@ -1,6 +1,6 @@
 import { Allow, IsArray, IsNotEmpty, IsString } from 'class-validator';
 
-export class GetPaysDto {
+export class GetPaysMoreDto {
   @IsNotEmpty()
   @IsString()
   store_id: string;
@@ -8,10 +8,4 @@ export class GetPaysDto {
   @IsNotEmpty()
   @IsArray()
   pays: string[];
-
-  @IsNotEmpty()
-  @IsString()
-  user_id: string;
-  // @Allow()
-  // key: string;
 }

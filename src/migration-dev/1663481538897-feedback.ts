@@ -34,6 +34,12 @@ export class feedback1663481538897 implements MigrationInterface {
             default: `left(NOW(),19)`,
           },
         ],
+        indices: [
+          {
+            name: 'idx',
+            columnNames: ['user_id', 'store_id'],
+          },
+        ],
       }),
       true,
     );

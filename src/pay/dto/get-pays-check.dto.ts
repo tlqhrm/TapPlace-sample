@@ -34,6 +34,10 @@ export class GetPaysCehckDto {
   @IsArray()
   pays: string[];
 
+  @IsNotEmpty()
+  @IsString()
+  user_id: string;
+
   // @Allow()
   // key: string;
 }

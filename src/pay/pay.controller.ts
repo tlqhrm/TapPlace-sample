@@ -16,6 +16,7 @@ import { keyCheck } from 'src/auth/keyCheck-decorators';
 import { keyPipe } from 'src/auth/keyPipes';
 import { FeedbackDto } from './dto/feedbackdto';
 import { GetPaysCehckDto } from './dto/get-pays-check.dto';
+import { GetPaysMoreDto } from './dto/get-pays-more.dto';
 
 @Controller('pay')
 export class PayController {
@@ -28,8 +29,8 @@ export class PayController {
   }
 
   @Post('/list/more')
-  async getPaysMore(@Body() getPaysDto: GetPaysDto) {
-    return await this.payService.getPaysMore(getPaysDto);
+  async getPaysMore(@Body() GetPaysMoreDto: GetPaysMoreDto) {
+    return await this.payService.getPaysMore(GetPaysMoreDto);
   }
 
   @HttpCode(200)
@@ -43,7 +44,9 @@ export class PayController {
     @Body() feedbackDto: FeedbackDto,
     @keyCheck(keyPipe) key,
   ): Promise<any[]> {
-    return await this.payService.feedBack(feedbackDto);
+    await this.payService.feedBack(feedbackDto);
+
+    throw new HttpException('ok', 200);
   }
 
   // @Patch('feedback2')

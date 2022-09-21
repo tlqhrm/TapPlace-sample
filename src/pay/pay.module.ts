@@ -24,9 +24,12 @@ import { tossRepository } from 'src/repositories/pays/toss.repository';
 import { FeedbackCountService } from 'src/feedback_count/feedback_count.service';
 import { FeedbackCountModule } from 'src/feedback_count/feedback_count.module';
 import { payRepository } from 'src/repositories/pay.repository';
+import { FeedbackModule } from 'src/feedback/feedback.module';
+import { BookmarkMapper } from 'src/bookmark/bookmark.mapper';
+import { bookmarkRepository } from 'src/repositories/bookmark.repository';
 
 @Module({
-  imports: [DatabaseModule, FeedbackCountModule],
+  imports: [DatabaseModule, FeedbackCountModule, FeedbackModule],
   controllers: [PayController],
   providers: [
     PayService,
@@ -50,6 +53,8 @@ import { payRepository } from 'src/repositories/pay.repository';
     StoreMapper,
     ...storeRepository,
     ...payRepository,
+    BookmarkMapper,
+    ...bookmarkRepository,
   ],
   exports: [PayMapper],
 })

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  HttpException,
 } from '@nestjs/common';
 import { QnaService } from './qna.service';
 import { CreateQnaDto } from './dto/create-qna.dto';
@@ -22,8 +23,10 @@ export class QnaController {
   constructor(private readonly qnaService: QnaService) {}
 
   @Post()
-  create(@Body() createQnaDto: CreateQnaDto, @keyCheck(keyPipe) key) {
-    return this.qnaService.createQna(createQnaDto);
+  async create(@Body() createQnaDto: CreateQnaDto, @keyCheck(keyPipe) key) {
+    await this.qnaService.createQna(createQnaDto);
+
+    throw new HttpException('ok', 200);
   }
 
   @Get(':category/:answer_check/:page')
@@ -36,16 +39,20 @@ export class QnaController {
   }
 
   @Patch(':num')
-  update(
+  async update(
     @Param('num') num: number,
     @Body() updateQnaDto: UpdateQnaDto,
     @keyCheck(keyPipe) key,
   ) {
-    return this.qnaService.updateQna(num, updateQnaDto);
+    await this.qnaService.updateQna(num, updateQnaDto);
+
+    throw new HttpException('ok', 200);
   }
 
   @Delete(':num')
-  delete(@Param('num') num: number, @Body('user_id') user_id: string) {
-    return this.qnaService.deleteQna(num, user_id);
+  async delete(@Param('num') num: number, @Body('user_id') user_id: string) {
+    await this.qnaService.deleteQna(num, user_id);
+
+    throw new HttpException('ok', 200);
   }
 }

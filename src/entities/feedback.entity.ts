@@ -15,5 +15,5 @@ export class Feedback {
   date: string;
 
   @Column({ type: 'varchar' })
-  feedback: object[];
+  feedback: string;
 }

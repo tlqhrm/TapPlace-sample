@@ -19,11 +19,12 @@ export class BookmarkMapper {
     return true;
   }
 
-  async getBookmarksById(user_id: string, page, viewCount, startCount) {
+  async getBookmarksById(user_id: string, viewCount, startCount) {
     return await this.bookmarkRepository
       .createQueryBuilder()
       .select('store_id')
       .where(`user_id = '${user_id}'`)
+      .orderBy('num', 'DESC')
       .limit(viewCount)
       .offset(startCount)
       .getRawMany();
@@ -37,15 +38,22 @@ export class BookmarkMapper {
       .getRawOne();
   }
 
+  async checkBookmark(user_id, store_id) {
+    const result = await this.bookmarkRepository
+      .createQueryBuilder()
+      .select('count(*) as count')
+      .where(`user_id = '${user_id}' and store_id = '${store_id}'`)
+      .getRawOne();
+    return result;
+  }
+
   async removeBookmark(deleteBookmarkDto: DeleteBookmarkDto) {
     const { user_id, store_id } = deleteBookmarkDto;
 
-    await this.bookmarkRepository
+    return await this.bookmarkRepository
       .createQueryBuilder()
       .delete()
       .where(`user_id = '${user_id}' and store_id = '${store_id}'`)
       .execute();
-
-    return true;
   }
 }

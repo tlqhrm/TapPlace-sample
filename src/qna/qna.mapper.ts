@@ -31,28 +31,27 @@ export class QnaMapper {
     return true;
   }
 
-  async findQna(ct, asnwer_check, page) {
-    const viewCount = 10;
-    const startCount = (page - 1) * viewCount;
+  async findQna(ct, answer_check, viewCount, startCount) {
     const result = {};
     result['qna'] = await this.qnaRepository
       .createQueryBuilder()
       .select(`*`)
       .where(`(category = ${ct})`)
-      .andWhere(`(answer_check = ${asnwer_check})`)
+      .andWhere(`(answer_check = ${answer_check})`)
       .orderBy('num', 'DESC')
-      .limit(10)
+      .limit(viewCount)
       .offset(startCount)
       .getRawMany();
-    return await Object.assign(
-      await this.qnaRepository
-        .createQueryBuilder('notice')
-        .select('count(*) as totalCount')
-        .where(`(category = ${ct})`)
-        .andWhere(`(answer_check = ${asnwer_check})`)
-        .getRawOne(),
-      result,
-    );
+    return result;
+  }
+
+  async getTotalCount(ct, answer_check) {
+    return await this.qnaRepository
+      .createQueryBuilder()
+      .select('count(*) as count')
+      .where(`(category = ${ct})`)
+      .andWhere(`(answer_check = ${answer_check})`)
+      .getRawOne();
   }
 
   async updateQna(num, updateQnaDto) {

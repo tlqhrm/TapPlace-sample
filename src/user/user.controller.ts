@@ -15,6 +15,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateUserPaysDto } from './dto/updatePay-user.dto';
 import { keyCheck } from 'src/auth/keyCheck-decorators';
 import { keyPipe } from 'src/auth/keyPipes';
+import { UpdateMarketingDto } from './dto/update-marketing.dto';
 
 @Controller('user')
 export class UserController {
@@ -33,6 +34,15 @@ export class UserController {
   @Patch('drop')
   async dropUser(@Body('user_id') user_id: string, @keyCheck(keyPipe) key) {
     await this.userService.dropUser(user_id);
+    throw new HttpException('ok', 200);
+  }
+
+  @Patch('marketing')
+  async updateMarketing(
+    @Body() updateMarketingDto: UpdateMarketingDto,
+    @keyCheck(keyPipe) key,
+  ) {
+    await this.userService.updateMarketing(updateMarketingDto);
     throw new HttpException('ok', 200);
   }
 

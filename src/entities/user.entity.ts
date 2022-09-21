@@ -28,4 +28,10 @@ export class User {
 
   @Column({ type: 'varchar', length: 40 })
   service_date: string;
+
+  @Column({ type: 'varchar', length: 40 })
+  marketing_date: string;
+
+  @Column({ type: 'boolean' })
+  marketing_agree: boolean;
 }

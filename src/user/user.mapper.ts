@@ -16,24 +16,29 @@ export class UserMapper {
       birth,
       sex,
       pays,
+      marketing_agree,
       personal_date,
       service_date,
       token,
     } = createUserDto;
 
-    const user = this.userRepository.create({
-      user_id,
-      os,
-      birth,
-      sex,
-      pays,
-      personal_date,
-      service_date,
-      token,
-    });
-
     try {
-      await this.userRepository.save(user);
+      const user = this.userRepository
+        .createQueryBuilder()
+        .insert()
+        .values({
+          user_id,
+          os,
+          birth,
+          sex,
+          pays,
+          marketing_date: () => `left(NOW(),19)`,
+          marketing_agree,
+          personal_date,
+          service_date,
+          token,
+        })
+        .execute();
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         return false;
@@ -71,6 +76,21 @@ export class UserMapper {
       .createQueryBuilder('user')
       .update()
       .set(set)
+      .where('user_id = :user_id', { user_id: user_id })
+      .execute();
+
+    return true;
+  }
+
+  async updateMarketing(updateMarketingDto) {
+    const { user_id, marketing_agree } = updateMarketingDto;
+    const result = await this.userRepository
+      .createQueryBuilder('user')
+      .update()
+      .set({
+        marketing_date: () => `left(NOW(),19)`,
+        marketing_agree: marketing_agree,
+      })
       .where('user_id = :user_id', { user_id: user_id })
       .execute();
 

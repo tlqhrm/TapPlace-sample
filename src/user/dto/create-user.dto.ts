@@ -1,6 +1,7 @@
 import {
   Allow,
   IsArray,
+  IsBoolean,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -31,6 +32,10 @@ export class CreateUserDto {
 
   @Allow()
   key: string;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  marketing_agree: boolean;
 
   @IsNotEmpty()
   @IsString()

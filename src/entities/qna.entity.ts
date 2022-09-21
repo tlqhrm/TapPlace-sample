@@ -32,5 +32,5 @@ export class Qna {
   os: string;
 
   @Column({ type: 'bool', default: false })
-  answer_check: string;
+  answer_check: boolean;
 }

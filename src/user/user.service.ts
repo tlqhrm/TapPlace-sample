@@ -24,6 +24,9 @@ export class UserService {
     return await this.userMapper.dropUser(user_id);
   }
 
+  async updateMarketing(updateMarketingDto) {
+    return await this.userMapper.updateMarketing(updateMarketingDto);
+  }
   //dev
   async getAllUser() {
     return await this.userMapper.getAllUser();

@@ -27,6 +27,8 @@ import { payRepository } from 'src/repositories/pay.repository';
 import { FeedbackModule } from 'src/feedback/feedback.module';
 import { BookmarkMapper } from 'src/bookmark/bookmark.mapper';
 import { bookmarkRepository } from 'src/repositories/bookmark.repository';
+import { UserMapper } from 'src/user/user.mapper';
+import { userRepository } from 'src/repositories/user.repository';
 
 @Module({
   imports: [DatabaseModule, FeedbackCountModule, FeedbackModule],
@@ -34,27 +36,29 @@ import { bookmarkRepository } from 'src/repositories/bookmark.repository';
   providers: [
     PayService,
     PayMapper,
-    ...appleMasterRepository,
-    ...appleVisaRepository,
-    ...appleJCBRepository,
-    ...paycoRepository,
-    ...kakaoPayRepository,
-    ...naverPayRepository,
-    ...zeropayRepository,
-    ...conlessVisaRepository,
-    ...conlessMasterRepository,
-    ...conlessAmexRepository,
-    ...conlessUnionRepository,
-    ...conlessJcbRepository,
-    ...googleVisaRepository,
-    ...googleMasterRepository,
-    ...googleMaestroRepository,
-    ...tossRepository,
+    // ...appleMasterRepository,
+    // ...appleVisaRepository,
+    // ...appleJCBRepository,
+    // ...paycoRepository,
+    // ...kakaoPayRepository,
+    // ...naverPayRepository,
+    // ...zeropayRepository,
+    // ...conlessVisaRepository,
+    // ...conlessMasterRepository,
+    // ...conlessAmexRepository,
+    // ...conlessUnionRepository,
+    // ...conlessJcbRepository,
+    // ...googleVisaRepository,
+    // ...googleMasterRepository,
+    // ...googleMaestroRepository,
+    // ...tossRepository,
     StoreMapper,
     ...storeRepository,
     ...payRepository,
     BookmarkMapper,
     ...bookmarkRepository,
+    UserMapper,
+    ...userRepository,
   ],
   exports: [PayMapper],
 })

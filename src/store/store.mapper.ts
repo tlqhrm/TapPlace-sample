@@ -100,4 +100,13 @@ export class StoreMapper {
       store_id: id,
     });
   }
+
+  async getCountById(store_id: string): Promise<Store> {
+    const found = await this.storeRepository
+      .createQueryBuilder()
+      .select('count(*) as count')
+      .where(`store_id = '${store_id}'`)
+      .getRawOne();
+    return found;
+  }
 }

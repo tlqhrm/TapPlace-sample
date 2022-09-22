@@ -4,6 +4,7 @@ import { Bookmark } from 'src/entities/bookmark.entity';
 import { FeedbackMapper } from 'src/feedback/feedback.mapper';
 import { FeedbackCountService } from 'src/feedback_count/feedback_count.service';
 import { StoreMapper } from 'src/store/store.mapper';
+import { UserMapper } from 'src/user/user.mapper';
 import { CreatePayDto } from './dto/create-pay.dto';
 import { FeedbackDto } from './dto/feedbackdto';
 import { GetPaysCehckDto } from './dto/get-pays-check.dto';
@@ -19,6 +20,7 @@ export class PayService {
     private readonly fbcService: FeedbackCountService,
     private feedbackMapper: FeedbackMapper,
     private bookmarkMapper: BookmarkMapper,
+    private userMapper: UserMapper,
   ) {}
 
   //store_id에 에 맞는 존재하는 pay들 exist까지 담아서 전달
@@ -202,6 +204,14 @@ export class PayService {
       feedback_result: [],
       remain_count: 0,
     };
+    const user = await this.userMapper.getCountById(user_id);
+    if (user['count'] === '0') {
+      throw new HttpException('존재하지 않는 유저', 404);
+    }
+    const store = await this.storeMapper.getCountById(store_id);
+    if (store['count'] === '0') {
+      throw new HttpException('존재하지 않는 스토어', 404);
+    }
     result['remain_count'] = await this.fbcService.increseCount(user_id);
 
     for (const feedback of user_feedback) {

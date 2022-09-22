@@ -129,4 +129,12 @@ export class UserMapper {
       user_id: id,
     });
   }
+
+  async getCountById(user_id: string) {
+    return await this.userRepository
+      .createQueryBuilder()
+      .select('count(*) as count')
+      .where(`user_id = '${user_id}'`)
+      .getRawOne();
+  }
 }

@@ -1,21 +1,21 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { Pay } from 'src/entities/pay.entity';
-import { AppleJcb } from 'src/entities/pays/apple_jcb.entity';
-import { AppleMaster } from 'src/entities/pays/apple_master.entity';
-import { AppleVisa } from 'src/entities/pays/apple_visa.entity';
-import { ConlessAmex } from 'src/entities/pays/conless_amex.entity';
-import { ConlessJcb } from 'src/entities/pays/conless_jcb.entity';
-import { ConlessMaster } from 'src/entities/pays/conless_master.entity';
-import { ConlessUnion } from 'src/entities/pays/conless_union.entity';
-import { ConlessVisa } from 'src/entities/pays/conless_visa.entity';
-import { GoogleMaestro } from 'src/entities/pays/google_maestreo.entity';
-import { GoogleMaster } from 'src/entities/pays/google_master.entity';
-import { GoogleVisa } from 'src/entities/pays/google_visa.entity';
-import { Kakaopay } from 'src/entities/pays/kakaopay.entity';
-import { Naverpay } from 'src/entities/pays/naverpay.entity';
-import { Payco } from 'src/entities/pays/pacyco.entity';
-import { Toss } from 'src/entities/pays/toss.entity';
-import { Zeropay } from 'src/entities/pays/zeropay.entity';
+// import { AppleJcb } from 'src/entities/pays/apple_jcb.entity';
+// import { AppleMaster } from 'src/entities/pays/apple_master.entity';
+// import { AppleVisa } from 'src/entities/pays/apple_visa.entity';
+// import { ConlessAmex } from 'src/entities/pays/conless_amex.entity';
+// import { ConlessJcb } from 'src/entities/pays/conless_jcb.entity';
+// import { ConlessMaster } from 'src/entities/pays/conless_master.entity';
+// import { ConlessUnion } from 'src/entities/pays/conless_union.entity';
+// import { ConlessVisa } from 'src/entities/pays/conless_visa.entity';
+// import { GoogleMaestro } from 'src/entities/pays/google_maestreo.entity';
+// import { GoogleMaster } from 'src/entities/pays/google_master.entity';
+// import { GoogleVisa } from 'src/entities/pays/google_visa.entity';
+// import { Kakaopay } from 'src/entities/pays/kakaopay.entity';
+// import { Naverpay } from 'src/entities/pays/naverpay.entity';
+// import { Payco } from 'src/entities/pays/pacyco.entity';
+// import { Toss } from 'src/entities/pays/toss.entity';
+// import { Zeropay } from 'src/entities/pays/zeropay.entity';
 import { Repository } from 'typeorm';
 import { CreatePayDto } from './dto/create-pay.dto';
 import { FeedbackDto } from './dto/feedbackdto';
@@ -23,38 +23,38 @@ import { FeedbackDto } from './dto/feedbackdto';
 @Injectable()
 export class PayMapper {
   constructor(
-    @Inject('APPLE_VISA_REPOSITORY')
-    private apple_visaRepository: Repository<AppleVisa>,
-    @Inject('APPLE_MASTER_REPOSITORY')
-    private apple_masterRepository: Repository<AppleMaster>,
-    @Inject('APPLE_JCB_REPOSITORY')
-    private apple_jcbRepository: Repository<AppleJcb>,
-    @Inject('KAKAOPAY_REPOSITORY')
-    private kakaopayRepository: Repository<Kakaopay>,
-    @Inject('NAVERPAY_REPOSITORY')
-    private naverpayRepository: Repository<Naverpay>,
-    @Inject('PAYCO_REPOSITORY')
-    private paycoRepository: Repository<Payco>,
-    @Inject('ZEROPAY_REPOSITORY')
-    private zeropayRepository: Repository<Zeropay>,
-    @Inject('CONLESS_VISA_REPOSITORY')
-    private conless_visaRepository: Repository<ConlessVisa>,
-    @Inject('CONLESS_MASTER_REPOSITORY')
-    private conless_masterRepository: Repository<ConlessMaster>,
-    @Inject('CONLESS_AMEX_REPOSITORY')
-    private conless_amexRepository: Repository<ConlessAmex>,
-    @Inject('CONLESS_UNION_REPOSITORY')
-    private conless_unionRepository: Repository<ConlessUnion>,
-    @Inject('CONLESS_JCB_REPOSITORY')
-    private conless_jcbRepository: Repository<ConlessJcb>,
-    @Inject('GOOGLE_VISA_REPOSITORY')
-    private google_visaRepository: Repository<GoogleVisa>,
-    @Inject('GOOGLE_MASTER_REPOSITORY')
-    private google_masterRepository: Repository<GoogleMaster>,
-    @Inject('GOOGLE_MAESTRO_REPOSITORY')
-    private google_maestroRepository: Repository<GoogleMaestro>,
-    @Inject('TOSS_REPOSITORY')
-    private tossRepository: Repository<Toss>,
+    // @Inject('APPLE_VISA_REPOSITORY')
+    // private apple_visaRepository: Repository<AppleVisa>,
+    // @Inject('APPLE_MASTER_REPOSITORY')
+    // private apple_masterRepository: Repository<AppleMaster>,
+    // @Inject('APPLE_JCB_REPOSITORY')
+    // private apple_jcbRepository: Repository<AppleJcb>,
+    // @Inject('KAKAOPAY_REPOSITORY')
+    // private kakaopayRepository: Repository<Kakaopay>,
+    // @Inject('NAVERPAY_REPOSITORY')
+    // private naverpayRepository: Repository<Naverpay>,
+    // @Inject('PAYCO_REPOSITORY')
+    // private paycoRepository: Repository<Payco>,
+    // @Inject('ZEROPAY_REPOSITORY')
+    // private zeropayRepository: Repository<Zeropay>,
+    // @Inject('CONLESS_VISA_REPOSITORY')
+    // private conless_visaRepository: Repository<ConlessVisa>,
+    // @Inject('CONLESS_MASTER_REPOSITORY')
+    // private conless_masterRepository: Repository<ConlessMaster>,
+    // @Inject('CONLESS_AMEX_REPOSITORY')
+    // private conless_amexRepository: Repository<ConlessAmex>,
+    // @Inject('CONLESS_UNION_REPOSITORY')
+    // private conless_unionRepository: Repository<ConlessUnion>,
+    // @Inject('CONLESS_JCB_REPOSITORY')
+    // private conless_jcbRepository: Repository<ConlessJcb>,
+    // @Inject('GOOGLE_VISA_REPOSITORY')
+    // private google_visaRepository: Repository<GoogleVisa>,
+    // @Inject('GOOGLE_MASTER_REPOSITORY')
+    // private google_masterRepository: Repository<GoogleMaster>,
+    // @Inject('GOOGLE_MAESTRO_REPOSITORY')
+    // private google_maestroRepository: Repository<GoogleMaestro>,
+    // @Inject('TOSS_REPOSITORY')
+    // private tossRepository: Repository<Toss>,
     @Inject('PAY_REPOSITORY')
     private payRepository: Repository<Pay>,
   ) {}

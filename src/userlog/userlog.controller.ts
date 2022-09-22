@@ -9,11 +9,11 @@ export class UserlogController {
   constructor(private readonly userlogService: UserlogService) {}
 
   @Post()
-  createUserLog(
+  async createUserLog(
     @Body() createUserlogDto: CreateUserlogDto,
     @keyCheck(keyPipe) key,
   ) {
-    return this.userlogService.createUserLog(createUserlogDto);
+    return await this.userlogService.createUserLog(createUserlogDto);
   }
 
   //개발시에만 쓰는 REST API

@@ -42,8 +42,11 @@ export class BookmarkController {
     description: 'asdasd',
   })
   @Post()
-  create(@Body() createBookmarkDto: CreateBookmarkDto, @keyCheck(keyPipe) key) {
-    this.bookmarkService.create(createBookmarkDto);
+  async create(
+    @Body() createBookmarkDto: CreateBookmarkDto,
+    @keyCheck(keyPipe) key,
+  ) {
+    await this.bookmarkService.create(createBookmarkDto);
 
     throw new HttpException('ok', 200);
   }

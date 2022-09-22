@@ -18,6 +18,10 @@ export class BookmarkService {
   async create(createBookmarkDto: CreateBookmarkDto) {
     const { user_id, store_id } = createBookmarkDto;
     const bookmarkLimit = 60;
+    const check = await this.bookmarkMapper.checkBookmark(user_id, store_id);
+    if (check['count'] !== '0') {
+      throw new HttpException(`이미 등록된 스토어`, 409);
+    }
     const count = await this.bookmarkMapper.getBookmarkCount(user_id);
     if (count['count'] > bookmarkLimit) {
       throw new HttpException(`북마크 ${bookmarkLimit}개를 초과.`, 409);

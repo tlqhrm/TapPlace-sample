@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Get, Delete, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Delete,
+  Param,
+  HttpCode,
+} from '@nestjs/common';
 import { UserlogService } from './userlog.service';
 import { CreateUserlogDto } from './dto/create-userlog.dto';
 import { keyCheck } from 'src/auth/keyCheck-decorators';
@@ -8,6 +16,7 @@ import { keyPipe } from 'src/auth/keyPipes';
 export class UserlogController {
   constructor(private readonly userlogService: UserlogService) {}
 
+  @HttpCode(200)
   @Post()
   async createUserLog(
     @Body() createUserlogDto: CreateUserlogDto,

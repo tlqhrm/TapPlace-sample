@@ -15,7 +15,7 @@ export class UserlogService {
   async createUserLog(createUserlogDto: CreateUserlogDto) {
     const { user_id } = createUserlogDto;
     const user = await this.userMapper.getUser(user_id);
-    if (!user) new HttpException('존재하지 않는 유저', 400);
+    if (!user) throw new HttpException('존재하지 않는 유저', 404);
     const result = {
       personal_date: true,
       service_date: true,

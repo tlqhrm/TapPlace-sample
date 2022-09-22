@@ -27,7 +27,7 @@ export class PayController {
   async getPays(@Body() getPaysDto: GetPaysDto) {
     return await this.payService.getPays(getPaysDto, false);
   }
-
+  @HttpCode(200)
   @Post('/list/more')
   async getPaysMore(@Body() GetPaysMoreDto: GetPaysMoreDto) {
     return await this.payService.getPaysMore(GetPaysMoreDto);
@@ -44,9 +44,7 @@ export class PayController {
     @Body() feedbackDto: FeedbackDto,
     @keyCheck(keyPipe) key,
   ): Promise<any[]> {
-    await this.payService.feedBack(feedbackDto);
-
-    throw new HttpException('ok', 200);
+    return await this.payService.feedBack(feedbackDto);
   }
 
   // @Patch('feedback2')

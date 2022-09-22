@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { BookmarkMapper } from 'src/bookmark/bookmark.mapper';
 import { Store } from 'src/entities/store.entity';
 import { PayMapper } from 'src/pay/pay.mapper';
 import { AroundStoreDto } from './dto/around-store';
@@ -8,7 +9,11 @@ import { StoreMapper } from './store.mapper';
 
 @Injectable()
 export class StoreService {
-  constructor(private storeMapper: StoreMapper, private payMapper: PayMapper) {}
+  constructor(
+    private storeMapper: StoreMapper,
+    private payMapper: PayMapper,
+    private bookmarkMapper: BookmarkMapper,
+  ) {}
 
   // (구) 주변찾기
   // async aroundStore(aroundStoreDto: AroundStoreDto) {
@@ -98,14 +103,21 @@ export class StoreService {
 
   async aroundStore(aroundStoreDto: AroundStoreDto) {
     // 전달받은 pay 배열
-    const { pays } = aroundStoreDto;
+    const { pays, user_id } = aroundStoreDto;
     // 주변 가게 먼저 가져옴
     const stores = await this.storeMapper.aroundStore(aroundStoreDto);
-    console.log(stores.length);
     // 해당 가게 stores 값 + pay 추가해서 리턴할 배열
     const result = {
       stores: [],
     };
+    let bookmarkStores;
+    const isBookmark = {};
+    if (user_id !== '') {
+      bookmarkStores = await this.bookmarkMapper.getStoreIds(user_id, stores);
+      for (const bookmarkStore of bookmarkStores) {
+        isBookmark[bookmarkStore['store_id']] = true;
+      }
+    }
 
     for await (const store of stores) {
       // pays 중에 존재하는 pay만 담을 배열
@@ -117,6 +129,10 @@ export class StoreService {
       // 해당 store에 pays 가있어야만 리턴
       if (paysResult.length) {
         store['pays'] = paysResult;
+        if (user_id !== '') {
+          if (isBookmark[store['store_id']]) store['isBookmark'] = true;
+          else store['isBookmark'] = false;
+        }
         result['stores'].push(store);
       }
     }

@@ -7,11 +7,20 @@ import { DatabaseModule } from 'src/database/database.module';
 import { PayModule } from 'src/pay/pay.module';
 import { PayMapper } from 'src/pay/pay.mapper';
 import { payRepository } from 'src/repositories/pay.repository';
+import { BookmarkMapper } from 'src/bookmark/bookmark.mapper';
+import { bookmarkRepository } from 'src/repositories/bookmark.repository';
 
 @Module({
   imports: [DatabaseModule, PayModule],
   controllers: [StoreController],
-  providers: [StoreService, StoreMapper, ...storeRepository, ...payRepository],
+  providers: [
+    StoreService,
+    StoreMapper,
+    ...storeRepository,
+    ...payRepository,
+    BookmarkMapper,
+    ...bookmarkRepository,
+  ],
   exports: [StoreMapper, ...storeRepository],
 })
 export class StoreModule {}

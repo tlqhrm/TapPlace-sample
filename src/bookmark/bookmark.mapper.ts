@@ -56,4 +56,23 @@ export class BookmarkMapper {
       .where(`user_id = '${user_id}' and store_id = '${store_id}'`)
       .execute();
   }
+
+  async getStoreIds(user_id, stores) {
+    let where = '';
+    for (let i = 0; i < stores.length; i++) {
+      if (i === 0) where += `store_id = '${stores[i]['store_id']}'`;
+      else where += ` or store_id = '${stores[i]['store_id']}'`;
+    }
+
+    try {
+      return await this.bookmarkRepository
+        .createQueryBuilder()
+        .select('store_id')
+        .where(`user_id = '${user_id}' and (${where})`)
+        .getRawMany();
+    } catch (error) {
+      if (error.sqlMessage) throw new HttpException(error.sqlMessage, 400);
+      throw new HttpException(`알 수 없는 오류`, 500);
+    }
+  }
 }

@@ -233,11 +233,16 @@ export class PayMapper {
       else where += ` or pay = '${pays[i]}'`;
     }
 
-    return await this.payRepository
-      .createQueryBuilder()
-      .select('pay')
-      .where(`store_id = '${store_id}' and (${where})`)
-      .getRawMany();
+    try {
+      return await this.payRepository
+        .createQueryBuilder()
+        .select('pay')
+        .where(`store_id = '${store_id}' and (${where})`)
+        .getRawMany();
+    } catch (error) {
+      if (error.sqlMessage) throw new HttpException(error.sqlMessage, 400);
+      throw new HttpException(`알 수 없는 오류`, 500);
+    }
   }
 
   async getPay3(store_id, pays) {

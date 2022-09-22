@@ -30,7 +30,7 @@ export class StoreController {
   async fineOne(@Param('store_id') store_id: string) {
     return await this.storeService.getStoreById(store_id);
   }
-
+  @HttpCode(200)
   @Post('around')
   async aroundStore(@Body() aroundStoreDto: AroundStoreDto) {
     return await this.storeService.aroundStore(aroundStoreDto);

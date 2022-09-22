@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserMapper } from './user.mapper';
@@ -11,13 +11,19 @@ export class UserService {
     const result = await this.userMapper.createUser(createUserDto);
     if (!result) {
       const { user_id } = createUserDto;
-      await this.userMapper.updateUser(createUserDto, user_id);
+      const updateResult = await this.userMapper.updateUser(
+        createUserDto,
+        user_id,
+      );
     }
     return true;
   }
 
   async updateUser(updateUserDto: UpdateUserDto, user_id) {
-    return await this.userMapper.updateUser(updateUserDto, user_id);
+    const updateResult = await this.userMapper.updateUser(
+      updateUserDto,
+      user_id,
+    );
   }
 
   async dropUser(user_id) {

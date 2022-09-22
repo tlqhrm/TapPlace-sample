@@ -1,4 +1,5 @@
 import { HttpException, Inject } from '@nestjs/common';
+import baseException from 'src/baseException';
 import { Store } from 'src/entities/store.entity';
 import { GetPaysCehckDto } from 'src/pay/dto/get-pays-check.dto';
 import { Repository } from 'typeorm';
@@ -14,17 +15,22 @@ export class StoreMapper {
   // 주변찾기 쿼리
   async aroundStore(aroundStoreDto: AroundStoreDto) {
     const { x1, y1, distance } = aroundStoreDto;
-
-    const stores = await this.storeRepository
-      .createQueryBuilder('store')
-      .select('*')
-      .addSelect(
-        `ROUND((6371*acos(cos(radians(${y1}))*cos(radians(y))*cos(radians(x) -radians(${x1}))+sin(radians(${y1}))*sin(radians(y)))),3) AS distance`,
-      )
-      .having(`distance <= ${distance}`)
-      .orderBy('distance')
-      .limit(300)
-      .getRawMany();
+    let stores;
+    try {
+      stores = await this.storeRepository
+        .createQueryBuilder('store')
+        .select('*')
+        .addSelect(
+          `ROUND((6371*acos(cos(radians(${y1}))*cos(radians(y))*cos(radians(x) -radians(${x1}))+sin(radians(${y1}))*sin(radians(y)))),3) AS distance`,
+        )
+        .having(`distance <= ${distance}`)
+        .orderBy('distance')
+        .limit(300)
+        .getRawMany();
+    } catch (error) {
+      if (error.sqlMessage) throw new HttpException(error.sqlMessage, 400);
+      throw new HttpException(`알 수 없는 오류`, 500);
+    }
 
     return stores;
   }
@@ -68,9 +74,18 @@ export class StoreMapper {
   }
 
   async getStoreById(store_id: string): Promise<Store> {
-    const found = await this.storeRepository.findOneBy({
-      store_id: store_id,
-    });
+    // let found;
+    // try {
+    //   found =
+    // } catch (error) {
+    //   if (error.sqlMessage) throw new HttpException(error.sqlMessage, 400);
+    //   throw new HttpException(`알 수 없는 오류`, 500);
+    // }
+    const found = await baseException(
+      await this.storeRepository.findOneBy({
+        store_id: store_id,
+      }),
+    );
     return found;
   }
 

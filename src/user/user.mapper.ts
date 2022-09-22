@@ -44,8 +44,8 @@ export class UserMapper {
         console.log('--------------------------');
         return false;
       } else {
-        console.log(error);
-        throw new HttpException(`Unkown error please contact the manager`, 500);
+        if (error.sqlMessage) throw new HttpException(error.sqlMessage, 400);
+        throw new HttpException(`알 수 없는 오류`, 500);
       }
     }
 
@@ -71,46 +71,64 @@ export class UserMapper {
       if (element === 'key') continue;
       if (updateUserDto[element] != null) set[element] = updateUserDto[element];
     }
+    let result;
+    try {
+      result = await this.userRepository
+        .createQueryBuilder('user')
+        .update()
+        .set(set)
+        .where('user_id = :user_id', { user_id: user_id })
+        .execute();
+    } catch (error) {
+      if (error.sqlMessage) throw new HttpException(error.sqlMessage, 400);
+      throw new HttpException(`알 수 없는 오류`, 500);
+    }
 
-    const result = await this.userRepository
-      .createQueryBuilder('user')
-      .update()
-      .set(set)
-      .where('user_id = :user_id', { user_id: user_id })
-      .execute();
-
-    return true;
+    if (!result['affected']) throw new HttpException('존재하지 않는 유저', 404);
+    return result;
   }
 
   async updateMarketing(updateMarketingDto) {
     const { user_id, marketing_agree } = updateMarketingDto;
-    const result = await this.userRepository
-      .createQueryBuilder('user')
-      .update()
-      .set({
-        marketing_date: () => `left(NOW(),19)`,
-        marketing_agree: marketing_agree,
-      })
-      .where('user_id = :user_id', { user_id: user_id })
-      .execute();
-
+    let result;
+    try {
+      result = await this.userRepository
+        .createQueryBuilder('user')
+        .update()
+        .set({
+          marketing_date: () => `left(NOW(),19)`,
+          marketing_agree: marketing_agree,
+        })
+        .where('user_id = :user_id', { user_id: user_id })
+        .execute();
+    } catch (error) {
+      if (error.sqlMessage) throw new HttpException(error.sqlMessage, 400);
+      throw new HttpException(`알 수 없는 오류`, 500);
+    }
+    if (!result['affected']) throw new HttpException('존재하지 않는 유저', 404);
     return true;
   }
 
   async dropUser(user_id) {
-    const result = await this.userRepository
-      .createQueryBuilder()
-      .update()
-      .set({
-        user_id: `deleted_${randomUUID()}`,
-        birth: '',
-        sex: '',
-      })
-      .where('user_id = :user_id', { user_id: user_id })
-      .execute();
-    console.log(result);
+    let result;
+
+    try {
+      result = await this.userRepository
+        .createQueryBuilder()
+        .update()
+        .set({
+          user_id: `deleted_${randomUUID()}`,
+          birth: '',
+          sex: '',
+        })
+        .where('user_id = :user_id', { user_id: user_id })
+        .execute();
+    } catch (error) {
+      if (error.sqlMessage) throw new HttpException(error.sqlMessage, 400);
+      throw new HttpException(`알 수 없는 오류`, 500);
+    }
     if (!result['affected'])
-      throw new HttpException('해당 아이디가 존재하지 않습니다.', 400);
+      throw new HttpException('존재하지 않는 유저.', 404);
     return true;
   }
   //dev

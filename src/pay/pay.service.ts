@@ -29,7 +29,7 @@ export class PayService {
     let result = {};
     if (!check) {
       result = await this.storeMapper.getStoreById(store_id);
-      if (!result) throw new HttpException('존재하지 않는 store_id', 400);
+      // if (!result) throw new HttpException('존재하지 않는 store_id', 400);
     }
     result['feedback'] = [];
     result = await this.getPaysFeedback(store_id, pays, result);
@@ -245,6 +245,6 @@ export class PayService {
     }
 
     await this.feedbackMapper.createFeedback(user_id, store_id, user_feedback);
-    return true;
+    return result;
   }
 }

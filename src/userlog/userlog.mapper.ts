@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, HttpException } from '@nestjs/common';
 import { UserLog } from 'src/entities/userlog.entity';
 import { Repository } from 'typeorm';
 import { CreateUserlogDto } from './dto/create-userlog.dto';
@@ -12,13 +12,18 @@ export class UserLogMapper {
   async createUserLog(createUserLogDto: CreateUserlogDto): Promise<boolean> {
     const { user_id } = createUserLogDto;
 
-    const user = await this.userLogRepository.create({
-      user_id,
-    });
+    try {
+      const result = await this.userLogRepository
+        .createQueryBuilder()
+        .insert()
+        .values({ user_id })
+        .execute();
+    } catch (error) {
+      if (error.sqlMessage) throw new HttpException(error.sqlMessage, 400);
+      throw new HttpException(`알 수 없는 오류`, 500);
+    }
 
-    const result = await this.userLogRepository.save(user);
-
-    return result ? true : false;
+    return true;
   }
 
   //dev

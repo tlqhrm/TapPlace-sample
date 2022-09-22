@@ -4,6 +4,7 @@ import {
   Allow,
   IsArray,
   IsNumber,
+  IsOptional,
 } from 'class-validator';
 
 export class AroundStoreDto {
@@ -22,6 +23,8 @@ export class AroundStoreDto {
   @IsArray()
   pays: string[];
 
+  @IsString()
+  user_id: string;
   // @Allow()
   // key: string;
 }

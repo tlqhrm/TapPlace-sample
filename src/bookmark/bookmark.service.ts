@@ -24,7 +24,7 @@ export class BookmarkService {
     }
     const count = await this.bookmarkMapper.getBookmarkCount(user_id);
     if (count['count'] > bookmarkLimit) {
-      throw new HttpException(`북마크 ${bookmarkLimit}개를 초과.`, 409);
+      throw new HttpException(`북마크 ${bookmarkLimit}개를 초과.`, 406);
     }
     const user = await this.userMapper.getCountById(user_id);
     if (user['count'] === '0') {

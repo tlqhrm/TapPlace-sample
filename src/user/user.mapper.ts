@@ -23,7 +23,7 @@ export class UserMapper {
     } = createUserDto;
 
     try {
-      const user = this.userRepository
+      const user = await this.userRepository
         .createQueryBuilder()
         .insert()
         .values({
@@ -41,8 +41,8 @@ export class UserMapper {
         .execute();
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
+        console.log('--------------------------');
         return false;
-        // throw new HttpException(`user_id : ${user_id} 는 이미존재합니다.`, 409);
       } else {
         console.log(error);
         throw new HttpException(`Unkown error please contact the manager`, 500);

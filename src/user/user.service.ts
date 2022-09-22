@@ -9,10 +9,10 @@ export class UserService {
 
   async createUser(createUserDto: CreateUserDto): Promise<boolean> {
     const result = await this.userMapper.createUser(createUserDto);
-    // if (!result) {
-    //   const { user_id } = createUserDto;
-    //   await this.userMapper.updateUser(createUserDto, user_id);
-    // }
+    if (!result) {
+      const { user_id } = createUserDto;
+      await this.userMapper.updateUser(createUserDto, user_id);
+    }
     return true;
   }
 

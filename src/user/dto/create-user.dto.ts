@@ -16,10 +16,10 @@ export class CreateUserDto {
   @IsString()
   os: string;
 
-  @Allow()
+  @IsString()
   birth: string;
 
-  @Allow()
+  @IsString()
   sex: string;
 
   @IsNotEmpty()

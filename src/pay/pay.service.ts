@@ -33,13 +33,16 @@ export class PayService {
     }
     result['feedback'] = [];
     result = await this.getPaysFeedback(store_id, pays, result);
-    const isBookmark = await this.bookmarkMapper.checkBookmark(
-      user_id,
-      store_id,
-    );
-    isBookmark['count'] === '0'
-      ? (result['isBookmark'] = false)
-      : (result['isBookmark'] = true);
+    if (user_id !== '') {
+      const isBookmark = await this.bookmarkMapper.checkBookmark(
+        user_id,
+        store_id,
+      );
+      isBookmark['count'] === '0'
+        ? (result['isBookmark'] = false)
+        : (result['isBookmark'] = true);
+    }
+
     return result;
   }
 

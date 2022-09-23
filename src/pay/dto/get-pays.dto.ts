@@ -9,7 +9,6 @@ export class GetPaysDto {
   @IsArray()
   pays: string[];
 
-  @IsNotEmpty()
   @IsString()
   user_id: string;
   // @Allow()

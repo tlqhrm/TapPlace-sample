@@ -4,12 +4,15 @@ import { FeedbackMapper } from './feedback.mapper';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
 import { UpdateFeedbackDto } from './dto/update-feedback.dto';
 import { BookmarkMapper } from 'src/bookmark/bookmark.mapper';
+import { FeedbackCount } from 'src/entities/feedback_count.entity';
+import { FeedbackCountService } from 'src/feedback_count/feedback_count.service';
 
 @Injectable()
 export class FeedbackService {
   constructor(
     private feedbackMapper: FeedbackMapper,
     private bookmarkMapper: BookmarkMapper,
+    private feedbackCountService: FeedbackCountService,
   ) {}
 
   async getFeedbacks(user_id, store_id, page) {
@@ -47,8 +50,10 @@ export class FeedbackService {
 
     const book = await this.bookmarkMapper.getBookmarkCount(user_id);
     const feed = await this.feedbackMapper.getTotalCount(user_id);
+    const remainCount = await this.feedbackCountService.remainCount(user_id);
     result['bookmark_count'] = book['count'];
     result['feedback_count'] = feed['count'];
+    result['remain_count'] = remainCount['remain_count'];
 
     return result;
   }

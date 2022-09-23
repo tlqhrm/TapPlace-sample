@@ -25,7 +25,7 @@ export class StoreMapper {
         )
         .having(`distance <= ${distance}`)
         .orderBy('distance')
-        .limit(300)
+        .limit(500)
         .getRawMany();
     } catch (error) {
       if (error.sqlMessage) throw new HttpException(error.sqlMessage, 400);

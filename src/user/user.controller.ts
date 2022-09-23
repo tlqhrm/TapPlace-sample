@@ -8,6 +8,7 @@ import {
   Delete,
   HttpException,
   Logger,
+  UseFilters,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,6 +17,7 @@ import { UpdateUserPaysDto } from './dto/updatePay-user.dto';
 import { keyCheck } from 'src/auth/keyCheck-decorators';
 import { keyPipe } from 'src/auth/keyPipes';
 import { UpdateMarketingDto } from './dto/update-marketing.dto';
+import { ExceptionHandler } from 'src/ExceptHandler';
 
 @Controller('user')
 export class UserController {

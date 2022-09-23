@@ -39,7 +39,7 @@ export class BookmarkService {
   }
 
   async findById(user_id: string, page) {
-    const viewCount = 2;
+    const viewCount = 20;
     const startCount = (page - 1) * viewCount;
     const result = {
       total_count: 0,

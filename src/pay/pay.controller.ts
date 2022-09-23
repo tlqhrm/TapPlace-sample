@@ -8,6 +8,7 @@ import {
   Delete,
   HttpException,
   HttpCode,
+  UseGuards,
 } from '@nestjs/common';
 import { PayService } from './pay.service';
 import { CreatePayDto } from './dto/create-pay.dto';
@@ -17,6 +18,9 @@ import { keyPipe } from 'src/auth/keyPipes';
 import { FeedbackDto } from './dto/feedbackdto';
 import { GetPaysCehckDto } from './dto/get-pays-check.dto';
 import { GetPaysMoreDto } from './dto/get-pays-more.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { userPipe } from 'src/auth/auth.pipe';
 
 @Controller('pay')
 export class PayController {
@@ -40,9 +44,10 @@ export class PayController {
   }
 
   @Patch('feedback')
+  @UseGuards(AuthGuard())
   async feedback(
     @Body() feedbackDto: FeedbackDto,
-    @keyCheck(keyPipe) key,
+    @GetUser(userPipe) user,
   ): Promise<any[]> {
     return await this.payService.feedBack(feedbackDto);
   }

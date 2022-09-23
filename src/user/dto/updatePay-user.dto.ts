@@ -8,7 +8,4 @@ export class UpdateUserPaysDto {
   @IsNotEmpty()
   @IsArray()
   pays: string[];
-
-  @Allow()
-  key: string;
 }

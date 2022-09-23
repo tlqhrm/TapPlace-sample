@@ -2,7 +2,8 @@ import { ArgumentMetadata, HttpException, PipeTransform } from '@nestjs/common';
 
 export class adminPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
-    if (value['role'] !== 'admin') {
+    const role = value['role'];
+    if (role !== 'admin') {
       throw new HttpException('운영자가 아닙니다', 403);
     }
   }
@@ -10,7 +11,8 @@ export class adminPipe implements PipeTransform {
 
 export class userPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
-    if (value['role'] !== 'user') {
+    const role = value['role'];
+    if (role !== 'user') {
       throw new HttpException('유저가 아닙니다.', 403);
     }
   }

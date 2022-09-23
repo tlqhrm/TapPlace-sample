@@ -6,11 +6,15 @@ import {
   Delete,
   Param,
   HttpCode,
+  UseGuards,
 } from '@nestjs/common';
 import { UserlogService } from './userlog.service';
 import { CreateUserlogDto } from './dto/create-userlog.dto';
 import { keyCheck } from 'src/auth/keyCheck-decorators';
 import { keyPipe } from 'src/auth/keyPipes';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { userPipe } from 'src/auth/auth.pipe';
 
 @Controller('userlog')
 export class UserlogController {
@@ -18,9 +22,10 @@ export class UserlogController {
 
   @HttpCode(200)
   @Post()
+  @UseGuards(AuthGuard())
   async createUserLog(
     @Body() createUserlogDto: CreateUserlogDto,
-    @keyCheck(keyPipe) key,
+    @GetUser(userPipe) user,
   ) {
     return await this.userlogService.createUserLog(createUserlogDto);
   }

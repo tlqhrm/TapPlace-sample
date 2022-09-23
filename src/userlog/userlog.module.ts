@@ -7,16 +7,12 @@ import { DatabaseModule } from 'src/database/database.module';
 import { termsRepository } from 'src/repositories/terms.repository';
 import { TermsMapper } from 'src/terms/terms.mapper';
 import { UserModule } from 'src/user/user.module';
+import { AdminModule } from 'src/admin/admin.module';
+import { TermsModule } from 'src/terms/terms.module';
 
 @Module({
-  imports: [DatabaseModule, UserModule],
+  imports: [DatabaseModule, UserModule, AdminModule, TermsModule],
   controllers: [UserlogController],
-  providers: [
-    UserlogService,
-    ...userLogRepository,
-    UserLogMapper,
-    ...termsRepository,
-    TermsMapper,
-  ],
+  providers: [UserlogService, ...userLogRepository, UserLogMapper],
 })
 export class UserlogModule {}

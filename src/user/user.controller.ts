@@ -9,6 +9,7 @@ import {
   HttpException,
   Logger,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,41 +19,47 @@ import { keyCheck } from 'src/auth/keyCheck-decorators';
 import { keyPipe } from 'src/auth/keyPipes';
 import { UpdateMarketingDto } from './dto/update-marketing.dto';
 import { ExceptionHandler } from 'src/ExceptHandler';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { userPipe } from 'src/auth/auth.pipe';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @UseGuards(AuthGuard())
   async createUser(
     @Body() createUserDto: CreateUserDto,
-    @keyCheck(keyPipe) key,
+    @GetUser(userPipe) user,
   ): Promise<boolean> {
     await this.userService.createUser(createUserDto);
-
     throw new HttpException('ok', 200);
   }
 
   @Patch('drop')
-  async dropUser(@Body('user_id') user_id: string, @keyCheck(keyPipe) key) {
+  @UseGuards(AuthGuard())
+  async dropUser(@Body('user_id') user_id: string, @GetUser(userPipe) user) {
     await this.userService.dropUser(user_id);
     throw new HttpException('ok', 200);
   }
 
   @Patch('marketing')
+  @UseGuards(AuthGuard())
   async updateMarketing(
     @Body() updateMarketingDto: UpdateMarketingDto,
-    @keyCheck(keyPipe) key,
+    @GetUser(userPipe) user,
   ) {
     await this.userService.updateMarketing(updateMarketingDto);
     throw new HttpException('ok', 200);
   }
 
   @Patch(':user_id')
+  @UseGuards(AuthGuard())
   async updateUser(
     @Body() updateUserDto: UpdateUserDto,
     @Param('user_id') user_id: string,
-    @keyCheck(keyPipe) key,
+    @GetUser(userPipe) user,
   ) {
     await this.userService.updateUser(updateUserDto, user_id);
 

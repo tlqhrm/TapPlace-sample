@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { PayService } from './pay.service';
 import { PayController } from './pay.controller';
 import { DatabaseModule } from 'src/database/database.module';
@@ -29,37 +29,23 @@ import { BookmarkMapper } from 'src/bookmark/bookmark.mapper';
 import { bookmarkRepository } from 'src/repositories/bookmark.repository';
 import { UserMapper } from 'src/user/user.mapper';
 import { userRepository } from 'src/repositories/user.repository';
+import { StoreModule } from 'src/store/store.module';
+import { UserModule } from 'src/user/user.module';
+import { BookmarkModule } from 'src/bookmark/bookmark.module';
+import { AdminModule } from 'src/admin/admin.module';
 
 @Module({
-  imports: [DatabaseModule, FeedbackCountModule, FeedbackModule],
-  controllers: [PayController],
-  providers: [
-    PayService,
-    PayMapper,
-    // ...appleMasterRepository,
-    // ...appleVisaRepository,
-    // ...appleJCBRepository,
-    // ...paycoRepository,
-    // ...kakaoPayRepository,
-    // ...naverPayRepository,
-    // ...zeropayRepository,
-    // ...conlessVisaRepository,
-    // ...conlessMasterRepository,
-    // ...conlessAmexRepository,
-    // ...conlessUnionRepository,
-    // ...conlessJcbRepository,
-    // ...googleVisaRepository,
-    // ...googleMasterRepository,
-    // ...googleMaestroRepository,
-    // ...tossRepository,
-    StoreMapper,
-    ...storeRepository,
-    ...payRepository,
-    BookmarkMapper,
-    ...bookmarkRepository,
-    UserMapper,
-    ...userRepository,
+  imports: [
+    DatabaseModule,
+    FeedbackCountModule,
+    FeedbackModule,
+    forwardRef(() => StoreModule),
+    UserModule,
+    BookmarkModule,
+    AdminModule,
   ],
-  exports: [PayMapper],
+  controllers: [PayController],
+  providers: [PayService, PayMapper, ...payRepository],
+  exports: [PayMapper, ...payRepository],
 })
 export class PayModule {}

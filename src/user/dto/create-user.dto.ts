@@ -32,9 +32,6 @@ export class CreateUserDto {
   @IsArray()
   pays: string[];
 
-  @Allow()
-  key: string;
-
   @IsNotEmpty()
   @IsBoolean()
   marketing_agree: boolean;

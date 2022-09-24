@@ -16,9 +16,16 @@ import { BookmarkModule } from 'src/bookmark/bookmark.module';
 import { UserModule } from 'src/user/user.module';
 import { Feedback } from 'src/entities/feedback.entity';
 import { FeedbackCountModule } from 'src/feedback_count/feedback_count.module';
+import { AdminModule } from 'src/admin/admin.module';
 
 @Module({
-  imports: [DatabaseModule, BookmarkModule, UserModule, FeedbackCountModule],
+  imports: [
+    DatabaseModule,
+    BookmarkModule,
+    UserModule,
+    FeedbackCountModule,
+    AdminModule,
+  ],
   controllers: [FeedbackController],
   providers: [FeedbackService, FeedbackMapper, ...feedbackRepository],
   exports: [FeedbackMapper, ...feedbackRepository],

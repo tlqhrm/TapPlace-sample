@@ -26,10 +26,10 @@ import { userPipe } from 'src/auth/auth.pipe';
 export class PayController {
   constructor(private readonly payService: PayService) {}
 
-  @Get('count')
-  async getCount() {
-    return await this.payService.getCount();
-  }
+  // @Get('count')
+  // async getCount() {
+  //   return await this.payService.getCount();
+  // }
 
   @HttpCode(200)
   @Post('/list')

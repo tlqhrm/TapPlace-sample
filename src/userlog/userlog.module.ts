@@ -9,9 +9,10 @@ import { TermsMapper } from 'src/terms/terms.mapper';
 import { UserModule } from 'src/user/user.module';
 import { AdminModule } from 'src/admin/admin.module';
 import { TermsModule } from 'src/terms/terms.module';
+import { PayModule } from 'src/pay/pay.module';
 
 @Module({
-  imports: [DatabaseModule, UserModule, AdminModule, TermsModule],
+  imports: [DatabaseModule, UserModule, AdminModule, TermsModule, PayModule],
   controllers: [UserlogController],
   providers: [UserlogService, ...userLogRepository, UserLogMapper],
 })

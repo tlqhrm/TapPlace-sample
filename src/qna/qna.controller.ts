@@ -31,7 +31,12 @@ export class QnaController {
   }
 
   @Get(':user_id/:page')
-  findQna(@Param('user_id') user_id: string, @Param('page') page: number) {
+  @UseGuards(AuthGuard())
+  findQna(
+    @Param('user_id') user_id: string,
+    @Param('page') page: number,
+    @GetUser(userPipe) user,
+  ) {
     return this.qnaService.findById(user_id, page);
   }
 

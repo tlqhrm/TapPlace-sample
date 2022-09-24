@@ -88,7 +88,12 @@ export class BookmarkController {
   //   description: 'page당 20개 표시',
   // })
   @Get(':user_id/:page')
-  findById(@Param('user_id') user_id: string, @Param('page') page: number) {
+  @UseGuards(AuthGuard())
+  findById(
+    @Param('user_id') user_id: string,
+    @Param('page') page: number,
+    @GetUser(userPipe) user,
+  ) {
     return this.bookmarkService.findById(user_id, page);
   }
 

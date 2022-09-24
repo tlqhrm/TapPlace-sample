@@ -21,7 +21,7 @@ import { UpdateMarketingDto } from './dto/update-marketing.dto';
 import { ExceptionHandler } from 'src/ExceptHandler';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
-import { userPipe } from 'src/auth/auth.pipe';
+import { adminPipe, userPipe } from 'src/auth/auth.pipe';
 
 @Controller('user')
 export class UserController {
@@ -34,6 +34,17 @@ export class UserController {
     @GetUser(userPipe) user,
   ): Promise<boolean> {
     await this.userService.createUser(createUserDto);
+    throw new HttpException('ok', 200);
+  }
+
+  @Patch()
+  @UseGuards(AuthGuard())
+  async updateUser(
+    @Body() updateUserDto: UpdateUserDto,
+    @GetUser(userPipe) user,
+  ) {
+    await this.userService.updateUser(updateUserDto);
+
     throw new HttpException('ok', 200);
   }
 
@@ -54,16 +65,16 @@ export class UserController {
     throw new HttpException('ok', 200);
   }
 
-  @Patch(':user_id')
+  @Get(':user_id')
   @UseGuards(AuthGuard())
-  async updateUser(
-    @Body() updateUserDto: UpdateUserDto,
-    @Param('user_id') user_id: string,
-    @GetUser(userPipe) user,
-  ) {
-    await this.userService.updateUser(updateUserDto, user_id);
+  async getUser(@Param('user_id') user_id: string, @GetUser(userPipe) user) {
+    return await this.userService.getUser(user_id);
+  }
 
-    throw new HttpException('ok', 200);
+  @Get('marketing')
+  @UseGuards(AuthGuard())
+  async getMarketingUser(@GetUser(adminPipe) admin) {
+    return await this.userService.getMarketingUser();
   }
 
   // @Get(':id')

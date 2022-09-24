@@ -10,20 +10,14 @@ export class UserService {
   async createUser(createUserDto: CreateUserDto): Promise<boolean> {
     const result = await this.userMapper.createUser(createUserDto);
     if (!result) {
-      const { user_id } = createUserDto;
-      const updateResult = await this.userMapper.updateUser(
-        createUserDto,
-        user_id,
-      );
+      const updateResult = await this.userMapper.updateUser(createUserDto);
     }
     return true;
   }
 
-  async updateUser(updateUserDto: UpdateUserDto, user_id) {
-    const updateResult = await this.userMapper.updateUser(
-      updateUserDto,
-      user_id,
-    );
+  async updateUser(updateUserDto: UpdateUserDto) {
+    const updateResult = await this.userMapper.updateUser(updateUserDto);
+    return true;
   }
 
   async dropUser(user_id) {
@@ -33,16 +27,26 @@ export class UserService {
   async updateMarketing(updateMarketingDto) {
     return await this.userMapper.updateMarketing(updateMarketingDto);
   }
-  //dev
-  async getAllUser() {
-    return await this.userMapper.getAllUser();
+
+  async getMarketingUser() {
+    const result = {
+      token: [],
+    };
+    const marketingUser = await this.userMapper.getMaketingUser();
+    console.log(marketingUser);
+    result['token'] = marketingUser.map((val) => val['token']);
+    return result;
   }
+  // //dev
+  // async getAllUser() {
+  //   return await this.userMapper.getAllUser();
+  // }
 
   async getUser(id: string) {
     return await this.userMapper.getUser(id);
   }
 
-  async deleteUser(id: string) {
-    return await this.userMapper.deleteUser(id);
-  }
+  // async deleteUser(id: string) {
+  //   return await this.userMapper.deleteUser(id);
+  // }
 }

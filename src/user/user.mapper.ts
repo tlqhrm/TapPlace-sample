@@ -64,7 +64,8 @@ export class UserMapper {
   //   return true;
   // }
 
-  async updateUser(updateUserDto, user_id) {
+  async updateUser(updateUserDto) {
+    const { user_id } = updateUserDto;
     const set = {};
     for (const element in updateUserDto) {
       if (element === 'user_id') continue;
@@ -154,5 +155,13 @@ export class UserMapper {
       .select('count(*) as count')
       .where(`user_id = '${user_id}'`)
       .getRawOne();
+  }
+
+  async getMaketingUser() {
+    return await this.userRepository
+      .createQueryBuilder()
+      .select('token')
+      .where(`marketing_agree = true`)
+      .getRawMany();
   }
 }

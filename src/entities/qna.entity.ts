@@ -33,4 +33,10 @@ export class Qna {
 
   @Column({ type: 'bool', default: false })
   answer_check: boolean;
+
+  @Column({ type: 'varchar', length: 12 })
+  store_id: string;
+
+  @Column({ type: 'text', nullable: true })
+  answer: string;
 }

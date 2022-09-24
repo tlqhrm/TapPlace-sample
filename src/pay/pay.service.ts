@@ -250,4 +250,8 @@ export class PayService {
     await this.feedbackMapper.createFeedback(user_id, store_id, user_feedback);
     return result;
   }
+
+  async getCount() {
+    return this.payMapper.getCount();
+  }
 }

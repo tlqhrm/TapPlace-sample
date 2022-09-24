@@ -258,4 +258,11 @@ export class PayMapper {
       .where(`store_id = '${store_id}' and (${where})`)
       .getRawMany();
   }
+
+  async getCount() {
+    return await this.payRepository
+      .createQueryBuilder()
+      .select('count(num) as count')
+      .getRawOne();
+  }
 }

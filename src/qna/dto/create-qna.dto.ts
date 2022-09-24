@@ -1,4 +1,10 @@
-import { Allow, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  Allow,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateQnaDto {
   @IsNotEmpty()
@@ -31,6 +37,10 @@ export class CreateQnaDto {
   @Allow()
   answer_check: boolean;
 
-  @Allow()
-  key: string;
+  @IsString()
+  store_id: string;
+
+  @IsOptional()
+  @IsString()
+  answer: string;
 }

@@ -11,7 +11,8 @@ export class QnaMapper {
   ) {}
 
   async createQna(createqnaDto: CreateQnaDto): Promise<any> {
-    const { user_id, category, title, content, email, os } = createqnaDto;
+    const { user_id, category, title, content, email, os, store_id } =
+      createqnaDto;
 
     const result = await this.qnaRepository
       .createQueryBuilder()
@@ -24,6 +25,7 @@ export class QnaMapper {
         content,
         email,
         os,
+        store_id,
         write_date: () => 'left(NOW(),19)',
       })
       .execute();
@@ -32,12 +34,23 @@ export class QnaMapper {
   }
 
   async findQna(ct, answer_check, viewCount, startCount) {
-    const result = {};
-    result['qna'] = await this.qnaRepository
+    const result = await this.qnaRepository
       .createQueryBuilder()
       .select(`*`)
       .where(`(category = ${ct})`)
       .andWhere(`(answer_check = ${answer_check})`)
+      .orderBy('num', 'DESC')
+      .limit(viewCount)
+      .offset(startCount)
+      .getRawMany();
+    return result;
+  }
+
+  async findById(user_id, viewCount, startCount) {
+    const result = await this.qnaRepository
+      .createQueryBuilder()
+      .select(`*`)
+      .where(`user_id = '${user_id}' and category='qna'`)
       .orderBy('num', 'DESC')
       .limit(viewCount)
       .offset(startCount)
@@ -51,6 +64,14 @@ export class QnaMapper {
       .select('count(*) as count')
       .where(`(category = ${ct})`)
       .andWhere(`(answer_check = ${answer_check})`)
+      .getRawOne();
+  }
+
+  async getUserTotalCount(user_id) {
+    return await this.qnaRepository
+      .createQueryBuilder()
+      .select('count(*) as count')
+      .where(`user_id = '${user_id}' and category='qna'`)
       .getRawOne();
   }
 

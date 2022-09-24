@@ -4,7 +4,4 @@ export class CreateUserlogDto {
   @IsNotEmpty()
   @IsString()
   user_id: string;
-
-  @Allow()
-  key: string;
 }

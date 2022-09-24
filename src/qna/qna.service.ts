@@ -36,6 +36,27 @@ export class QnaService {
     return result;
   }
 
+  async findById(user_id: string, page: number) {
+    const viewCount = 20;
+    const startCount = (page - 1) * viewCount;
+    const result = {
+      total_count: 0,
+      isEnd: false,
+      qna: null,
+    };
+    const totalCount = await this.qnaMapper.getUserTotalCount(user_id);
+    console.log(totalCount);
+    result['total_count'] = totalCount['count'];
+    if (totalCount['count'] - viewCount * page <= 0) result['isEnd'] = true;
+    result['qna'] = await this.qnaMapper.findById(
+      user_id,
+      viewCount,
+      startCount,
+    );
+
+    return result;
+  }
+
   async updateQna(num: number, updateQnaDto: UpdateQnaDto) {
     return await this.qnaMapper.updateQna(num, updateQnaDto);
   }

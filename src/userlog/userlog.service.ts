@@ -24,12 +24,13 @@ export class UserlogService {
       personal_date: true,
       service_date: true,
     };
-
-    const terms = await this.termsMapper.findLast();
-    if (user['personal_date'] !== terms['personal_date'])
-      result['personal_date'] = false;
-    if (user['service_date'] !== terms['service_date'])
-      result['service_date'] = false;
+    if (user) {
+      const terms = await this.termsMapper.findLast();
+      if (user['personal_date'] !== terms['personal_date'])
+        result['personal_date'] = false;
+      if (user['service_date'] !== terms['service_date'])
+        result['service_date'] = false;
+    }
 
     const totalFeedbackCount = await this.payMapper.getCount();
     result['count'] = totalFeedbackCount['count'];

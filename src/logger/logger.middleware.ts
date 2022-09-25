@@ -6,23 +6,20 @@ import {
   NestMiddleware,
 } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
+import { RealIP } from 'nestjs-real-ip';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   constructor(@Inject(Logger) private readonly logger: LoggerService) {}
   use(req: Request, res: Response, next: NextFunction) {
-    const start = new Date().getTime();
     const { ip, method, originalUrl } = req;
     const userAgent = req.get('user-agent');
-
+    console.log(req.headers, ip);
     res.on('finish', () => {
-      const end = new Date().getTime();
       const { statusCode } = res;
 
       this.logger.log(
-        `${method} ${originalUrl} ${statusCode} ${ip} ${userAgent} ${
-          end - start
-        }`,
+        `${method} - ${originalUrl} - ${statusCode} - ${ip} - ${userAgent}`,
       );
     });
 

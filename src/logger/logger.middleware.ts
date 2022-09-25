@@ -6,7 +6,6 @@ import {
   NestMiddleware,
 } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-import { RealIP } from 'nestjs-real-ip';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {

@@ -14,7 +14,7 @@ export class LoggerMiddleware implements NestMiddleware {
     const { method, originalUrl } = req;
     const userAgent = req.get('user-agent');
     let ip = req.ip;
-    if (req.header('x-forwarded-for')) ip = req.header['x-forwarded-for'];
+    if (req.header('x-forwarded-for')) ip = req.header('x-forwarded-for');
     res.on('finish', () => {
       const { statusCode } = res;
 

@@ -11,9 +11,10 @@ import { NextFunction, Request, Response } from 'express';
 export class LoggerMiddleware implements NestMiddleware {
   constructor(@Inject(Logger) private readonly logger: LoggerService) {}
   use(req: Request, res: Response, next: NextFunction) {
-    const { ip, method, originalUrl } = req;
+    const { method, originalUrl } = req;
     const userAgent = req.get('user-agent');
-    console.log(req.headers, ip);
+    let ip = req.ip;
+    if (req.header['x-forwarded-for']) ip = req.header['x-forwarded-for'];
     res.on('finish', () => {
       const { statusCode } = res;
 

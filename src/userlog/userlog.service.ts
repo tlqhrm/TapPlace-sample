@@ -21,17 +21,21 @@ export class UserlogService {
     if (user) await this.userLogMapper.createUserLog(createUserlogDto);
 
     const result = {
-      personal_date: true,
-      service_date: true,
+      personal_date: null,
+      service_date: null,
     };
     if (user) {
       const terms = await this.termsMapper.findLast();
       if (user['personal_date'] !== terms['personal_date'])
         result['personal_date'] = false;
+      else result['personal_date'] = true;
       if (user['service_date'] !== terms['service_date'])
         result['service_date'] = false;
+      else result['service_date'] = true;
+    } else {
+      result['personal_date'] = '';
+      result['service_date'] = '';
     }
-
     const totalFeedbackCount = await this.payMapper.getCount();
     result['count'] = totalFeedbackCount['count'];
     return result;

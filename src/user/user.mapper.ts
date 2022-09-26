@@ -1,9 +1,10 @@
-import { HttpException, Inject } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 
+@Injectable()
 export class UserMapper {
   constructor(
     @Inject('USER_REPOSITORY') private userRepository: Repository<User>,

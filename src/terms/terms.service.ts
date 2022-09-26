@@ -1,11 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { PayMapper } from 'src/pay/pay.mapper';
 import { CreateTermDto } from './dto/create-term.dto';
 import { UpdateTermDto } from './dto/update-term.dto';
 import { TermsMapper } from './terms.mapper';
 
 @Injectable()
 export class TermsService {
-  constructor(private termsMapper: TermsMapper) {}
+  constructor(private termsMapper: TermsMapper, private payMapper: PayMapper) {}
   create(createTermDto: CreateTermDto) {
     return this.termsMapper.createTerms(createTermDto);
   }
@@ -18,7 +19,10 @@ export class TermsService {
     return result;
   }
   async findLast() {
-    return await this.termsMapper.findLast();
+    const result = await this.termsMapper.findLast();
+    const count = await this.payMapper.getCount();
+    result['count'] = count['count'];
+    return result;
   }
   async findOne(num: number) {
     const result = await this.termsMapper.findOne(num);

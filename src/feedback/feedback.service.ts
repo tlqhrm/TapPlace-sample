@@ -15,7 +15,7 @@ export class FeedbackService {
     private feedbackCountService: FeedbackCountService,
   ) {}
 
-  async getFeedbacks(user_id, store_id, page) {
+  async getFeedbacks(user_id, page) {
     const viewCount = 20;
     const startCount = (page - 1) * viewCount;
     const result = {
@@ -25,7 +25,6 @@ export class FeedbackService {
     };
     const feedbacks = await this.feedbackMapper.getFeedbacks(
       user_id,
-      store_id,
       viewCount,
       startCount,
     );

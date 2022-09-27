@@ -19,15 +19,14 @@ import { userPipe } from 'src/auth/auth.pipe';
 export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 
-  @Get(':user_id/:store_id/:page')
+  @Get(':user_id/:page')
   @UseGuards(AuthGuard())
   findOne(
     @Param('user_id') user_id: string,
-    @Param('store_id') store_id: string,
     @Param('page') page: number,
     @GetUser(userPipe) user,
   ) {
-    return this.feedbackService.getFeedbacks(user_id, store_id, page);
+    return this.feedbackService.getFeedbacks(user_id, page);
   }
 
   @Get('bookmark/:user_id')

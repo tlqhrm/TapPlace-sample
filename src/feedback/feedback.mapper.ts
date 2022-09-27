@@ -29,11 +29,11 @@ export class FeedbackMapper {
       .execute();
   }
 
-  async getFeedbacks(user_id, store_id, viewCount, startCount) {
+  async getFeedbacks(user_id, viewCount, startCount) {
     const result = await this.feedbackRepository
       .createQueryBuilder()
       .select('num, store_id, date, feedback')
-      .where(`user_id = '${user_id}' and store_id = '${store_id}'`)
+      .where(`user_id = '${user_id}'`)
       .orderBy('num', 'DESC')
       .limit(viewCount)
       .offset(startCount)

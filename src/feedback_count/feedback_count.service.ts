@@ -13,14 +13,14 @@ export class FeedbackCountService {
     private fcRepository: Repository<FeedbackCount>,
     private userMapper: UserMapper,
   ) {
-    this.limit = 5;
+    this.limit = 200;
   }
   async increseCount(user_id) {
     const find = await this.fineOne(user_id);
     let result;
     if (find) {
       const count = find['count'];
-      if (count >= 5) throw new HttpException('피드백 횟수 초과', 400);
+      if (count >= this.limit) throw new HttpException('피드백 횟수 초과', 400);
       else {
         await this.fcRepository
           .createQueryBuilder()

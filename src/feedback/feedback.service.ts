@@ -13,6 +13,7 @@ export class FeedbackService {
     private feedbackMapper: FeedbackMapper,
     private bookmarkMapper: BookmarkMapper,
     private feedbackCountService: FeedbackCountService,
+    private storeMapper: StoreMapper,
   ) {}
 
   async getFeedbacks(user_id, page) {
@@ -28,7 +29,7 @@ export class FeedbackService {
       viewCount,
       startCount,
     );
-    console.log(feedbacks);
+
     for (const feedback of feedbacks) {
       feedback['feedback'] = JSON.parse(feedback['feedback']);
       result['feedbacks'].push(feedback);

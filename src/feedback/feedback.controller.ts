@@ -19,6 +19,11 @@ import { userPipe } from 'src/auth/auth.pipe';
 export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 
+  @Get('bookmark/:user_id')
+  getTotalCount(@Param('user_id') user_id: string) {
+    return this.feedbackService.getFeedBookCount(user_id);
+  }
+
   @Get(':user_id/:page')
   @UseGuards(AuthGuard())
   findOne(
@@ -27,10 +32,5 @@ export class FeedbackController {
     @GetUser(userPipe) user,
   ) {
     return this.feedbackService.getFeedbacks(user_id, page);
-  }
-
-  @Get('bookmark/:user_id')
-  getTotalCount(@Param('user_id') user_id: string) {
-    return this.feedbackService.getFeedBookCount(user_id);
   }
 }

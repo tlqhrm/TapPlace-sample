@@ -104,7 +104,13 @@ export class BookmarkController {
     @GetUser(userPipe) user,
   ) {
     await this.bookmarkService.remove(deleteBookmarkDto);
+    throw new HttpException('ok', 200);
+  }
 
+  @Delete('all')
+  @UseGuards(AuthGuard())
+  async removeAll(@Body('user_id') user_id: string, @GetUser(userPipe) user) {
+    await this.bookmarkService.removeAll(user_id);
     throw new HttpException('ok', 200);
   }
 }

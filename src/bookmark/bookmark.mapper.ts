@@ -57,6 +57,14 @@ export class BookmarkMapper {
       .execute();
   }
 
+  async removeAllBookmark(user_id) {
+    return await this.bookmarkRepository
+      .createQueryBuilder()
+      .delete()
+      .where(`user_id = '${user_id}'`)
+      .execute();
+  }
+
   async getStoreIds(user_id, stores) {
     let where = '';
     for (let i = 0; i < stores.length; i++) {

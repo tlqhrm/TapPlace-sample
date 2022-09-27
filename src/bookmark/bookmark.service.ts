@@ -70,4 +70,11 @@ export class BookmarkService {
     if (!result['affected']) throw new HttpException('해당 북마크 없음', 409);
     return result;
   }
+
+  async removeAll(user_id) {
+    const result = await this.bookmarkMapper.removeAllBookmark(user_id);
+    console.log(result);
+    if (!result['affected']) throw new HttpException('남은 북마크 없음', 409);
+    return result;
+  }
 }

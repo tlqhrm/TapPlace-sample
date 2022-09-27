@@ -43,7 +43,7 @@ export class FeedbackMapper {
 
   async getFeedbacks(user_id, viewCount, startCount) {
     const result = await this.feedbackRepository.query(`
-      select f.num,f.user_id,f.feedback,f.store_id, s.place_name,s.address_name,s.road_address_name, s.category_group_name, s.phone, s.x, s.y from (select * from feedback f where user_id = '${user_id}') f, (select * from store ) s
+      select f.num,f.user_id,f.date,f.feedback,f.store_id, s.place_name,s.address_name,s.road_address_name, s.category_group_name, s.phone, s.x, s.y from (select * from feedback f where user_id = '${user_id}') f, (select * from store ) s
       WHERE f.store_id = s.store_id
       order by f.num DESC 
       limit ${viewCount}

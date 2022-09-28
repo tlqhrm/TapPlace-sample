@@ -27,10 +27,6 @@ export class CreateQnaDto {
   // write_date: string;
 
   @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
   @IsString()
   os: string;
 

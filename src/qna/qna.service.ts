@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import axios from 'axios';
+import { UserMapper } from 'src/user/user.mapper';
 import { CreateQnaDto } from './dto/create-qna.dto';
 import { UpdateQnaDto } from './dto/update-qna.dto';
 import { QnaMapper } from './qna.mapper';
 
 @Injectable()
 export class QnaService {
-  constructor(private readonly qnaMapper: QnaMapper) {}
+  constructor(
+    private readonly qnaMapper: QnaMapper,
+    private userMapper: UserMapper,
+  ) {}
   async createQna(createQnaDto: CreateQnaDto) {
     return await this.qnaMapper.createQna(createQnaDto);
   }
@@ -58,7 +63,33 @@ export class QnaService {
   }
 
   async updateQna(num: number, updateQnaDto: UpdateQnaDto) {
-    return await this.qnaMapper.updateQna(num, updateQnaDto);
+    const { user_id } = updateQnaDto;
+    const answer = await this.qnaMapper.updateQna(num, updateQnaDto);
+    const user = await this.userMapper.getUser(user_id);
+    if (answer['affected']) {
+      axios({
+        url: 'https://fcm.googleapis.com/fcm/send',
+        method: 'post',
+        data: {
+          notification: {
+            title: '탭플레이스',
+            body: '알림테스트',
+            sound: 'default',
+            badge: 0,
+          },
+          data: {
+            key_1: 'Value_1',
+            key_2: 2,
+          },
+          content_available: true,
+          mutable_content: true,
+          priority: 'high',
+          to: user['token'],
+        },
+        headers: { Authorization: process.env.FCM_KEY },
+      });
+    }
+    return true;
   }
 
   async deleteQna(num: number, user_id) {

@@ -68,6 +68,11 @@ export class UserController {
   @Get(':user_id')
   @UseGuards(AuthGuard())
   async getUser(@Param('user_id') user_id: string, @GetUser(userPipe) user) {
+    if (process.env.NODE_ENV === 'prod') {
+      if (user['role'] === 'admin' || user['user_id'] === user_id)
+        return await this.userService.getUser(user_id);
+      else throw new HttpException('Unauthorized', 401);
+    }
     return await this.userService.getUser(user_id);
   }
 

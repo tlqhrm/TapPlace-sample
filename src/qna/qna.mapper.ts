@@ -11,8 +11,7 @@ export class QnaMapper {
   ) {}
 
   async createQna(createqnaDto: CreateQnaDto): Promise<any> {
-    const { user_id, category, title, content, email, os, store_id } =
-      createqnaDto;
+    const { user_id, category, title, content, os, store_id } = createqnaDto;
 
     const result = await this.qnaRepository
       .createQueryBuilder()
@@ -23,7 +22,6 @@ export class QnaMapper {
         category,
         title,
         content,
-        email,
         os,
         store_id,
         write_date: () => 'left(NOW(),19)',

@@ -25,9 +25,6 @@ export class Qna {
   @Column({ type: 'varchar', length: 40 })
   write_date: string;
 
-  @Column({ type: 'varchar', length: 100, default: '' })
-  email: string;
-
   @Column({ type: 'varchar', length: 10 })
   os: string;
 

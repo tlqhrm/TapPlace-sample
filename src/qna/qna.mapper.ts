@@ -91,7 +91,7 @@ export class QnaMapper {
 
     if (!result['affected'])
       throw new HttpException('조건에 맞는 게시글이 없습니다.', 400);
-    return true;
+    return result;
   }
 
   async deleteQna(num, user_id) {

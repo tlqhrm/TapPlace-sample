@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import { response } from 'express';
 import { UserMapper } from 'src/user/user.mapper';
 import { CreateQnaDto } from './dto/create-qna.dto';
 import { UpdateQnaDto } from './dto/update-qna.dto';
@@ -87,8 +88,14 @@ export class QnaService {
           to: user['token'],
         },
         headers: { Authorization: process.env.FCM_KEY },
-      });
+      })
+        .then((response) => {
+          console.log(response, 'dddddddddd');
+        })
+        .catch((err) => console.log(err, 'wwwwwwwwww'));
     }
+    // console.log(user['token']);
+    // console.log(process.env.FCM_KEY);
     return true;
   }
 

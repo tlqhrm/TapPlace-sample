@@ -23,7 +23,7 @@ export class BookmarkService {
       throw new HttpException(`이미 등록된 스토어`, 409);
     }
     const count = await this.bookmarkMapper.getBookmarkCount(user_id);
-    if (count['count'] > bookmarkLimit) {
+    if (count['count'] >= bookmarkLimit) {
       throw new HttpException(`북마크 ${bookmarkLimit}개를 초과.`, 406);
     }
     const user = await this.userMapper.getCountById(user_id);
@@ -59,14 +59,23 @@ export class BookmarkService {
     for (const store of stores) {
       store_ids.push(store['store_id']);
     }
-    result['bookmarks'] = await this.storeMapper.getStoreById2(store_ids);
+    const bookmarks = await this.storeMapper.getStoreById2(store_ids);
+    for (const store of stores) {
+      for (const bookmark of bookmarks) {
+        if (store['store_id'] === bookmark['store_id']) {
+          bookmark['bookmark_num'] = store['num'];
+          result['bookmarks'].push(bookmark);
+          break;
+        }
+      }
+    }
 
     return result;
   }
 
   async remove(deleteBookmarkDto: DeleteBookmarkDto) {
     const result = await this.bookmarkMapper.removeBookmark(deleteBookmarkDto);
-    console.log(result);
+    // console.log(result);
     if (!result['affected']) throw new HttpException('해당 북마크 없음', 409);
     return result;
   }

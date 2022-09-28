@@ -22,7 +22,7 @@ export class BookmarkMapper {
   async getBookmarksById(user_id: string, viewCount, startCount) {
     return await this.bookmarkRepository
       .createQueryBuilder()
-      .select('store_id')
+      .select('num,store_id')
       .where(`user_id = '${user_id}'`)
       .orderBy('num', 'DESC')
       .limit(viewCount)

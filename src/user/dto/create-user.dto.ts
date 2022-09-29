@@ -43,8 +43,6 @@ export class CreateUserDto {
   @IsString()
   service_date: string;
 
-  @IsOptional()
-  @IsNotEmpty()
   @IsString()
   token: string;
 }

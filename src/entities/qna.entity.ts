@@ -36,4 +36,7 @@ export class Qna {
 
   @Column({ type: 'text', nullable: true })
   answer: string;
+
+  @Column({ type: 'varchar', length: 12 })
+  answer_date: string;
 }

@@ -79,9 +79,14 @@ export class QnaMapper {
     for (const element in updateQnaDto) {
       if (element === 'user_id') continue;
       if (element === 'key') continue;
+      if (element === 'answer_check') {
+        if (updateQnaDto['answer_check'])
+          set['answer_date'] = () => `left(NOW(),19)`;
+        else set['answer_date'] = '';
+      }
       if (updateQnaDto[element] != null) set[element] = updateQnaDto[element];
     }
-    // console.log(set);
+    console.log(set);
     const result = await this.qnaRepository
       .createQueryBuilder()
       .update(Qna)

@@ -56,6 +56,15 @@ export class QnaMapper {
     return result;
   }
 
+  async findByNum(num) {
+    const result = await this.qnaRepository
+      .createQueryBuilder()
+      .select(`*`)
+      .where(`num = ${num}`)
+      .getRawOne();
+    return result;
+  }
+
   async getTotalCount(ct, answer_check) {
     return await this.qnaRepository
       .createQueryBuilder()
@@ -86,7 +95,7 @@ export class QnaMapper {
       }
       if (updateQnaDto[element] != null) set[element] = updateQnaDto[element];
     }
-    console.log(set);
+    // console.log(set);
     const result = await this.qnaRepository
       .createQueryBuilder()
       .update(Qna)

@@ -67,6 +67,7 @@ export class QnaService {
     const { user_id } = updateQnaDto;
     const answer = await this.qnaMapper.updateQna(num, updateQnaDto);
     const user = await this.userMapper.getUser(user_id);
+    const qna = await this.qnaMapper.findByNum(num);
     if (answer['affected']) {
       axios({
         url: 'https://fcm.googleapis.com/fcm/send',
@@ -74,7 +75,7 @@ export class QnaService {
         data: {
           notification: {
             title: '탭플레이스',
-            body: '알림테스트',
+            body: `문의하신 [${qna['title']}]에 대한 답변이 등록되었습니다.`,
             sound: 'default',
             badge: 0,
           },
@@ -90,9 +91,9 @@ export class QnaService {
         headers: { Authorization: process.env.FCM_KEY },
       })
         .then((response) => {
-          console.log(response, 'dddddddddd');
+          // console.log(response, 'dddddddddd');
         })
-        .catch((err) => console.log(err, 'wwwwwwwwww'));
+        .catch((err) => console.log(err));
     }
     // console.log(user['token']);
     // console.log(process.env.FCM_KEY);

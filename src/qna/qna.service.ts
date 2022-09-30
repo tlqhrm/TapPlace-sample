@@ -80,8 +80,7 @@ export class QnaService {
             badge: 0,
           },
           data: {
-            key_1: 'Value_1',
-            key_2: 2,
+            type: 'qna',
           },
           content_available: true,
           mutable_content: true,

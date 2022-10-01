@@ -13,7 +13,7 @@ export class FeedbackCountService {
     private fcRepository: Repository<FeedbackCount>,
     private userMapper: UserMapper,
   ) {
-    this.limit = 200;
+    this.limit = 5;
   }
   async increseCount(user_id) {
     const find = await this.fineOne(user_id);

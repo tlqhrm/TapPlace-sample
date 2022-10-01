@@ -6,6 +6,7 @@ export class adminPipe implements PipeTransform {
     if (role !== 'admin') {
       throw new HttpException('운영자가 아닙니다', 403);
     }
+    return value;
   }
 }
 
@@ -15,5 +16,6 @@ export class userPipe implements PipeTransform {
     if (role !== 'user') {
       throw new HttpException('유저가 아닙니다.', 403);
     }
+    return value;
   }
 }

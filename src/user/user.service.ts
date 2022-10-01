@@ -33,7 +33,6 @@ export class UserService {
       token: [],
     };
     const marketingUser = await this.userMapper.getMaketingUser();
-    console.log(marketingUser);
     result['token'] = marketingUser.map((val) => val['token']);
     return result;
   }

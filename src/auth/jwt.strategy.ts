@@ -22,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     //   throw new UnauthorizedException('123');
     // }
     // payload['role'] = 'admin';
-    console.log(payload);
+    // console.log(payload);
     return payload;
   }
 }

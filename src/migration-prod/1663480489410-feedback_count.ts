@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class bookmark1663481544436 implements MigrationInterface {
+export class feedbackCount1663480959980 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'bookmark',
+        name: 'feedback_count',
         columns: [
           {
             name: 'num',
@@ -19,15 +19,8 @@ export class bookmark1663481544436 implements MigrationInterface {
             length: '50',
           },
           {
-            name: 'store_id',
-            type: 'varchar',
-            length: '12',
-          },
-          {
-            name: 'date',
-            type: 'varchar',
-            length: '40',
-            default: `left(NOW(),19)`,
+            name: 'count',
+            type: 'int',
           },
         ],
       }),
@@ -36,6 +29,6 @@ export class bookmark1663481544436 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('bookmark');
+    await queryRunner.dropTable('feedback_count');
   }
 }

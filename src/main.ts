@@ -22,7 +22,7 @@ async function bootstrap() {
   const port = 3000;
   await app.listen(port);
   app.enableCors({
-    origin: ['https://www.tapplace.co.kr', 'https://tapplace.co.kr'],
+    origin: '*c',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,

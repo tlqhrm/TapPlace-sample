@@ -6,6 +6,7 @@ import { winstonLogger } from './logger/winston.util';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: winstonLogger,
+    cors: true,
   });
   app.useGlobalPipes(
     new ValidationPipe({

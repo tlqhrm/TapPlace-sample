@@ -21,12 +21,7 @@ async function bootstrap() {
 
   const port = 3000;
   await app.listen(port);
-  app.enableCors({
-    origin: '*c',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-  });
+  app.enableCors();
   Logger.log(`Application running on port${port} `);
 }
 bootstrap();

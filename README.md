@@ -4,7 +4,7 @@
 
 개발 : https://api.tapplace.cloud
 
-노션 주소 : [https://interesting-english-106.notion.site/Tapplace-API-v1-2-0-59bc730670154642983ed37b12443f97](https://www.notion.so/Tapplace-API-v1-2-1-59bc730670154642983ed37b12443f97)
+노션 주소 : [https://dev159.notion.site/Tapplace-API-v1-2-1-59bc730670154642983ed37b12443f97](https://www.notion.so/Tapplace-API-v1-2-1-59bc730670154642983ed37b12443f97)
 
 ## 변경사항
 
@@ -29,9 +29,9 @@
   13. qna, notice, bookmark, feedback 페이징시 한 페이지당 20개씩 노출
   14. 북마크 최대 등록개수 60개로설정
   15. 기존 true 리턴값 → statuscode,messgae로 변경
-  9/23 변경사항
-  1. [POST](http://1.POST) /store/around 입력값 user_id 추가, 리턴값에 isBookmark 추가 ( 웹페이지는 user_id 공백으로 입력시 리턴값에 isBookmark 항목 없이 리턴)
-  2. (웹)POST /pay/list , /pay/list/check 입력값에 user_id 공백으로 입력시 리턴값에 isBookmark 항목 없이 리턴
+      9/23 변경사항
+  16. [POST](http://1.POST) /store/around 입력값 user_id 추가, 리턴값에 isBookmark 추가 ( 웹페이지는 user_id 공백으로 입력시 리턴값에 isBookmark 항목 없이 리턴)
+  17. (웹)POST /pay/list , /pay/list/check 입력값에 user_id 공백으로 입력시 리턴값에 isBookmark 항목 없이 리턴
 - 1.2 → 1.2.1
   1. GET feedback/bookmark/:user_id(더보기) 리턴값에 남은 피드백 횟수 추가
   2. qna 테이블 store_id, answer 컬럼 추가

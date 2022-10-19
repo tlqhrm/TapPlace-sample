@@ -10,44 +10,10 @@ import { StoreMapper } from './store.mapper';
 @Injectable()
 export class StoreService {
   constructor(
-    private storeMapper: StoreMapper,
-    private payMapper: PayMapper,
-    private bookmarkMapper: BookmarkMapper,
+    private readonly storeMapper: StoreMapper,
+    private readonly payMapper: PayMapper,
+    private readonly bookmarkMapper: BookmarkMapper,
   ) {}
-
-  // (구) 주변찾기
-  // async aroundStore(aroundStoreDto: AroundStoreDto) {
-  //   // 전달받은 pay 배열
-  //   const { pays } = aroundStoreDto;
-  //   // 주변 가게 먼저 가져옴
-  //   const stores = await this.storeMapper.aroundStore(aroundStoreDto);
-  //   // 해당 가게 stores 값 + pay 추가해서 리턴할 배열
-  //   const result = {
-  //     stores: [],
-  //   };
-
-  //   for await (const store of stores) {
-  //     // pays 중에 존재하는 pay만 담을 배열
-  //     const paysResult = [];
-  //     for await (const pay of pays) {
-  //       // pays 존재 check
-  //       const start = new Date().getTime();
-  //       const payExist = await this.payMapper.payCheck(store['store_id'], pay);
-  //       const end = new Date().getTime();
-  //       console.log(store, pay, payExist, end - start);
-  //       if (payExist) {
-  //         paysResult.push(pay);
-  //       }
-  //     }
-  //     //해당 store에 pays 가있어야만 리턴
-  //     if (paysResult.length) {
-  //       store['pays'] = paysResult;
-  //       result['stores'].push(store);
-  //     }
-  //   }
-
-  //   return result;
-  // }
 
   //dev
   async create(createStoreDto: CreateStoreDto): Promise<Store> {
@@ -67,39 +33,6 @@ export class StoreService {
   async deleteStore(id: string) {
     return await this.storeMapper.deleteStore(id);
   }
-
-  // async aroundStore2(aroundStoreDto: AroundStoreDto) {
-  //   // 전달받은 pay 배열
-  //   const { pays } = aroundStoreDto;
-  //   // 주변 가게 먼저 가져옴
-  //   const stores = await this.storeMapper.aroundStore(aroundStoreDto);
-  //   // 해당 가게 stores 값 + pay 추가해서 리턴할 배열
-  //   const result = {
-  //     stores: [],
-  //   };
-
-  //   for await (const store of stores) {
-  //     // pays 중에 존재하는 pay만 담을 배열
-  //     const paysResult = [];
-  //     for await (const pay of pays) {
-  //       // pays 존재 check
-  //       const start = new Date().getTime();
-  //       const payExist = await this.payMapper.payCheck2(store['store_id'], pay);
-  //       const end = new Date().getTime();
-  //       console.log(store, pay, payExist, end - start);
-  //       if (payExist) {
-  //         paysResult.push(pay);
-  //       }
-  //     }
-  //     // 해당 store에 pays 가있어야만 리턴
-  //     if (paysResult.length) {
-  //       store['pays'] = paysResult;
-  //       result['stores'].push(store);
-  //     }
-  //   }
-
-  //   return result;
-  // }
 
   async aroundStore(aroundStoreDto: AroundStoreDto) {
     // 전달받은 pay 배열
@@ -136,7 +69,22 @@ export class StoreService {
         result['stores'].push(store);
       }
     }
-
     return result;
+  }
+
+  async aroundStore2(aroundStoreDto: AroundStoreDto) {
+    // 전달받은 pay 배열
+    const { pays, user_id } = aroundStoreDto;
+    // 주변 가게 먼저 가져옴
+    const stores = await this.storeMapper.aroundStore2(aroundStoreDto);
+
+    stores.map((store) => {
+      store['pays'] = store['pays'].split(',');
+      if (store['isBookmark']) store['isBookmark'] = true;
+      else store['isBookmark'] = false;
+    });
+    return {
+      stores,
+    };
   }
 }

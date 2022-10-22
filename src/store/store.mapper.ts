@@ -1,7 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { Store } from 'src/entities/store.entity';
 import { HandleSqlError } from 'src/exception/handleSqlError.decorator';
-import { GetPaysCehckDto } from 'src/pay/dto/get-pays-check.dto';
 import { Repository, QueryRunner } from 'typeorm';
 import { AroundStoreDto } from './dto/around-store';
 import { CreateStoreDto } from './dto/create-store';
@@ -34,9 +33,7 @@ export class StoreMapper {
 
   // 가게 생성 쿼리
   @HandleSqlError
-  async createStore(
-    createStoreDto: CreateStoreDto | GetPaysCehckDto,
-  ): Promise<boolean> {
+  async createStore(createStoreDto: CreateStoreDto): Promise<boolean> {
     await this.storeRepository
       .createQueryBuilder()
       .insert()

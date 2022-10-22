@@ -3,20 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { DatabaseModule } from './database/database.module';
 import { StoreModule } from './store/store.module';
-import { UserModule } from './user/user.module';
-import { PayModule } from './pay/pay.module';
-import { UserlogModule } from './userlog/userlog.module';
-import { WinstonModule } from 'nest-winston';
-import winston from 'winston';
 import { LoggerMiddleware } from './logger/logger.middleware';
-import { winstonLogger } from './logger/winston.util';
-import { NoticeModule } from './notice/notice.module';
-import { TermsModule } from './terms/terms.module';
-import { AdminModule } from './admin/admin.module';
-import { QnaModule } from './qna/qna.module';
-import { FeedbackCountModule } from './feedback_count/feedback_count.module';
-import { FeedbackModule } from './feedback/feedback.module';
-import { BookmarkModule } from './bookmark/bookmark.module';
 
 @Module({
   imports: [
@@ -40,17 +27,7 @@ import { BookmarkModule } from './bookmark/bookmark.module';
       }),
     }),
     DatabaseModule,
-    UserModule,
-    PayModule,
     StoreModule,
-    UserlogModule,
-    NoticeModule,
-    TermsModule,
-    AdminModule,
-    QnaModule,
-    FeedbackCountModule,
-    FeedbackModule,
-    BookmarkModule,
   ],
   controllers: [],
   providers: [Logger],

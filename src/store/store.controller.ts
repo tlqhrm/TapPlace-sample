@@ -30,13 +30,14 @@ export class StoreController {
     return await this.storeService.findAll();
   }
 
-  @HttpCode(200)
   @Post('around')
+  @HttpCode(200)
   async aroundStore(@Body() aroundStoreDto: AroundStoreDto): Promise<boolean> {
     return await this.storeService.aroundStore(aroundStoreDto);
   }
 
   @Post()
+  @HttpCode(200)
   @UseGuards(AuthGuard())
   async create(
     @Body() createStoreDto: CreateStoreDto,

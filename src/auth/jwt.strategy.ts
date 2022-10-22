@@ -13,16 +13,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload) {
-    // const { username } = payload;
-    // const user: User = await this.userRepository.findOneBy({
-    //   username,
-    // });
-    // console.log(user);
-    // if (!user) {
-    //   throw new UnauthorizedException('123');
-    // }
-    // payload['role'] = 'admin';
-    // console.log(payload);
     return payload;
   }
 }

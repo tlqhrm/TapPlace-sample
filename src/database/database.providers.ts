@@ -14,12 +14,6 @@ export const databaseProviders = [
         entities: [__dirname + '/../**/*.entity.{js,ts}'],
         synchronize: process.env.DB_SYNC == 'true' ? true : false,
         logging: process.env.LOGGING == 'true' ? true : false,
-        // type: 'oracle',
-        // username: 'admin',
-        // password: 'Wlgns13579@@',
-        // connectString: 'Wallet_O653N969L3A78WUZ',
-
-        // migrations: ['src/migration/*.ts'],
       });
 
       return dataSource.initialize();

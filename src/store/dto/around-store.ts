@@ -1,10 +1,9 @@
 import {
   IsNotEmpty,
   IsString,
-  Allow,
   IsArray,
   IsNumber,
-  IsOptional,
+  IsUUID,
 } from 'class-validator';
 
 export class AroundStoreDto {
@@ -23,8 +22,6 @@ export class AroundStoreDto {
   @IsArray()
   pays: string[];
 
-  @IsString()
+  @IsUUID()
   user_id: string;
-  // @Allow()
-  // key: string;
 }

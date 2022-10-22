@@ -1,6 +1,7 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './exception/http-exception.filter';
 import { winstonLogger } from './logger/winston.util';
 
 async function bootstrap() {
@@ -13,13 +14,9 @@ async function bootstrap() {
       transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
-      // forbidUnknownValues: true,
     }),
   );
-  // const config = new BaseAPIDocument().initializeOptions();
-  // const document = SwaggerModule.createDocument(app, config);
-  // SwaggerModule.setup('', app, document);
-
+  app.useGlobalFilters(new HttpExceptionFilter(Logger));
   const port = 3000;
   await app.listen(port);
   app.enableCors();

@@ -5,20 +5,13 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   HttpException,
-  Logger,
-  UseFilters,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UpdateUserPaysDto } from './dto/updatePay-user.dto';
-import { keyCheck } from 'src/auth/keyCheck-decorators';
-import { keyPipe } from 'src/auth/keyPipes';
 import { UpdateMarketingDto } from './dto/update-marketing.dto';
-import { ExceptionHandler } from 'src/ExceptHandler';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { adminPipe, userPipe } from 'src/auth/auth.pipe';

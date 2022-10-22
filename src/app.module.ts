@@ -28,7 +28,6 @@ import { BookmarkModule } from './bookmark/bookmark.module';
           : process.env.NODE_ENV === 'prod'
           ? '.prod.env'
           : '.local.env',
-      // ignoreEnvFile: process.env.NODE_ENV === 'prod',
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('dev', 'prod', 'local').required(),
         DB_HOST: Joi.string().required(),
@@ -40,15 +39,6 @@ import { BookmarkModule } from './bookmark/bookmark.module';
         JWT_SECRET: Joi.string().required(),
       }),
     }),
-    // WinstonModule.forRoot({
-    //   level: 'info',
-    //   format: winston.format.json(),
-    //   defaultMeta: { service: 'user-service' },
-    //   transports: [
-    //     new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    //     new winston.transports.File({ filename: 'combined.log' }),
-    //   ],
-    // }),
     DatabaseModule,
     UserModule,
     PayModule,

@@ -85,26 +85,26 @@ Nest.js를 이용한 백엔드 HTTP API 서버입니다.
 
 ## 구조
 
-### `[main.ts](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/main.ts)`
+### [main.ts](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/main.ts)
 
 ![mainTs.png](readme%2024a7daff03fb4522afac11c9e2dd6d78/mainTs.png)
 
-### `[AppModule](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/app.module.ts)`
+### [AppModule](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/app.module.ts)
 
 ![appModule.png](readme%2024a7daff03fb4522afac11c9e2dd6d78/appModule.png)
 
-### `[StoreModule](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/store/store.module.ts)`
+### [StoreModule](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/store/store.module.ts)
 
 ![module.png](readme%2024a7daff03fb4522afac11c9e2dd6d78/module.png)
 
-### `[StoreController](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/store/store.controller.ts)`
+### [StoreController](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/store/store.controller.ts)
 
 ![controller.png](readme%2024a7daff03fb4522afac11c9e2dd6d78/controller.png)
 
-### `[StoreService](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/store/store.service.ts)`
+### [StoreService](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/store/store.service.ts)
 
 ![service.png](readme%2024a7daff03fb4522afac11c9e2dd6d78/service.png)
 
-### `[StroeMapper](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/store/store.mapper.ts)`
+### [StroeMapper](https://github.com/tlqhrm/TapPlace-sample/blob/61e5717f26d41d5bd975299f5188e8fc2ba059c8/src/store/store.mapper.ts)
 
 ![mapper.png](readme%2024a7daff03fb4522afac11c9e2dd6d78/mapper.png)

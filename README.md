@@ -1,7 +1,7 @@
 ## Nest.js HTTP API SampleCode
 
 Nest.js를 이용한 백엔드 HTTP API 서버입니다.
-팀 프로젝트 `[TapPlace](http://tapplace.co.kr)`의 일부 코드입니다.
+팀 프로젝트 [TapPlace](http://tapplace.co.kr)의 일부 코드입니다.
 
 ## 기능
 

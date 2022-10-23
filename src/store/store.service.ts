@@ -14,10 +14,6 @@ export class StoreService {
     return store;
   }
 
-  async findAll(): Promise<Store[]> {
-    return await this.storeMapper.findAll();
-  }
-
   async create(createStoreDto: CreateStoreDto): Promise<boolean> {
     const store = await this.storeMapper.createStore(createStoreDto);
     return store;

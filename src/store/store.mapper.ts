@@ -12,7 +12,8 @@ export class StoreMapper {
     @Inject('DATA_SOURCE')
     private queryRunner: QueryRunner,
   ) {}
-  // 아이디에 맞는 스토어 가져옴
+
+  // 아이디에 맞는 store 가져옴
   @HandleSqlError
   async getStoreById(store_id: string): Promise<Store> {
     const found = await this.storeRepository.findOneBy({
@@ -22,16 +23,7 @@ export class StoreMapper {
     return found;
   }
 
-  //스토어 전부가져옴
-  @HandleSqlError
-  async findAll(): Promise<Store[]> {
-    return this.storeRepository
-      .createQueryBuilder('store')
-      .limit(100)
-      .getMany();
-  }
-
-  // 가게 생성 쿼리
+  // store 생성 쿼리
   @HandleSqlError
   async createStore(createStoreDto: CreateStoreDto): Promise<boolean> {
     await this.storeRepository
@@ -44,6 +36,7 @@ export class StoreMapper {
   }
 
   // 주변찾기 쿼리
+  // 사용자위치의 distance 안에있는 store 중 pays 조건에맞는 스토어를 가져오고 user_id와 bookmark 테이블을 조회해 user의 해당 store 북마크 여부 표시
   @HandleSqlError
   async aroundStore(aroundStoreDto: AroundStoreDto): Promise<any> {
     const { x1, y1, distance, pays, user_id } = aroundStoreDto;
@@ -57,13 +50,13 @@ export class StoreMapper {
           from store
           having distance <= ${distance}
           ) s
-        join pay p on s.store_id = p.store_id AND 
+        left join pay p on s.store_id = p.store_id AND 
         p.pay IN (${paysToString})
         GROUP by s.store_id
         order by distance
         ) sp
       left join bookmark b
-      on sp.store_id = b.store_id AND b.user_id = '${user_id}';
+      on sp.store_id = b.store_id AND b.user_id = '${user_id}' limit 500;
       `);
 
     return stores;

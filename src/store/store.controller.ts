@@ -25,11 +25,6 @@ export class StoreController {
     return await this.storeService.getStoreById(store_id);
   }
 
-  @Get()
-  async findAll(): Promise<Store[]> {
-    return await this.storeService.findAll();
-  }
-
   @Post('around')
   @HttpCode(200)
   async aroundStore(@Body() aroundStoreDto: AroundStoreDto): Promise<boolean> {

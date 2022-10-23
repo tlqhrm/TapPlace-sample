@@ -29,7 +29,4 @@ export class CreateStoreDto {
   @IsNotEmpty()
   @IsString()
   y: string;
-
-  @Allow()
-  key: string;
 }
